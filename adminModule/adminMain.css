@@ -1,0 +1,52 @@
+body{
+    margin: 0;
+    padding: 0;
+}
+
+::-webkit-scrollbar{
+    display: none;
+}
+
+.slider-div{
+    background-color: #e74c3c;
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+.slider{
+    margin: 0px 30px;
+    height: 500px;
+    display: flex;
+    position: relative;
+    overflow: hidden;
+}
+
+.slider .slide{
+    position: absolute;
+    transition-duration: 1s;
+}
+
+.slider .btn{
+    position: absolute;
+    padding: 30px 20px;
+    background-color: transparent;
+    top: 220px;
+}
+
+.slider .btn:hover{
+    background-color: white;
+    transition-duration: 1s;
+}
+
+.slider #slider-left-btn{
+    left: 0px;
+}
+
+.slider #slider-right-btn{
+    right: 0px;
+}
+
+.slider img{
+    height: 100%;
+    width: 100%;
+}
