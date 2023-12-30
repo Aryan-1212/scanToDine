@@ -13,11 +13,11 @@
 <body>
     <div class="slider-div">
         <div class="slider">
-            <img src="adminMain-images/menu.jpg" class="slide" alt="">
-            <img src="adminMain-images/bill.jpg" class="slide" alt="">
-            <img src="adminMain-images/ingredients.jpg" class="slide" alt="">
-            <img src="adminMain-images/Qr.jpg" class="slide" alt="">
-            <img src="adminMain-images/orderStatus.jpg" class="slide" alt="">
+            <img src="adminMain-images/slide1.jpg" class="slide" alt="">
+            <img src="adminMain-images/slide2.jpg" class="slide" alt="">
+            <img src="adminMain-images/slide3.jpg" class="slide" alt="">
+            <img src="adminMain-images/slide4.jpg" class="slide" alt="">
+            <img src="adminMain-images/slide5.jpg" class="slide" alt="">
             <button id="slider-left-btn" class="btn" onclick="prevSlide()"><i class="fa-solid fa-chevron-left fa-lg"></i></button>
             <button id="slider-right-btn" class="btn" onclick="nextSlide()"><i class="fa-solid fa-chevron-right fa-lg"></i></button>
         </div>
