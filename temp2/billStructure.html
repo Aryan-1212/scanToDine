@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Restaurant Bill</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 500px;
+            min-height: 400px;
+            margin: 0 auto;
+            background-color: #fff;
+            border: 2px solid #ff0000;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        .header {
+            background-color: #ff0000;
+            color: #fff;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            width: 50px;
+            height: 50px;
+            background-color: #fff;
+            /* You can set your logo image as a background here */
+        }
+        .details {
+            text-align: right;
+        }
+        .main {
+            padding: 20px;
+        }
+        .item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        .item-name {
+            flex: 1;
+        }
+        .item-quantity {
+            flex: 1;
+            text-align: center;
+        }
+        .item-price {
+            flex: 1;
+            text-align: right;
+        }
+        .taxes {
+            text-align: right;
+            font-weight: bold;
+        }
+        .total {
+            text-align: right;
+            font-size: 18px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo"></div>
+            <div class="details">
+                <p>Order ID: 12345</p>
+                <p>Restaurant Name: My Restaurant</p>
+            </div>
+        </div>
+        <div class="main">
+            <div class="item">
+                <div class="item-name">Burger</div>
+                <div class="item-quantity">2</div>
+                <div class="item-price">$10.00</div>
+            </div>
+            <div class="item">
+                <div class="item-name">Fries</div>
+                <div class="item-quantity">1</div>
+                <div class="item-price">$5.00</div>
+            </div>
+            <div class="item">
+                <div class="item-name">Soda</div>
+                <div class="item-quantity">3</div>
+                <div class="item-price">$2.00</div>
+            </div>
+            <div class="item">
+                <div class="item-name">Taxes (8%):</div>
+                <div class="item-quantity"></div>
+                <div class="item-price">$1.36</div>
+            </div>
+            <div class="item">
+                <div class="item-name">Total:</div>
+                <div class="item-quantity"></div>
+                <div class="item-price">$18.36</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

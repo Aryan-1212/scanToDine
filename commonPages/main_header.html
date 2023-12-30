@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Header</title>
+    <style>
+/* Reset some default styles */
+body, h1, h2, p, ul, li, a {
+    margin: 0;
+    padding: 0;
+}
+
+/* Set background colors and font styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+}
+
+.header {
+    background-color: white; /* White background */
+    color: #e74c3c; /* Red text color */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    height: 100px; /* Header height set to 100px */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+    width: 100px; /* Adjust the logo width as needed */
+}
+
+.logo img {
+    width: 100%;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between; /* Add space between navigation options */
+    width: 400px; /* Adjust as needed */
+}
+
+.nav-list {
+    width: 100%;
+    justify-content: space-between;
+    list-style: none;
+    display: flex;
+}
+
+.nav-item {
+    margin-right: 20px;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: #e74c3c; /* Red text color */
+    transition: color 0.3s;
+    position: relative; /* Add relative positioning for dropdown */
+    font-size: 18px; /* Increase font size */
+}
+
+.nav-link:hover {
+    color: #c0392b; /* Darker red on hover */
+}
+
+/* Hover effect for navigation links */
+.nav-link::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #e74c3c; /* Red line color */
+    transform: scaleX(0); /* Initial width of the line is zero */
+    transform-origin: bottom right;
+    transition: transform 0.3s ease-in-out;
+}
+
+.nav-link:hover::before {
+    transform: scaleX(1); /* Full width on hover */
+    transform-origin: bottom left;
+}
+
+/* Dropdown styles */
+.dropdown {
+    position: relative;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: white; /* White background */
+    min-width: 150px;
+    right: 0; /* Position the dropdown to the right */
+    top: 100%; /* Position below the "More" option */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown-content a {
+    color: #e74c3c; /* Red text color */
+    padding: 10px;
+    text-decoration: none;
+    display: block;
+    transition: background-color 0.3s;
+}
+
+.dropdown-content a:hover {
+    background-color: #f2f2f2; /* Light gray on hover */
+}
+#mobile-menu{
+    display: none;
+}
+
+/* Add your previous CSS styles here */
+
+/* Media query for screens smaller than 768px */
+@media (max-width: 768px) {
+    /* Hide the navigation options by default */
+    .nav-list {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 70px; /* Adjust as needed */
+        right: 20px;
+        width: 150px;
+        background-color: white;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        z-index: 1;
+    }
+
+    /* Style for the mobile menu button */
+    #mobile-menu {
+        display: block;
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        cursor: pointer;
+        font-size: 24px; /* Increase font size for the hamburger icon */
+    }
+
+    /* Show the navigation options when the mobile menu button is clicked */
+    .nav-list.show {
+        display: flex;
+    }
+
+    /* Style for each navigation option */
+    .nav-item {
+        margin-right: 0; /* Remove margin between options */
+        text-align: center;
+        height: 40px;
+    }
+
+    /* Add a border to separate each option */
+    .nav-link {
+        padding: 10px;
+        text-align: center;
+        width: 150px;
+        border-bottom: 1px solid transparent;
+    }
+
+    .nav-link:hover {
+    color: #c0392b; /* Darker red on hover */
+    border-bottom: 1px solid #e74c3c; /* Show the border on hover */
+    }
+    .dropdown-content {
+        top: 0;
+        right: 150px;
+    }
+}
+
+
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <img src="../default_items2/logo.png" alt="Logo" class="logo-img">
+        </div>
+        <div id="mobile-menu" onclick="toggleMobileMenu()">☰</div>
+        <nav class="nav-container">
+            <ul class="nav-list">
+                <li class="nav-item"><a href="#" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">Menu</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">Bill</a></li>
+                <li class="nav-item dropdown">
+                    <a href="#" class="nav-link">More</a>
+                    <div class="dropdown-content">
+                        <a href="#" class="nav-link">Option 1</a>
+                        <a href="#" class="nav-link">Option 2</a>
+                        <a href="#" class="nav-link">Option 3</a>
+                    </div>
+                </li>
+                <li class="nav-item"><a href="#" class="nav-link">Profile</a></li>
+            </ul>
+        </nav>
+        
+    </header>
+    <!-- Rest of your content goes here -->
+
+
+    <script>
+        // Function to toggle mobile menu
+        function toggleMobileMenu() {
+            const nav = document.querySelector('.nav-list');
+            nav.classList.toggle('show');
+        }
+    </script>
+</body>
+</html>

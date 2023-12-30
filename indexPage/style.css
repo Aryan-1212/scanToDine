@@ -1,0 +1,680 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --red: #cf3427;
+    --white: #ffffff;
+    --offwhite: whitesmoke;
+    --wheat: wheat;
+    --black: black;
+    --chocolate: chocolate;
+    --gray : gray;
+}
+
+@keyframes p1 {
+    0%{
+        width: 0;
+        background-color: red;
+    }
+    80%{
+        width: 90vw;
+        background-color: red;
+    }
+    100%{
+        width: 100vw;
+        background-color: red;
+    }
+}
+
+#progress{
+    background-color: whitesmoke;
+    height: 2px;
+    animation: p1 1s ease-in-out 1;
+}
+
+/* section{
+    border-bottom: 2px solid var(--gray);
+} */
+
+::selection{
+    color: #f2aa4cff;
+    background-color: #101020ff;
+}
+
+header{
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: rgb(255 255 255/var(--tw-bg-opacity));
+    width: 100%;
+    height: 100%;
+    background-color: var(--offwhite);
+    border-bottom: 1px solid rgb(224 206 206);;
+}
+
+header .HeaderContainer{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header .HeaderContainer .logo{
+    width: 10%;
+}
+
+header .HeaderContainer .logo img{
+    width: 100px;
+}
+
+header .HeaderContainer .HeaderLinks{
+    width: 60%;
+    background-color: var(--offwhite);
+}
+
+/* header .HeaderContainer .HeaderLinks nav{
+} */
+
+header .HeaderContainer .HeaderLinks nav ul{
+    margin: 0;
+    padding: 0;
+}
+
+header .HeaderContainer .HeaderLinks nav ul li{
+    list-style-type: none;
+    display: inline-block;
+    padding: 0px 9px;
+}
+
+header .HeaderContainer nav ul li a{
+    text-decoration: none;
+    color: var(--black);
+    display: inline-block;
+    font-size: 1.2rem;
+    font-family: 'Poppins', sans-serif;
+}
+
+header .HeaderContainer nav ul li a{
+    text-decoration: none;
+    position: relative;
+    padding-bottom: 4px; /* The distance between text and underline */
+}
+
+header .HeaderContainer nav ul li a::before {
+    content: "";
+    position: absolute;
+    width: 100%;    
+    top: 0;
+    bottom: 0;
+    background-image: linear-gradient(90deg, var(--black), var(--black)); /* underline color */
+    background-size: 0 2px; /* vertical size of underline */
+    background-repeat: no-repeat;
+    background-position: left bottom; /* start position of underline */
+    transition: background-size .3s ease-in; /* duration and timing style of animation */
+}
+
+header .HeaderContainer nav ul li a:hover::before {
+    background-size: 100% 2px;
+}
+
+header .HeaderContainer .HeaderSearch{
+    width: 20%;
+}
+
+
+header .HeaderContainer .HeaderSearch input{
+    border: 2px solid var(--red);
+    padding: 5px;
+    font-size: 18px;
+    float: left;
+    border: none;
+    width: 80%;
+    background: var(--red);
+    color: var(--white);
+    outline: 0;
+    font-family: 'Poppins', sans-serif;
+    box-shadow: none;
+}
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: var(--white);
+    font-family: 'Poppins', sans-serif;
+}
+
+header .HeaderContainer .HeaderSearch button{
+    border: 2px solid var(--red);
+    background-color: var(--white);
+    color: var(--red);
+    width: 20%;
+    height: 37px;
+}
+
+header .HeaderContainer .HeaderSearch .burger{
+    display: none;
+}
+
+header .HeaderContainer .HeaderSearch .burger .menu{
+    display: none;
+}
+
+#sidebarmenu{
+    display: none;
+}
+
+#sidebarmenu ul{
+    display: none;
+}
+
+#sidebarmenu ul li{
+    display: none;
+}
+
+#sidebarmenu ul li a{
+    display: none;
+}
+
+#sidebarmenu ul li a:hover{
+    display: none;
+}
+
+
+
+
+@media only screen and (max-width: 1024px) {
+    header .HeaderContainer .HeaderLinks{
+        display: none;
+    }
+    
+    header .HeaderContainer .HeaderSearch form{
+        display: none;
+    }
+    
+    header .HeaderContainer .HeaderSearch .burger{
+        display: block;
+        border: none;
+        background-color: transparent;
+    }
+
+    header .HeaderContainer .HeaderSearch .burger .menu{
+        display: block;
+        width: 30px;
+        height: 5px;
+        background-color: var(--red);
+        margin: 4px 0;
+        margin-left: 50%;
+    }
+
+    #sidebarmenu{
+        display: none;
+    }
+
+    #sidebarmenu{
+        position: sticky;
+        top: 94px;
+        z-index: 3;
+        text-align: center;
+        min-width: 200px;
+        float: right;
+        height: 100%;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        background-color: var(--white);
+    }
+    
+    #sidebarmenu ul{
+        display: block;
+        margin: 0;
+        padding: 0;
+    }
+
+    #sidebarmenu ul li{
+        list-style-type: none;
+        display: block;
+    }
+    
+    #sidebarmenu ul li a{
+        color: var(--red);
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        font-family: 'Poppins', sans-serif;
+        font-weight: bold;
+    }
+
+    #sidebarmenu ul li a:hover{
+        background-color:  var(--offwhite);
+    }
+}
+
+
+
+/* section 1 */
+
+.ManageYourRestaurant{
+    background-color: var(--red);
+    width: 100%;
+    height: 90vh;
+}
+
+.ManageYourRestaurant .Manage{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    justify-items: center;
+    padding: 6% 0;
+}
+
+.ManageYourRestaurant .Manage .Your{
+    width: 50%;
+}
+
+.ManageYourRestaurant .Manage .Your h2{
+    color: var(--wheat);
+    font-size: 2.7rem;
+    font-family: 'Poppins', sans-serif;
+}
+
+.ManageYourRestaurant .Manage .Your p{
+    color: var(--white);
+    font-size: 1.3rem;
+    margin-bottom: 50px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.ManageYourRestaurant .Manage .Your a{
+    text-decoration: none;
+    color: var(--red);
+    background-color: var(--white);
+    padding: 10px 5px;
+    font-family: 'Poppins', sans-serif;
+    border-radius: 10px;
+    font-weight: bold;
+    transition: all ease-in-out 0.8s;
+    border: 2px solid var(--white);
+}
+
+.ManageYourRestaurant .Manage .Your a:hover{
+    border: 2px solid var(--white);
+    background-color: var(--red);
+    color: var(--white);
+}
+
+.ManageYourRestaurant .Manage .Restaurant{
+    width: 50%;
+}
+
+.ManageYourRestaurant .Manage .Restaurant img{
+    width: 100%;
+}
+
+@media only screen and (max-width: 1024px) {
+    .ManageYourRestaurant .Manage{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        justify-items: center;
+        flex-wrap: wrap;
+    }
+    
+    .ManageYourRestaurant {
+        background-color: var(--red);
+        width: 100%;
+        height: 100%;
+    }
+
+    .ManageYourRestaurant .Manage .Your{
+        width: 100%;
+        padding-bottom: 50px;
+    }
+    
+    .ManageYourRestaurant .Manage .Restaurant{
+        width: 100%;
+        padding-top: 50px;
+    }
+
+  }
+/* section 2 */
+
+
+.WhatIsaQRCodeMenuforRestaurants{
+    background-color: var(--offwhite);
+    width: 100%;
+    height: 100vh;
+}
+
+.WhatIsaQRCodeMenuforRestaurants .QRCode{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.WhatIsaQRCodeMenuforRestaurants .QRCode .WhatIsQRCode{
+    width: 50%;
+    padding-left: 50px;
+}
+
+.WhatIsaQRCodeMenuforRestaurants .QRCode .MenuforRestaurants{
+    width: 50%;
+}
+
+.WhatIsaQRCodeMenuforRestaurants .QRCode .MenuforRestaurants img{
+    width: 100%;
+}
+
+.WhatIsaQRCodeMenuforRestaurants{
+    padding: 100px 0;
+}
+
+.WhatIsaQRCodeMenuforRestaurants .QRCode .WhatIsQRCode h2{
+    font-family: 'Poppins', sans-serif;
+    font-size: 2.7rem;
+    color: var(--chocolate);
+}
+
+.WhatIsaQRCodeMenuforRestaurants .QRCode .WhatIsQRCode p{
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.3rem;
+}
+
+@media only screen and (max-width: 1024px) {
+    .WhatIsaQRCodeMenuforRestaurants{
+        background-color: var(--offwhite);
+        width: 100%;
+        height: 100%;
+    }
+
+
+    .WhatIsaQRCodeMenuforRestaurants .QRCode{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .WhatIsaQRCodeMenuforRestaurants .QRCode .WhatIsQRCode{
+        width: 100%;
+        padding-top: 50px;
+        padding-left: 0;
+    }
+    
+    .WhatIsaQRCodeMenuforRestaurants .QRCode .MenuforRestaurants{
+        width: 100%;
+    }
+  }
+
+
+  /* section 3 */
+
+  .CustomizeIngredients{
+    background-color: var(--red);
+    width: 100%;
+    height: 90vh;
+}
+
+.CustomizeIngredients .Customize{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    justify-items: center;
+    padding: 7% 0;
+}
+
+.CustomizeIngredients .Customize .CustomizationOption{
+    width: 60%;
+}
+
+.CustomizeIngredients .Customize .CustomizationOption h2{
+    color: var(--wheat);
+    font-size: 2.7rem;
+    font-family: 'Poppins', sans-serif;
+}
+
+.CustomizeIngredients .Customize .CustomizationOption p{
+    color: var(--white);
+    font-size: 1.3rem;
+    font-family: 'Poppins', sans-serif;
+}
+
+.CustomizeIngredients .Customize .CustomizeIngredientsImage{
+    width: 30%;
+    padding-left: 40px;
+}
+
+.CustomizeIngredients .Customize .CustomizeIngredientsImage img{
+    width: 100%;
+    height: auto;
+    border-radius: 50px;
+}
+
+@media only screen and (max-width: 1024px) {
+    .CustomizeIngredients{
+        background-color: var(--red);
+        width: 100%;
+        height: 100%;
+    }
+
+    .CustomizeIngredients .Customize{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+    
+    .CustomizeIngredients .Customize .CustomizationOption{
+        width: 100%;
+        padding-bottom: 50px;
+        padding-left: 0;
+    }
+    
+    .CustomizeIngredients .Customize .CustomizeIngredientsImage{
+        width: 100%;
+        padding: 0 35px;
+    }
+
+}
+
+
+
+/* section 4 */
+
+.bill{
+    background-color: var(--offwhite);
+    width: 100%;
+    height: 100vh;
+}
+
+.bill .BillAndPay{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12% 0;
+}
+
+.bill .BillAndPay .BillAndPayImage{
+    width: 40%;
+    margin-right: 7%;
+}
+
+.bill .BillAndPay .BillAndPayImage img{
+    width: 100%;
+    height: auto;
+}
+
+.bill .BillAndPay .DigitallyPayment{
+    width: 50%;
+}
+
+.bill .BillAndPay .DigitallyPayment h2{   
+    font-family: 'Poppins', sans-serif;
+    font-size: 2.7rem;
+    color: var(--chocolate);
+}
+
+.bill .BillAndPay .DigitallyPayment p{
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.3rem;
+}
+
+@media only screen and (max-width: 1024px) {
+    .bill{
+        background-color: var(--offwhite);
+        width: 100%;
+        height: 100%;
+    }
+    
+    .bill .BillAndPay{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+    
+    .bill .BillAndPay .BillAndPayImage{
+        width: 100%;
+        padding-bottom: 50px;
+        margin: auto;
+    }
+    
+    .bill .BillAndPay .DigitallyPayment{
+        width: 100%;
+    }
+    
+}
+
+/* section 5 */
+
+.FoodStatus{
+    background-color: var(--red);
+    width: 100%;
+    height: 100vh;
+}
+
+.FoodStatus .Food{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    justify-items: center;
+    padding: 10% 0;
+}
+
+.FoodStatus .Food .OrderTracking{
+    width: 60%;
+}
+
+.FoodStatus .Food .OrderTracking h2{
+    color: var(--wheat);
+    font-size: 2.7rem;
+    font-family: 'Poppins', sans-serif;
+}
+
+.FoodStatus .Food .OrderTracking p{
+    color: var(--white);
+    font-size: 1.3rem;
+    font-family: 'Poppins', sans-serif;
+}
+
+.FoodStatus .Food .FoodStatusImage{
+    width: 40%;
+    padding-left: 40px;
+}
+
+.FoodStatus .Food .FoodStatusImage img{
+    width: 100%;
+    height: auto;
+    border-radius: 50px;
+}
+
+@media only screen and (max-width: 1024px) {
+    .FoodStatus{
+        background-color: var(--red);
+        width: 100%;
+        height: 100%;
+    }
+    
+    .FoodStatus .Food{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+    
+    .FoodStatus .Food .OrderTracking{
+        width: 100%;
+        padding-bottom: 50px;
+        padding-left: 0;
+    }
+    
+    .FoodStatus .Food .FoodStatusImage{
+        width: 100%;
+        padding: 0 35px;
+    }
+    
+}
+
+/* section 6 */
+
+.Feedback{
+    background-color: var(--offwhite);
+    width: 100%;
+    height: 90vh;
+}
+
+.Feedback .feedback{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15% 0;
+}
+
+.Feedback .feedback .FeedbackImage{
+    width: 50%;
+    margin-right: 7%;
+}
+
+.Feedback .feedback .FeedbackImage img{
+    width: 100%;
+    height: auto;
+}
+
+.Feedback .feedback .FeedbackAndImprovements{
+    width: 50%;
+}
+
+.Feedback .feedback .FeedbackAndImprovements h2{   
+    font-family: 'Poppins', sans-serif;
+    font-size: 2.7rem;
+    color: var(--chocolate);
+}
+
+.Feedback .feedback .FeedbackAndImprovements p{
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.3rem;
+}
+
+@media only screen and (max-width: 1024px) {
+    .Feedback{
+        background-color: var(--offwhite);
+        width: 100%;
+        height: 100%;
+    }
+    
+    .Feedback .feedback{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+    
+    .Feedback .feedback .FeedbackImage{
+        width: 100%;
+        padding-bottom: 50px;
+        margin: auto;
+    }
+    
+    .Feedback .feedback .FeedbackAndImprovements{
+        width: 100%;
+    }
+    
+}
+
+/* footer  */
