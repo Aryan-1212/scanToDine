@@ -18,6 +18,10 @@
     font-family: 'Poppins', sans-serif;
   }
 
+  ::-webkit-scrollbar{
+    display: none;
+  }
+
   body {
     background-color: var(--whitesmoke);
   }

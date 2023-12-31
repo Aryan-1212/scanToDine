@@ -8,7 +8,6 @@ slides.forEach(
 )
 
 const changeSlide = () => {
-    console.log("changed");
     slides.forEach(
         (slide)=>{
             slide.style.transform = `translate(-${100*counter}%)`;
@@ -21,7 +20,6 @@ const nextSlide = () =>{
     if(counter>=slides.length){
         counter = 0;
     }
-    console.log(counter);
     changeSlide();
 }
 
@@ -30,7 +28,6 @@ const prevSlide = () =>{
     if(counter<0){
         counter=slides.length-1;
     }
-    console.log(counter);
     changeSlide();
 }
 

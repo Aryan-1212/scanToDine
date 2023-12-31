@@ -36,6 +36,10 @@ if (isset($_SESSION['is_error'])) {
             height: 100%;
         }
 
+        ::-webkit-scrollbar{
+            display: none;
+        }
+
         :root {
             --red: #cf3427;
             --white: #ffffff;

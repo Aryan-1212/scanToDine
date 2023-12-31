@@ -3,6 +3,10 @@
     padding: 0;
 }
 
+::-webkit-scrollbar{
+    display: none;
+}
+
 :root {
     --red: #cf3427;
     --white: #ffffff;

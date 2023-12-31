@@ -18,6 +18,10 @@
       font-family: 'Poppins', sans-serif;
     }
 
+    ::-webkit-scrollbar{
+      display: none;
+    }
+
     :root {
       --whitesmoke: whitesmoke;
       --red: #cf3427;
