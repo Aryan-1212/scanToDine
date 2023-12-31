@@ -19,6 +19,10 @@
 </head>
 
 <style>
+
+    ::-webkit-scrollbar{
+        display: none;
+    }
     #Feedback {
         width: 100%;
         height: auto;

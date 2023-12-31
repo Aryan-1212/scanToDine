@@ -1,4 +1,6 @@
-<?php session_start(); ?>
+<?php 
+session_start(); 
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,6 +19,10 @@
             margin: 0;
             padding: 0;
             font-family: 'Poppins', sans-serif;
+        }
+
+        ::-webkit-scrollbar{
+            display: none;
         }
 
         input,
@@ -167,7 +173,11 @@
     
     <?php
         include('../commonPages/dbConnect.php');
-        $is_error = $_SESSION['is_error'];
+        if($_SESSION['is_error']){
+            $is_error = $_SESSION['is_error'];
+        }else{
+            $is_error = false;
+        }
         $fetch_data = "select * from inventory where res_code=547902";
         $data = mysqli_query($con, $fetch_data);
         $rows = mysqli_fetch_all($data, MYSQLI_ASSOC);

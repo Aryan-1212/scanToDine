@@ -299,7 +299,7 @@
                             <li class="Header-nav-item Header-dropdown"><a href="#" class="Header-nav-link">More</a>
                                 <ul class="Header-sub-menu">
                                     <li class="Header-sub-item"><a href="../adminModule/feedback.php">Feedbacks</a></li>
-                                    <li class="Header-sub-item"><a href="#">Option 2</a></li>
+                                    <li class="Header-sub-item"><a href="../adminModule/inventory.php">Inventory</a></li>
                                     <!-- Add more sub-menu items as needed -->
                                 </ul>
                             </li>
