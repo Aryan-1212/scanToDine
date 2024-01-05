@@ -1,1 +1,3 @@
-php-qr
+vendor
+composer.json
+composer.lock

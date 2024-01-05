@@ -390,7 +390,7 @@ session_start();
                   <div class="iFrameItemDiv" id="<?php echo $item_id . "-" . $item_index; ?>">
 
 
-                    <!-- <div class="iFrame-menuVarietyItem">
+                    <div class="iFrame-menuVarietyItem">
                       <span>
                         <input type="text" class="type-input-field <?php echo $item_id . "-" . $item_index; ?>"
                           name="name" id="<?php echo $item_id . "-" . $item_index . '-type-name' ?>"
@@ -405,11 +405,11 @@ session_start();
                             ₹40
                           </span>
                       </div>
-                    </div> -->
-                    <!-- <div class="iFrame-foodDes">
+                    </div>
+                    <div class="iFrame-foodDes">
                       <textarea class="type-input-field <?php echo $item_id . "-" . $item_index; ?>" name="des"
                         id="<?php echo $item_id . "-" . $item_index . '-type-des' ?>" placeholder="Description"></textarea>
-                    </div> -->
+                    </div>
                   </div>
                   <div class="formToAppend" id="<?php echo 'iFrame-formToAppend-' . $item_id; ?>">
 
