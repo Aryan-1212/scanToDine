@@ -370,14 +370,15 @@ session_start();
       display: none;
     }
 
-    .addItem-div{
+    .addItem-div {
       width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 10px 0px -10px 0px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 10px 0px -10px 0px;
     }
-    .addItem-btn{
+
+    .addItem-btn {
       background-color: var(--red);
       padding: 2px 10px;
       border: none;
@@ -474,8 +475,17 @@ session_start();
                             value="Edit">
                           <input type="button" onclick="save_btn(event);" id="<?php echo $type_id . '-save' ?>"
                             class="updateType" value="Save">
+                          <input type="button" onclick="remove_btn(event);" id="<?php echo $type_id . '-remove' ?>"
+                            value="Remove">
                           <form action="menuUpdate.php" method="POST" id="updateForm">
                             <input type="hidden" id="hiddenValues" name="data">
+                          </form>
+                          <form action="menuRemove.php" method="POST" id="removeForm">
+                            <input type="hidden" id="hiddenValues-remove" name="id">
+                          </form>
+                          <form action="menuAdd.php" method="POST" id="add-type">
+                            <input type="hidden" name="item_id" id="add-item-id">
+                            <input type="hidden" id="add-hidden-values" name="data">
                           </form>
                         </div>
                       </div>
@@ -490,12 +500,7 @@ session_start();
                     <?php
                   }
                   ?>
-
                   <div class="formToAppend" id="<?php echo 'iFrame-formToAppend-' . $item_id; ?>">
-                    <form action="menuAdd.php" method="POST" id="add-type">
-                      <input type="hidden" name="item_id" value="<?php echo $item_id; ?>">
-                      <input type="hidden" id="add-hidden-values" name="data">
-                    </form>
                   </div>
                   <div>
                     <input type="button" id=<?php echo $item_id; ?> class="iFrame-addItem" value="Add Item">
@@ -526,9 +531,9 @@ session_start();
 <script>
   edit_btn = (e) => {
     e.target.disabled = true;
+    document.getElementById(`${e.target.id}-remove`).disabled = true;
     const edit_type_id = e.target.id;
     document.getElementById(`${edit_type_id}-save`).style.display = 'block';
-    console.log(edit_type_id);
     const edit_type_name = document.getElementById(`${edit_type_id}-name`);
     const edit_type_price = document.getElementById(`${edit_type_id}-price`);
     const edit_type_des = document.getElementById(`${edit_type_id}-des`);
@@ -556,21 +561,33 @@ session_start();
     document.getElementById('updateForm').submit();
   }
 
-  addItemType = (e) =>{
-    const add_type_id = e.target.id.replace('-add','');
-    const add_type_name_id = add_type_id+'-type-name';
-    const add_type_price_id = add_type_id+'-type-price';
-    const add_type_des_id = add_type_id+'-type-des';
+  addItemType = (e) => {
+    const add_type_id = e.target.id.replace('-add', '');
+    const item_id = add_type_id.substring(0,6);
+
+    const add_type_name_id = add_type_id + '-type-name';
+    const add_type_price_id = add_type_id + '-type-price';
+    const add_type_des_id = add_type_id + '-type-des';
 
     const add_type = {};
 
-    add_type['add_type_name'] =document.getElementById(add_type_name_id).value;
-    add_type['add_type_price'] =document.getElementById(add_type_price_id).value;
-    add_type['add_type_des'] =document.getElementById(add_type_des_id).value;
+    add_type['add_type_name'] = document.getElementById(add_type_name_id).value;
+    add_type['add_type_price'] = document.getElementById(add_type_price_id).value;
+    add_type['add_type_des'] = document.getElementById(add_type_des_id).value;
 
     add_type_json = JSON.stringify(add_type);
+    document.getElementById('add-item-id').value = item_id;
     document.getElementById('add-hidden-values').value = add_type_json;
-    document.getElementById('add-type').submit();
+    document.getElementById(`add-type`).submit();
+  }
+
+  remove_btn = (e) => {
+    const remove_type_id = e.target.id.substring(0,8);
+    const confirm_to_remove = confirm("Are You Sure to Remove this Food Type Permanently?");
+    if(confirm_to_remove){
+      document.getElementById('hiddenValues-remove').value = remove_type_id;
+      document.getElementById('removeForm').submit();
+    }
   }
 </script>
 
@@ -625,9 +642,7 @@ session_start();
         category.className = "IframeItemDiv";
         category.id = addItemButtonId + "-" + currentIndex;
         <?php $item_index += 1; ?>
-
-        console.log(addItemButtonId+' '+currentIndex);
-
+        
         category.innerHTML = `<div class="iFrame-menuVarietyItem">
                     <span><input type="text" class="type-input-field ${addItemButtonId}-${currentIndex}" name="name"
                         id="${addItemButtonId}-${currentIndex}-type-name" placeholder="Food item's type"></span>

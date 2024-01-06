@@ -18,6 +18,7 @@
     $data = json_decode($_POST['data'],true);
     $food_type_id = generate_unique_code($con);
     $item_id = $_POST['item_id'];
+    echo $item_id;
     $res_id = 421340;
     $name = $data['add_type_name'];
     $price = $data['add_type_price'];
