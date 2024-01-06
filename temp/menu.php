@@ -379,6 +379,19 @@ session_start();
       <h1>Menu</h1>
 
       <?php
+        if(isset($_SESSION['is_error']) && $_SESSION['is_error']){
+          $is_error = $_SESSION['is_error'];
+        }else{
+          $is_error = false;
+        }
+        
+        if($is_error){
+          echo "<script>alert('There was an error, while updateing record.');</script>";
+          $_SESSION['is_error']=false;
+        }
+      ?>
+
+      <?php
 
 $queryForItems = mysqli_query($con, "select distinct food_id from food_items where res_id=421340");
       $selectedItems = mysqli_fetch_all($queryForItems);
@@ -445,6 +458,9 @@ $queryForItems = mysqli_query($con, "select distinct food_id from food_items whe
                       <div class="type-edit-btn">
                         <input type="button" onclick="edit_btn(event);" id="<?php echo $type_id ?>" class="EditType" value="Edit">
                         <input type="button" onclick="save_btn(event);" id="<?php echo $type_id.'-save'?>" class="updateType" value="Save">
+                        <form action="menuUpdate.php" method="POST" id="updateForm">
+                          <input type="hidden" id="hiddenValues" name="data">
+                        </form>
                       </div>
                     </div>
                     <div class="iFrame-foodDes">
@@ -476,12 +492,12 @@ $queryForItems = mysqli_query($con, "select distinct food_id from food_items whe
       ?>
 
     </div>
-    <form action="menu_entry.php" method="post" id="formToSubmit">
+    <!-- <form action="menu_entry.php" method="post" id="formToSubmit">
       <input type="hidden" id="hiddenValue" name="data">
       <div class="Button">
         <input type="button" value="Submit" id="submitData">
       </div>
-    </form>
+    </form> -->
   </section>
 
 
@@ -510,12 +526,15 @@ $queryForItems = mysqli_query($con, "select distinct food_id from food_items whe
     const type_id = e.target.id;
     const edit_type_id = type_id.substring(0,8);
 
-    const update_name = document.getElementById(`${edit_type_id}-name-update`).value;
-    const update_price = document.getElementById(`${edit_type_id}-price-update`).value;
-    const update_des = document.getElementById(`${edit_type_id}-des-update`).value;
-    console.log(update_name);
-    console.log(update_price);
-    console.log(update_des);
+    const updated_values={};
+
+    updated_values['type_id'] =edit_type_id;
+    updated_values['name'] = document.getElementById(`${edit_type_id}-name-update`).value;
+    updated_values['price'] = document.getElementById(`${edit_type_id}-price-update`).value;
+    updated_values['des'] = document.getElementById(`${edit_type_id}-des-update`).value;
+    updated_values_json = JSON.stringify(updated_values);
+    document.getElementById('hiddenValues').value = updated_values_json;
+    document.getElementById('updateForm').submit();
   }
 </script>
 
