@@ -9,12 +9,12 @@ session_start();
 ?>
 <?php
 // if ($_POST['selecteditems']) {
-  ?>
+?>
 
-  <script>
-    // localStorage.removeItem('selected_items');
-  </script>
-  <?php
+<script>
+  // localStorage.removeItem('selected_items');
+</script>
+<?php
 // }
 ?>
 
@@ -34,6 +34,10 @@ session_start();
       margin: 0;
       padding: 0;
       font-family: 'Poppins', sans-serif;
+    }
+
+    ::-webkit-scrollbar{
+      display: none;
     }
 
     :root {
@@ -245,7 +249,7 @@ session_start();
         text-align: center;
       }
 
-      .formToAppend{
+      .formToAppend {
         overflow: scroll;
       }
 
@@ -257,7 +261,7 @@ session_start();
         /* height: auto; */
       }
 
-      .iFrameItemDiv{
+      .iFrameItemDiv {
         overflow-y: scroll;
       }
 
@@ -346,6 +350,25 @@ session_start();
       width: 100%;
       height: 60vh;
     }
+
+    .iFrame-menuVarietyItemTitle {
+      display: inline-block;
+      margin-right: 10px;
+    }
+
+    .iFrame-priceItemTitle {
+      display: inline-block;
+      margin-right: 10px;
+    }
+
+    .iFrame-foodDesTitle {
+      display: inline-block;
+      margin-right: 10px;
+    }
+
+    .updateType{
+      display: none;
+    }
   </style>
 </head>
 
@@ -357,12 +380,13 @@ session_start();
 
       <?php
 
-        $queryForItems = mysqli_query($con, "select distinct food_id from food_items where res_id=421340");
-        $selectedItems = mysqli_fetch_all($queryForItems);
+$queryForItems = mysqli_query($con, "select distinct food_id from food_items where res_id=421340");
+      $selectedItems = mysqli_fetch_all($queryForItems);
 
       foreach ($selectedItems as $val) {
         $item_index = 1;
         $val = $val[0];
+
         $queryForItem = mysqli_query($con, "select * from default_item where item_id=$val");
         $data = mysqli_fetch_assoc($queryForItem);
         $item_id = $data['item_id'];
@@ -387,30 +411,54 @@ session_start();
                   </div>
                 </div>
                 <div class="iFrame-menuVariety">
-                  <div class="iFrameItemDiv" id="<?php echo $item_id . "-" . $item_index; ?>">
 
+                  <?php
+                  $fetch_types_query = "select * from food_items where food_id = $item_id";
+                  $fetch_all_types = mysqli_query($con, $fetch_types_query);
+                  $all_types = mysqli_fetch_all($fetch_all_types, MYSQLI_ASSOC);
+                  foreach($all_types as $type){
+                    $type_id = $type['food_type_id'];
+                    $type_name = $type['type_name'];
+                    $type_price = $type['type_price'];
+                    $type_des = $type['type_des'];
+                  ?>
+
+                  <div class="iFrameItemDiv" id="<?php echo $item_id . "-" . $item_index; ?>">
 
                     <div class="iFrame-menuVarietyItem">
                       <span>
-                        <input type="text" class="type-input-field <?php echo $item_id . "-" . $item_index; ?>"
-                          name="name" id="<?php echo $item_id . "-" . $item_index . '-type-name' ?>"
-                          placeholder="Food item's type">
-                          Burger
+                        <div class="iFrame-menuVarietyItemTitle">
+                          <?php echo ucfirst($item_name) . ' type: '; ?>
+                        </div>
+                        <span id="<?php echo $type_id."-name" ?>">
+                        <?php echo $type_name; ?>
                         </span>
+                      </span>
                       <div class="iFrame-priceItem">
-                        <input type="number" class="type-input-field <?php echo $item_id . "-" . $item_index; ?>" name="price"
-                          id="<?php echo $item_id . "-" . $item_index . '-type-price' ?>" placeholder="Price-₹"
-                          class="iFrame-price">
-                          <span>
-                            ₹40
+                        <span>
+                          <div class="iFrame-priceItemTitle">Price: </div>
+                          <span id="<?php echo $type_id."-price" ?>">
+                            <?php echo $type_price; ?>
                           </span>
+                        </span>
+                      </div>
+                      <div class="type-edit-btn">
+                        <input type="button" onclick="edit_btn(event);" id="<?php echo $type_id ?>" class="EditType" value="Edit">
+                        <input type="button" onclick="save_btn(event);" id="<?php echo $type_id.'-save'?>" class="updateType" value="Save">
                       </div>
                     </div>
                     <div class="iFrame-foodDes">
-                      <textarea class="type-input-field <?php echo $item_id . "-" . $item_index; ?>" name="des"
-                        id="<?php echo $item_id . "-" . $item_index . '-type-des' ?>" placeholder="Description"></textarea>
+                      <div class="iFrame-foodDesTitle">Desc:</div>
+                      <span id="<?php echo $type_id."-des" ?>">
+                        <?php echo $type_des; ?>
+                      </span>
                     </div>
                   </div>
+
+                  <?php
+                  }
+                  ?>
+
                   <div class="formToAppend" id="<?php echo 'iFrame-formToAppend-' . $item_id; ?>">
 
                   </div>
@@ -439,6 +487,37 @@ session_start();
 
 
 </body>
+
+<script>
+  edit_btn = (e) =>{
+    e.target.disabled = true;
+    const edit_type_id = e.target.id;
+    document.getElementById(`${edit_type_id}-save`).style.display = 'block';
+    console.log(edit_type_id);
+    const edit_type_name = document.getElementById(`${edit_type_id}-name`);
+    const edit_type_price = document.getElementById(`${edit_type_id}-price`);
+    const edit_type_des = document.getElementById(`${edit_type_id}-des`);
+    const type_name_value =edit_type_name.textContent.trim();
+    const type_price_value =edit_type_price.textContent.trim();
+    const type_des_value =edit_type_des.textContent.trim();
+    
+    edit_type_name.innerHTML = `<input type='text' id="${edit_type_id}-name-update" value='${type_name_value}' style='width:150px'>`;
+    edit_type_price.innerHTML = `<input type='text' id="${edit_type_id}-price-update" value='${type_price_value}' style='width:50px'>`;
+    edit_type_des.innerHTML = `<textarea id="${edit_type_id}-des-update">${type_des_value}</textarea>`;
+  }
+
+  save_btn = (e) =>{
+    const type_id = e.target.id;
+    const edit_type_id = type_id.substring(0,8);
+
+    const update_name = document.getElementById(`${edit_type_id}-name-update`).value;
+    const update_price = document.getElementById(`${edit_type_id}-price-update`).value;
+    const update_des = document.getElementById(`${edit_type_id}-des-update`).value;
+    console.log(update_name);
+    console.log(update_price);
+    console.log(update_des);
+  }
+</script>
 
 <script>
   var coll = document.getElementsByClassName("collapsible");
