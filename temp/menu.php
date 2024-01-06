@@ -36,7 +36,7 @@ session_start();
       font-family: 'Poppins', sans-serif;
     }
 
-    ::-webkit-scrollbar{
+    ::-webkit-scrollbar {
       display: none;
     }
 
@@ -366,8 +366,22 @@ session_start();
       margin-right: 10px;
     }
 
-    .updateType{
+    .updateType {
       display: none;
+    }
+
+    .addItem-div{
+      width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0px -10px 0px;
+    }
+    .addItem-btn{
+      background-color: var(--red);
+      padding: 2px 10px;
+      border: none;
+      color: white;
     }
   </style>
 </head>
@@ -379,21 +393,21 @@ session_start();
       <h1>Menu</h1>
 
       <?php
-        if(isset($_SESSION['is_error']) && $_SESSION['is_error']){
-          $is_error = $_SESSION['is_error'];
-        }else{
-          $is_error = false;
-        }
-        
-        if($is_error){
-          echo "<script>alert('There was an error, while updateing record.');</script>";
-          $_SESSION['is_error']=false;
-        }
+      if (isset($_SESSION['is_error']) && $_SESSION['is_error']) {
+        $is_error = $_SESSION['is_error'];
+      } else {
+        $is_error = false;
+      }
+
+      if ($is_error) {
+        echo "<script>alert('Unexpected Error Occurs.');</script>";
+        $_SESSION['is_error'] = false;
+      }
       ?>
 
       <?php
 
-$queryForItems = mysqli_query($con, "select distinct food_id from food_items where res_id=421340");
+      $queryForItems = mysqli_query($con, "select distinct food_id from food_items where res_id=421340");
       $selectedItems = mysqli_fetch_all($queryForItems);
 
       foreach ($selectedItems as $val) {
@@ -429,54 +443,59 @@ $queryForItems = mysqli_query($con, "select distinct food_id from food_items whe
                   $fetch_types_query = "select * from food_items where food_id = $item_id";
                   $fetch_all_types = mysqli_query($con, $fetch_types_query);
                   $all_types = mysqli_fetch_all($fetch_all_types, MYSQLI_ASSOC);
-                  foreach($all_types as $type){
+                  foreach ($all_types as $type) {
                     $type_id = $type['food_type_id'];
                     $type_name = $type['type_name'];
                     $type_price = $type['type_price'];
                     $type_des = $type['type_des'];
-                  ?>
+                    ?>
 
-                  <div class="iFrameItemDiv" id="<?php echo $item_id . "-" . $item_index; ?>">
+                    <div class="iFrameItemDiv" id="<?php echo $item_id . "-" . $item_index; ?>">
 
-                    <div class="iFrame-menuVarietyItem">
-                      <span>
-                        <div class="iFrame-menuVarietyItemTitle">
-                          <?php echo ucfirst($item_name) . ' type: '; ?>
-                        </div>
-                        <span id="<?php echo $type_id."-name" ?>">
-                        <?php echo $type_name; ?>
-                        </span>
-                      </span>
-                      <div class="iFrame-priceItem">
+                      <div class="iFrame-menuVarietyItem">
                         <span>
-                          <div class="iFrame-priceItemTitle">Price: </div>
-                          <span id="<?php echo $type_id."-price" ?>">
-                            <?php echo $type_price; ?>
+                          <div class="iFrame-menuVarietyItemTitle">
+                            <?php echo ucfirst($item_name) . ' type: '; ?>
+                          </div>
+                          <span id="<?php echo $type_id . "-name" ?>">
+                            <?php echo $type_name; ?>
                           </span>
                         </span>
+                        <div class="iFrame-priceItem">
+                          <span>
+                            <div class="iFrame-priceItemTitle">Price: </div>
+                            <span id="<?php echo $type_id . "-price" ?>">
+                              <?php echo $type_price; ?>
+                            </span>
+                          </span>
+                        </div>
+                        <div class="type-edit-btn">
+                          <input type="button" onclick="edit_btn(event);" id="<?php echo $type_id ?>" class="EditType"
+                            value="Edit">
+                          <input type="button" onclick="save_btn(event);" id="<?php echo $type_id . '-save' ?>"
+                            class="updateType" value="Save">
+                          <form action="menuUpdate.php" method="POST" id="updateForm">
+                            <input type="hidden" id="hiddenValues" name="data">
+                          </form>
+                        </div>
                       </div>
-                      <div class="type-edit-btn">
-                        <input type="button" onclick="edit_btn(event);" id="<?php echo $type_id ?>" class="EditType" value="Edit">
-                        <input type="button" onclick="save_btn(event);" id="<?php echo $type_id.'-save'?>" class="updateType" value="Save">
-                        <form action="menuUpdate.php" method="POST" id="updateForm">
-                          <input type="hidden" id="hiddenValues" name="data">
-                        </form>
+                      <div class="iFrame-foodDes">
+                        <div class="iFrame-foodDesTitle">Desc:</div>
+                        <span id="<?php echo $type_id . "-des" ?>">
+                          <?php echo $type_des; ?>
+                        </span>
                       </div>
                     </div>
-                    <div class="iFrame-foodDes">
-                      <div class="iFrame-foodDesTitle">Desc:</div>
-                      <span id="<?php echo $type_id."-des" ?>">
-                        <?php echo $type_des; ?>
-                      </span>
-                    </div>
-                  </div>
 
-                  <?php
+                    <?php
                   }
                   ?>
 
                   <div class="formToAppend" id="<?php echo 'iFrame-formToAppend-' . $item_id; ?>">
-
+                    <form action="menuAdd.php" method="POST" id="add-type">
+                      <input type="hidden" name="item_id" value="<?php echo $item_id; ?>">
+                      <input type="hidden" id="add-hidden-values" name="data">
+                    </form>
                   </div>
                   <div>
                     <input type="button" id=<?php echo $item_id; ?> class="iFrame-addItem" value="Add Item">
@@ -505,7 +524,7 @@ $queryForItems = mysqli_query($con, "select distinct food_id from food_items whe
 </body>
 
 <script>
-  edit_btn = (e) =>{
+  edit_btn = (e) => {
     e.target.disabled = true;
     const edit_type_id = e.target.id;
     document.getElementById(`${edit_type_id}-save`).style.display = 'block';
@@ -513,28 +532,45 @@ $queryForItems = mysqli_query($con, "select distinct food_id from food_items whe
     const edit_type_name = document.getElementById(`${edit_type_id}-name`);
     const edit_type_price = document.getElementById(`${edit_type_id}-price`);
     const edit_type_des = document.getElementById(`${edit_type_id}-des`);
-    const type_name_value =edit_type_name.textContent.trim();
-    const type_price_value =edit_type_price.textContent.trim();
-    const type_des_value =edit_type_des.textContent.trim();
-    
+    const type_name_value = edit_type_name.textContent.trim();
+    const type_price_value = edit_type_price.textContent.trim();
+    const type_des_value = edit_type_des.textContent.trim();
+
     edit_type_name.innerHTML = `<input type='text' id="${edit_type_id}-name-update" value='${type_name_value}' style='width:150px'>`;
     edit_type_price.innerHTML = `<input type='text' id="${edit_type_id}-price-update" value='${type_price_value}' style='width:50px'>`;
     edit_type_des.innerHTML = `<textarea id="${edit_type_id}-des-update">${type_des_value}</textarea>`;
   }
 
-  save_btn = (e) =>{
+  save_btn = (e) => {
     const type_id = e.target.id;
-    const edit_type_id = type_id.substring(0,8);
+    const edit_type_id = type_id.substring(0, 8);
 
-    const updated_values={};
+    const updated_values = {};
 
-    updated_values['type_id'] =edit_type_id;
+    updated_values['type_id'] = edit_type_id;
     updated_values['name'] = document.getElementById(`${edit_type_id}-name-update`).value;
     updated_values['price'] = document.getElementById(`${edit_type_id}-price-update`).value;
     updated_values['des'] = document.getElementById(`${edit_type_id}-des-update`).value;
     updated_values_json = JSON.stringify(updated_values);
     document.getElementById('hiddenValues').value = updated_values_json;
     document.getElementById('updateForm').submit();
+  }
+
+  addItemType = (e) =>{
+    const add_type_id = e.target.id.replace('-add','');
+    const add_type_name_id = add_type_id+'-type-name';
+    const add_type_price_id = add_type_id+'-type-price';
+    const add_type_des_id = add_type_id+'-type-des';
+
+    const add_type = {};
+
+    add_type['add_type_name'] =document.getElementById(add_type_name_id).value;
+    add_type['add_type_price'] =document.getElementById(add_type_price_id).value;
+    add_type['add_type_des'] =document.getElementById(add_type_des_id).value;
+
+    add_type_json = JSON.stringify(add_type);
+    document.getElementById('add-hidden-values').value = add_type_json;
+    document.getElementById('add-type').submit();
   }
 </script>
 
@@ -590,6 +626,8 @@ $queryForItems = mysqli_query($con, "select distinct food_id from food_items whe
         category.id = addItemButtonId + "-" + currentIndex;
         <?php $item_index += 1; ?>
 
+        console.log(addItemButtonId+' '+currentIndex);
+
         category.innerHTML = `<div class="iFrame-menuVarietyItem">
                     <span><input type="text" class="type-input-field ${addItemButtonId}-${currentIndex}" name="name"
                         id="${addItemButtonId}-${currentIndex}-type-name" placeholder="Food item's type"></span>
@@ -602,7 +640,11 @@ $queryForItems = mysqli_query($con, "select distinct food_id from food_items whe
                   <div class="iFrame-foodDes">
                     <textarea class="type-input-field ${addItemButtonId}-${currentIndex}" name="des" id="${addItemButtonId}-${currentIndex}-type-des""
                       placeholder="Description"></textarea>
-                  </div>`;
+                      <div class="addItem-div">
+                        <button class="addItem-btn" id="${addItemButtonId}-${currentIndex}-add" onclick="addItemType(event)">Add</button>
+                      </div>
+                  </div>
+                  `;
 
         const formToAppend = "iFrame-formToAppend-" + addItemButtonId;
         document.getElementById(formToAppend).appendChild(category);
