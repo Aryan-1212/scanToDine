@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bill</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        img {
+            width: 100%;
+            height: auto;
+        }
+
+        .BillStructure .Bill {
+            border: 2px solid;
+        }
+
+        .BillStructure .BillHeader {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: red;
+            height: 250px;
+        }
+
+        .BillStructure .BillHeader .BillLogo {
+            width: 10%;
+        }
+
+        .BillStructure .BillHeader .BillLogo img {
+            margin-left: 20px;
+        }
+
+        .BillStructure .BillHeader .BillInvoice {
+            width: 50%;
+        }
+
+        .BillStructure .BillHeader .BillInvoice h1 {
+            margin-left: 5rem;
+            position: relative;
+        }
+
+        .BillStructure .BillHeader .BillInvoice h1::before {
+            content: "";
+            position: absolute;
+            top: -39%;
+            right: 103%;
+            height: 80px;
+            width: 8px;
+            background-color: white;
+            display: inline-block;
+        }
+
+        .BillStructure .BillHeader .BillImg {
+            width: 40%;
+        }
+
+        .BillStructure .BillBody .Invoice {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0;
+        }
+        
+        .BillStructure .BillBody .MainBill {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            /* flex-direction: column; */
+            margin-top: 20px;
+        }
+        
+        hr{
+            margin: 0;padding: 0;
+        }
+        
+        .BillStructure .BillBody .Invoice  th{
+            padding: 1px 10px;
+        }
+        .BillStructure .BillBody .Invoice  td{
+            padding: 1px 10px;
+        }
+        
+        .BillStructure .BillBody .SubTotal {
+            display: flex;
+            justify-content: space-between;
+        }
+        .BillStructure .BillBody .SubTotal  table{
+            margin: 20px;
+        }
+
+        .BillStructure .BillBody .SubTotal  table tr:nth-child(3){
+            background-color: red;
+            color: white;
+        }
+        .BillStructure .BillBody .SubTotal  th{
+            padding: 5px 10px;
+            margin: 0;
+        }
+        .BillStructure .BillBody .SubTotal .Payment  {
+            margin: 20px;
+        }
+        .BillStructure .BillBody .SubTotal .Payment  p,h6{
+            margin: 0;padding: 0;
+        }
+        .BillStructure .BillBody .SubTotal  td{
+            padding: 5px 10px;
+            margin: 0;
+        }
+
+        @media screen and (max-width: 480px) {
+            .BillStructure .BillBody .Invoice{
+                flex-direction: column;
+                align-items: self-start;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <section class="BillStructure">
+        <div class="container">
+            <div class="Bill">
+                <div class="BillHeader">
+                    <div class="BillLogo">
+                        <img src="Burgerlogo.png" alt="">
+                    </div>
+                    <div class="BillInvoice">
+                        <h1>INVOICE</h1>
+                    </div>
+                    <div class="BillImg">
+                        <img src="burger.png" alt="">
+                    </div>
+                </div>
+                <div class="BillBody">
+                    <div class="container">
+                        <div class="Invoice">
+                            <div class="InvoiceTo">
+                                <table>
+                                    <tr>
+                                        <th>INVOICE TO:</th>
+                                        <td>JOHN SMITH</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Order Id:</th>
+                                        <td>2345643524</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Pay through UPI:</th>
+                                        <td>test@123upi</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Order Notes:</th>
+                                        <td>Add extra cheese</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="InvoiceNo">
+                                <table>
+                                    <tr>
+                                        <th>INVOICE NO:</th>
+                                        <td>0000</td>
+                                    </tr>
+                                    <tr>
+                                        <th>DATE:</th>
+                                        <td>05/01/2024</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="MainBill">
+                            <div class="No">
+                                <h5>NO.</h5>
+                                <p>1</p>
+                                <p>2</p>
+                                <p>3</p>
+                            </div>
+                            <div class="ItemDescription">
+                                <h5>ITEM DESCRIPTION</h5>
+                                <p>Burger1</p>
+                                <p>Burger2</p>
+                                <p>Burger3</p>
+                            </div>
+                            <div class="Price">
+                                <h5>PRICE</h5>
+                                <p>10$</p>
+                                <p>20$</p>
+                                <p>30$</p>
+                            </div>
+                            <div class="Qty">
+                                <h5>QTY.</h5>
+                                <p>2</p>
+                                <p>3</p>
+                                <p>4</p>
+                            </div>
+                            <div class="Total">
+                                <h5>TOTAL</h5>
+                                <p>20$</p>
+                                <p>30$</p>
+                                <p>40$</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="SubTotal">
+                            <div class="Payment">
+                                <p>Thanks For Your Bussiness</p>
+                                <h6>Your Restaurant Name</h6>
+                                <p>Restayrant Address</p>
+                                <p>Contact</p>
+                            </div>
+                            <div class="Total">
+                                <table>
+                                    <tr>
+                                        <td>SUB TOTAL :</td>
+                                        <th>90$</th>
+                                    </tr>
+                                    <tr>
+                                        <td>TAX :</td>
+                                    <th>%10</th>
+                                </tr>
+                                <tr>
+                                    <th>TOTAL :</th>
+                                    <th>100$</th>
+                                </tr>
+                            </table>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+    crossorigin="anonymous"></script>
+
+</html>
