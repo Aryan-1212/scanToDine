@@ -1,5 +1,9 @@
 <?php 
-session_start(); 
+include("../commonPages/index_header.php");
+
+if(!isset($_SESSION)){
+    session_start();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">

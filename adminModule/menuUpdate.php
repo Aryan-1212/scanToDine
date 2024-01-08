@@ -1,6 +1,8 @@
 <?php
     include('../commonPages/dbConnect.php');
-    session_start();
+    if(!isset($_SESSION)){
+        session_start();
+    }
     $_SESSION['is_error'] = false;
 
     $data = json_decode($_POST['data'],true);

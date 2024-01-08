@@ -1,4 +1,8 @@
-<?php session_start(); ?>
+<?php 
+    if(!isset($_SESSION)){
+        session_start();
+    }
+ ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -293,7 +297,7 @@
                         } else {
                             ?>
                             <li class="Header-nav-item"><a href="../adminModule/adminMain.php" class="Header-nav-link">Home</a></li>
-                            <li class="Header-nav-item"><a href="../adminModule/menu_select1.php"
+                            <li class="Header-nav-item"><a href="../adminModule/menu_choose.php"
                                     class="Header-nav-link">Menu</a></li>
                             <li class="Header-nav-item"><a href="#" class="Header-nav-link">Bill</a></li>
                             <li class="Header-nav-item Header-dropdown"><a href="#" class="Header-nav-link">More</a>

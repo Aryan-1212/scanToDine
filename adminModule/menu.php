@@ -1,9 +1,11 @@
 <?php
 include("../commonPages/dbConnect.php");
+include("../commonPages/index_header.php");
 // $selectedItemsjson = $_POST['selecteditems'];
 // $selectedItems = json_decode($selectedItemsjson, true);
-
-session_start();
+if(!isset($_SESSION)){
+  session_start();
+}
 // $_SESSION['selectedItems'] = $selectedItems;
 
 ?>
@@ -104,12 +106,9 @@ session_start();
     }
 
     .container {
-      margin-bottom: 50px;
+      /* margin-bottom: 50px;  */
     }
-
-
-
-
+    
     .iFrame-menuItem {
       display: flex;
       width: 100%;
@@ -408,7 +407,8 @@ session_start();
 
       <?php
 
-      $queryForItems = mysqli_query($con, "select distinct food_id from food_items where res_id=421340");
+      $res_code = $_SESSION["res_code"];
+      $queryForItems = mysqli_query($con, "select distinct food_id from food_items where res_id=$res_code");
       $selectedItems = mysqli_fetch_all($queryForItems);
 
       foreach ($selectedItems as $val) {
@@ -441,7 +441,7 @@ session_start();
                 <div class="iFrame-menuVariety">
 
                   <?php
-                  $fetch_types_query = "select * from food_items where food_id = $item_id";
+                  $fetch_types_query = "select * from food_items where food_id = $item_id and res_id=$res_code";
                   $fetch_all_types = mysqli_query($con, $fetch_types_query);
                   $all_types = mysqli_fetch_all($fetch_all_types, MYSQLI_ASSOC);
                   foreach ($all_types as $type) {

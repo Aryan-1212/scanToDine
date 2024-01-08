@@ -1,7 +1,10 @@
 <?php
     include('../commonPages/dbConnect.php');
-    session_start();
+    if(!isset($_SESSION)){
+        session_start();
+    }
     $_SESSION['is_error'] = false;
+    $res_code = $_SESSION['res_code'];
 
     $id = $_POST['id'];
     

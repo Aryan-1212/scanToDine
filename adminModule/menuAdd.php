@@ -12,17 +12,18 @@
     
     
     include('../commonPages/dbConnect.php');
-    session_start();
+    if(!isset($_SESSION)){
+        session_start();
+    }
     $_SESSION['is_error'] = false;
 
     $data = json_decode($_POST['data'],true);
     $food_type_id = generate_unique_code($con);
     $item_id = $_POST['item_id'];
-    echo $item_id;
-    $res_id = 421340;
-    $name = $data['add_type_name'];
-    $price = $data['add_type_price'];
-    $des = $data['add_type_des'];
+    $res_id = $_SESSION['res_code'];
+    $name = (!$data['add_type_name']) ? "Undefined":$data['add_type_name'];
+    $price = (!$data['add_type_price']) ? 0:$data['add_type_price'];
+    $des = (!$data['add_type_des']) ? "Undefined":$data['add_type_des'];
     
     $insertQuery = "insert into food_items values($food_type_id, $item_id, $res_id, '$name', $price, '$des')";
     $insertRecord = mysqli_query($con, $insertQuery);
