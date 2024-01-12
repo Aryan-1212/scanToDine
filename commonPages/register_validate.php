@@ -61,7 +61,7 @@ function generate_unique_code($con){
         values('$res_name', '$res_code', '$u_id', '$res_add')");
         
         mysqli_close($con);
-        header("Location: ../adminMain.php");
+        header("Location: ../adminModule/adminDashboard.php");
     }
 
 ?>

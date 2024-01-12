@@ -177,7 +177,7 @@ if(!isset($_SESSION)){
     
     <?php
         include('../commonPages/dbConnect.php');
-        if($_SESSION['is_error']){
+        if(isset($_SESSION['is_error'])){
             $is_error = $_SESSION['is_error'];
         }else{
             $is_error = false;

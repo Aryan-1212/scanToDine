@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta email="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -40,6 +40,15 @@
       font-weight: bold;
       margin-bottom: 5px;
     }
+        input[type="text"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+        }
+
 
     input[type="text"],
     input[type="email"],
@@ -54,17 +63,23 @@
       margin-top: 10px;
     }
 
-    .emoji-option {
-      display: flex;
-      align-items: center;
-      margin-bottom: 10px;
-      cursor: pointer;
-    }
+        .rating {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-    .emoji {
-      font-size: 24px;
-      margin-right: 10px;
-    }
+        .star {
+            cursor: pointer;
+            font-size: 24px;
+            color: #ccc;
+            transition: color 0.2s;
+        }
+
+        .star:hover,
+        .star.active {
+            color: #ffcc00;
+        }
 
     .indicator {
       width: 20px;
@@ -73,6 +88,8 @@
       border: 2px solid #ccc;
       margin-right: 10px;
     }
+    
+
 
     .selected {
       background-color: #333;
@@ -98,58 +115,62 @@
     <div class="header"><b>Feedback</b></div>
     <form action="feedback_db.php" method="post">
       <div class="input-field">
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required>
-      </div>
-      <div class="input-field">
-        <label for="email">Email:</label>
+        <label for="email">Email :</label>
         <input type="email" id="email" name="email" required>
       </div>
       <div class="input-field">
-        <label for="subject">Subject:</label>
-        <input type="text" id="subject" name="subject" required>
-      </div>
+        <label for="subject">Subject :</label>
+        <select id="subject" name="subject" required>
+            <option value="" disabled selected>Select Subject</option>
+            <option value="General Feedback">General Feedback</option>
+            <option value="Issues">Issues</option>
+            <option value="Suggestions">Suggestions</option>
+            <option value="Other">Other</option>
+        </select>
+        
+        
       <div class="input-field">
-        <label for="feedback">Feedback:</label>
+        <label for="feedback">Feedback :</label>
         <textarea id="feedback" name="feedback" rows="4" style="resize:vertical" required></textarea>
       </div>
       <div class="options-container">
-        <label for="experience"><u>How was your experience?</u></label>
-        <div class="emoji-option" onclick="selectEmoji(this)">
-          <div class="indicator"></div>
-          <div class="emoji" data-emoji-name="Angry">😡</div>
-        </div>
-        <div class="emoji-option" onclick="selectEmoji(this)">
-          <div class="indicator"></div>
-          <div class="emoji" data-emoji-name="Neutral">😐</div>
-        </div>
-        <div class="emoji-option" onclick="selectEmoji(this)">
-          <div class="indicator"></div>
-          <div class="emoji" data-emoji-name="Happy">😊</div>
-        </div>
-        <div class="emoji-option" onclick="selectEmoji(this)">
-          <div class="indicator"></div>
-          <div class="emoji" data-emoji-name="Very Happy">😄</div>
-        </div>
-        <input type="hidden" id="experience" name="experience" value="">
-      </div>
+        <label for="experience"><u>Rate Us :</u></label>
+<div class="rating">
+    <span class="star" onclick="rate(1)">★</span>
+    <span class="star" onclick="rate(2)">★</span>
+    <span class="star" onclick="rate(3)">★</span>
+    <span class="star" onclick="rate(4)">★</span>
+    <span class="star" onclick="rate(5)">★</span>
+</div>
+<script>
+    let selectedRating = 0;
+
+    function rate(rating) {
+        selectedRating = rating;
+        console.log(selectedRating);
+        resetStars();
+        highlightStars(rating);
+        // You can use 'selectedRating' for further processing, like sending it to the server.
+    }
+
+    function resetStars() {
+        const stars = document.querySelectorAll('.star');
+        stars.forEach(star => {
+            star.classList.remove('active');
+        });
+    }
+
+    function highlightStars(count) {
+        const stars = document.querySelectorAll('.star');
+        for (let i = 0; i < count; i++) {
+            stars[i].classList.add('active');
+        }
+    }
+</script>
       <button type="submit">Submit</button>
     </form>
   </div>
-  <script>
-    function selectEmoji(optionElement) {
-      const indicators = document.querySelectorAll('.indicator');
-      indicators.forEach(indicator => {
-        indicator.classList.remove('selected');
-      });
-      const selectedIndicator = optionElement.querySelector('.indicator');
-      selectedIndicator.classList.add('selected');
-
-      const emoji = optionElement.querySelector('.emoji');
-      const emojiname = emoji.getAttribute('data-emoji-name');
-      document.getElementById('experience').value = emojiname;
-    }
-  </script>
+    
 </body>
 
 </html>

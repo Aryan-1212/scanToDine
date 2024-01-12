@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ConfirmOrder</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .ConfirmOrder .ConfirmOrderContainer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .ConfirmOrder .ConfirmOrderContainer .ConfirmOrderInformation {
+            width: 50%;
+        }
+
+        .ConfirmOrder .ConfirmOrderContainer .ConfirmOrderInformation h4 {
+            font-weight: lighter;
+        }
+
+        .ConfirmOrder .ConfirmOrderContainer .ConfirmOrderImg {
+            width: 50%;
+            position: relative;
+        }
+
+        .ConfirmOrder .ConfirmOrderContainer .ConfirmOrderImg img {
+            height: auto;
+            width: 100%;
+        }
+
+        .ConfirmOrder .ConfirmOrderContainer .ConfirmOrderImg .Addbtn {
+            position: absolute;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 900;
+            top: 70%;
+            left: 43%;
+            color: green;
+            background-color: white;
+            border: 2px solid white;
+            border-radius: 250px;
+            box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            width: 100px;
+            height: 50px;
+            transition: all ease-in-out 0.5s;
+        }
+        
+        .ConfirmOrder .ConfirmOrderContainer .ConfirmOrderImg .Addbtn:hover {
+            color: white;
+            background-color: green;
+            border: 2px solid green;
+        }
+
+        .ConfirmOrder .ConfirmOrderContainer .ConfirmOrderImg .btn {
+            position: absolute;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 900;
+            top: 70%;
+            left: 43%;
+            color: green;
+            background-color: white;
+            border: 2px solid white;
+            border-radius: 250px;
+            box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            width: 100px;
+            height: 50px;
+        }
+
+        .ConfirmOrder .ConfirmOrderContainer .ConfirmOrderImg .btn input{
+            width: 40px;
+            text-align: center;
+        }
+
+        .ConfirmOrder .ConfirmOrderContainer .ConfirmOrderImg .btn .arithmetic{
+            border: none;
+            background-color: transparent;
+            color: green;
+            font-family: 'Poppins', sans-serif;
+            padding: 0 2px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <section class="ConfirmOrder">
+        <div class="container">
+            <div class="ConfirmOrderContainer">
+                <div class="ConfirmOrderInformation">
+                    <h2>Veggie Burger[100 Gm]</h2>
+                    <h4>130$</h4>
+                    <p>4.4*{Rating}</p>
+                    <p>A burger is a patty of ground beef grilled and placed between two halves of a bun. Slices of raw
+                        onion, lettuce, bacon, mayonnaise, and other ingredients add flavor. Burgers are considered an
+                        American food but are popular around the world.</p>
+                </div>
+                <div class="ConfirmOrderImg">
+                    <img src="burger.jpg" alt="">
+                    <button class="Addbtn">ADD</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="ConfirmOrder">
+        <div class="container">
+            <div class="ConfirmOrderContainer">
+                <div class="ConfirmOrderInformation">
+                    <h2>Veggie Burger[100 Gm]</h2>
+                    <h4>130$</h4>
+                    <p>4.4*{Rating}</p>
+                    <p>A burger is a patty of ground beef grilled and placed between two halves of a bun. Slices of raw
+                        onion, lettuce, bacon, mayonnaise, and other ingredients add flavor. Burgers are considered an
+                        American food but are popular around the world.</p>
+                </div>
+                <div class="ConfirmOrderImg">
+                    <img src="burger.jpg" alt="">
+                    <div class="btn"><button class="arithmetic" onclick="minus()">-</button><input id="Num" type="number"><button
+                            onclick="plus()" class="arithmetic">+</button></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</body>
+
+<script>
+    let num = 0;
+    function minus() {
+        if(num <= 0){
+        }
+        else{
+            num--;
+            document.getElementById('Num').value = num;    
+        }
+    }
+    function plus() {
+        num++;
+        document.getElementById('Num').value = num;
+    }
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+    crossorigin="anonymous"></script>
+
+</html>

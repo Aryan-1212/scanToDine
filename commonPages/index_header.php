@@ -69,17 +69,20 @@
             margin-right: 20px;
         }
 
+        .Header-dropdown{
+            position: relative;
+        }
+
         .Header-nav-link {
             text-decoration: none;
             color: #e74c3c;
             transition: color 0.3s;
-            position: relative;
             font-size: 18px;
+            z-index: 3;
         }
 
         .Header-nav-link:hover {
             color: #c0392b;
-            /* Darker red on hover */
         }
         .Header-nav-link::before {
             content: '';
@@ -98,9 +101,9 @@
             transform: scaleX(1);
             transform-origin: bottom left;
         }
-        .Header-dropdown {
+        /* .Header-dropdown {
             position: relative;
-        }
+        } */
 
 
         #Header-mobile-menu {
@@ -131,6 +134,10 @@
             display: block;
         }
 
+
+        /* .Header-sub-item {
+            z-index: 3;
+        } */
 
         .Header-sub-item a{
             text-decoration: none;
@@ -212,7 +219,6 @@
                 z-index: 1;
             }
 
-            /* Style for the mobile menu button */
             #Header-mobile-menu {
                 display: block;
                 /* position: absolute; */
@@ -220,24 +226,19 @@
                 right: 20px;
                 cursor: pointer;
                 font-size: 24px;
-                /* Increase font size for the hamburger icon */
             }
 
-            /* Show the navigation options when the mobile menu button is clicked */
             .Header-nav-list.show {
                 display: flex;
             }
 
-            /* Style for each navigation option */
             .Header-nav-item {
                 margin-left: -33px;
                 margin-right: 0;
-                /* Remove margin between options */
                 text-align: center;
                 height: 40px;
             }
 
-            /* Add a border to separate each option */
             .Header-nav-link {
                 padding: 10px;
                 text-align: center;
@@ -247,9 +248,7 @@
 
             .Header-nav-link:hover {
                 color: #c0392b;
-                /* Darker red on hover */
                 border-bottom: 1px solid #e74c3c;
-                /* Show the border on hover */
             }
 
         }
@@ -262,7 +261,6 @@
     $is_login = isset($_SESSION['is_login']) ? true : false;
     ?>
 
-    <!-- <div class="Header-to-sticky"> -->
     <header class="Header-header">
         <div class="container Header-Container">
             <?php
@@ -272,7 +270,7 @@
                     <?php
             } else {
                 ?>
-                    <a href="../adminModule/adminMain.php">
+                    <a href="../adminModule/adminDashboard.php">
                         <?php
             }
             ?>
@@ -280,7 +278,6 @@
                         <img src="../commonPages/logo.png" alt="Logo" class="Header-logo-img">
                     </div>
                 </a>
-                <!-- <div id="Header-mobile-menu" onclick="toggleMobileMenu()">☰</div> -->
                 <nav class="Header-nav-container">
                     <div id="Header-mobile-menu" onclick="toggleMobileMenu()">☰</div>
                     <ul class="Header-nav-list">
@@ -296,7 +293,7 @@
                             <?php
                         } else {
                             ?>
-                            <li class="Header-nav-item"><a href="../adminModule/adminMain.php" class="Header-nav-link">Home</a></li>
+                            <li class="Header-nav-item"><a href="../adminModule/adminDashboard.php" class="Header-nav-link">Dashboard   </a></li>
                             <li class="Header-nav-item"><a href="../adminModule/menu_choose.php"
                                     class="Header-nav-link">Menu</a></li>
                             <li class="Header-nav-item"><a href="#" class="Header-nav-link">Bill</a></li>
@@ -304,10 +301,9 @@
                                 <ul class="Header-sub-menu">
                                     <li class="Header-sub-item"><a href="../adminModule/feedback.php">Feedbacks</a></li>
                                     <li class="Header-sub-item"><a href="../adminModule/inventory.php">Inventory</a></li>
-                                    <!-- Add more sub-menu items as needed -->
                                 </ul>
                             </li>
-                            <li class="Header-nav-item"><a href="#" class="Header-nav-link">Profile</a></li>
+                            <li class="Header-nav-item"><a href="../commonPages/profile.php" class="Header-nav-link">Profile</a></li>
                             <?php
                         }
                         ?>
@@ -316,20 +312,17 @@
 
         </div>
     </header>
-    <!-- </div> -->
-    <!-- Rest of your content goes here -->
 
 
     <script>
-        // Function to toggle mobile menu
         function toggleMobileMenu() {
             const nav = document.querySelector('.Header-nav-list');
             nav.classList.toggle('show');
         }
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
-        crossorigin="anonymous"></script>
+        crossorigin="anonymous"></script> -->
 
 </body>
 

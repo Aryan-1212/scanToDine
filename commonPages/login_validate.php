@@ -21,6 +21,7 @@
     $data = mysqli_fetch_assoc($query);
     $pass = $data['password'];
     $res_code = $data['res_code'];
+    $u_id = $data['u_id'];
 
     if ($pass != $password){
         $_SESSION['is_error']=true;
@@ -38,6 +39,7 @@
         session_start();
         $_SESSION['is_login'] = true;
         $_SESSION['res_code'] = $res_code;
-        header("Location: ../adminModule/adminMain.php");
+        $_SESSION['u_id'] = $u_id;
+        header("Location: ../adminModule/adminDashboard.php");
     }
 ?>
