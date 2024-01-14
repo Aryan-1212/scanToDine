@@ -451,14 +451,14 @@ if (isset($_SESSION['is_error'])) {
                             </div>
 
                             <div class="user-box">
-                                <input type="password" id="Password" maxlength="12" name="password"
+                                <input type="password" id="Password" minlength="8" maxlength="12" name="password"
                                     value="<?php echo $password; ?>" required="">
                                 <i class="far fa-eye togglePassword" id="togglePassword"></i>
                                 <label>Password</label>
                             </div>
 
                             <div class="user-box">
-                                <input type="password" id="confirm-Password" maxlength="12"
+                                <input type="password" id="confirm-Password" minlength="8" maxlength="12"
                                     value="<?php echo $password; ?>" required="">
                                 <i class="far fa-eye togglePassword" id="confirm-togglePassword"></i>
                                 <label>Confirm Password</label>

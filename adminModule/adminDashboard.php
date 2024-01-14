@@ -137,7 +137,7 @@ $test1 = array(
         height: auto;
         justify-content: space-between;
         height: 550px;
-        padding: 20px;
+        /* padding: 20px; */
         margin-bottom: 2%;
     }
 

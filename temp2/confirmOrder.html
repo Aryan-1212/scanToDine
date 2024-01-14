@@ -14,38 +14,40 @@
         * {
             margin: 0;
             padding: 0;
+            font-family: 'Poppins', sans-serif;
         }
 
         .ConfirmOrder .ConfirmOrderContainer {
             display: flex;
             justify-content: center;
             align-items: center;
+            margin: 50px 0;
+            padding: 50px 20px;
+            border: 2px solid #c81a1a;
+            border-radius: 50px;
+            background-color: whitesmoke;
         }
 
         .ConfirmOrder .ConfirmOrderContainer .ConfirmOrderInformation {
-            width: 50%;
+            width: 80%;
         }
 
         .ConfirmOrder .ConfirmOrderContainer .ConfirmOrderInformation h4 {
             font-weight: lighter;
         }
 
-        .ConfirmOrder .ConfirmOrderContainer .ConfirmOrderImg {
-            width: 50%;
-            position: relative;
+        .ConfirmOrder .ConfirmOrderContainer .addOrder {
+            width: 20%;
         }
 
-        .ConfirmOrder .ConfirmOrderContainer .ConfirmOrderImg img {
+        .ConfirmOrder .ConfirmOrderContainer .addOrder img {
             height: auto;
             width: 100%;
         }
 
-        .ConfirmOrder .ConfirmOrderContainer .ConfirmOrderImg .Addbtn {
-            position: absolute;
+        .ConfirmOrder .ConfirmOrderContainer .addOrder .Addbtn {
             font-family: 'Poppins', sans-serif;
             font-weight: 900;
-            top: 70%;
-            left: 43%;
             color: green;
             background-color: white;
             border: 2px solid white;
@@ -55,19 +57,16 @@
             height: 50px;
             transition: all ease-in-out 0.5s;
         }
-        
-        .ConfirmOrder .ConfirmOrderContainer .ConfirmOrderImg .Addbtn:hover {
+
+        .ConfirmOrder .ConfirmOrderContainer .addOrder .Addbtn:hover {
             color: white;
             background-color: green;
             border: 2px solid green;
         }
 
-        .ConfirmOrder .ConfirmOrderContainer .ConfirmOrderImg .btn {
-            position: absolute;
+        .ConfirmOrder .ConfirmOrderContainer .addOrder .btn {
             font-family: 'Poppins', sans-serif;
             font-weight: 900;
-            top: 70%;
-            left: 43%;
             color: green;
             background-color: white;
             border: 2px solid white;
@@ -77,17 +76,25 @@
             height: 50px;
         }
 
-        .ConfirmOrder .ConfirmOrderContainer .ConfirmOrderImg .btn input{
+        .ConfirmOrder .ConfirmOrderContainer .addOrder .btn input {
             width: 40px;
             text-align: center;
         }
 
-        .ConfirmOrder .ConfirmOrderContainer .ConfirmOrderImg .btn .arithmetic{
+        .ConfirmOrder .ConfirmOrderContainer .addOrder .btn .arithmetic {
             border: none;
             background-color: transparent;
             color: green;
             font-family: 'Poppins', sans-serif;
             padding: 0 2px;
+        }
+
+        #more {
+            display: none;
+        }
+
+        .addAfterFirst{
+            display: none;
         }
     </style>
 </head>
@@ -100,14 +107,20 @@
                 <div class="ConfirmOrderInformation">
                     <h2>Veggie Burger[100 Gm]</h2>
                     <h4>130$</h4>
-                    <p>4.4*{Rating}</p>
-                    <p>A burger is a patty of ground beef grilled and placed between two halves of a bun. Slices of raw
-                        onion, lettuce, bacon, mayonnaise, and other ingredients add flavor. Burgers are considered an
-                        American food but are popular around the world.</p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit<span id="dots">...</span><span
+                            id="more">erisque enim
+                            ligula venenatis dolor. Maecenas nisl est, ultrices nec congue eget, auctor vitae massa.
+                            Fusce luctus vestibulum augue ut aliquet. Nunc sagittis dictum nisi, sed ullamcorper ipsum
+                            dignissim ac. In at libero sed nunc venenatis imperdiet sed ornare turpis. Donec vitae dui
+                            eget tellus gravida venenatis. Integer fringilla congue eros non fermentum. Sed dapibus
+                            pulvinar nibh tempor porta.</span></p>
+                    <u style="cursor: pointer;" onclick="myFunction()" id="myBtn">Read more</u>
                 </div>
-                <div class="ConfirmOrderImg">
-                    <img src="burger.jpg" alt="">
-                    <button class="Addbtn">ADD</button>
+                <div class="addOrder">
+                    <!-- <img src="burger.jpg" alt=""> -->
+                    <button class="Addbtn" id="addFirst1" onclick="addItem(event)">ADD</button>
+                    <div class="btn addAfterFirst" id="addAfterFirst1"><button class="arithmetic" onclick="minus(event)">-</button><input id="Num1"
+                        type="number"><button onclick="plus(event)" class="arithmetic">+</button></div>
                 </div>
             </div>
         </div>
@@ -119,15 +132,20 @@
                 <div class="ConfirmOrderInformation">
                     <h2>Veggie Burger[100 Gm]</h2>
                     <h4>130$</h4>
-                    <p>4.4*{Rating}</p>
-                    <p>A burger is a patty of ground beef grilled and placed between two halves of a bun. Slices of raw
-                        onion, lettuce, bacon, mayonnaise, and other ingredients add flavor. Burgers are considered an
-                        American food but are popular around the world.</p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum
+                        interdum, nisi lorem egestas vitae scel<span id="dots">...</span><span id="more">erisque enim
+                            ligula venenatis dolor. Maecenas nisl est, ultrices nec congue eget, auctor vitae massa.
+                            Fusce luctus vestibulum augue ut aliquet. Nunc sagittis dictum nisi, sed ullamcorper ipsum
+                            dignissim ac. In at libero sed nunc venenatis imperdiet sed ornare turpis. Donec vitae dui
+                            eget tellus gravida venenatis. Integer fringilla congue eros non fermentum. Sed dapibus
+                            pulvinar nibh tempor porta.</span></p>
+                    <u style="cursor: pointer;" onclick="myFunction()" id="myBtn">Read more</u>
                 </div>
-                <div class="ConfirmOrderImg">
-                    <img src="burger.jpg" alt="">
-                    <div class="btn"><button class="arithmetic" onclick="minus()">-</button><input id="Num" type="number"><button
-                            onclick="plus()" class="arithmetic">+</button></div>
+                <div class="addOrder">
+                    <!-- <img src="burger.jpg" alt=""> -->
+                    <button class="Addbtn" id="addFirst2" onclick="addItem(event)">ADD</button>
+                    <div class="btn addAfterFirst" id="addAfterFirst2"><button class="arithmetic" onclick="minus(event)">-</button><input id="Num2"
+                        type="number"><button onclick="plus(event)" class="arithmetic">+</button></div>
                 </div>
             </div>
         </div>
@@ -136,18 +154,56 @@
 </body>
 
 <script>
-    let num = 0;
-    function minus() {
-        if(num <= 0){
-        }
-        else{
-            num--;
-            document.getElementById('Num').value = num;    
+    let count = 0;
+    const num = document.getElementById('Num1');
+
+    checkcount = (count) =>{
+        if(count === 0){
+            document.getElementById('addFirst1').style.display = 'block';
+            document.getElementById('addAfterFirst1').style.display = 'none';
+        }else if(count > 0){
+            document.getElementById('addFirst1').style.display = 'none';
+            document.getElementById('addAfterFirst1').style.display = 'block';
         }
     }
-    function plus() {
-        num++;
-        document.getElementById('Num').value = num;
+
+    addItem = (e) => {
+        count++;
+        console.log(e.target);
+        e.target.value = count;
+        num.value = count;
+        checkcount(count);
+    }
+
+    function minus(e) {
+        count--;
+        e.target.value = count;
+        num.value = count;
+        checkcount(count);
+    }
+    function plus(e) {
+        count++;
+        e.target.value = count;
+        num.value = count;
+        checkcount(count);
+    }
+</script>
+
+<script>
+    function myFunction() {
+        var dots = document.getElementById("dots");
+        var moreText = document.getElementById("more");
+        var btnText = document.getElementById("myBtn");
+
+        if (dots.style.display === "none") {
+            dots.style.display = "inline";
+            btnText.innerHTML = "Read more";
+            moreText.style.display = "none";
+        } else {
+            dots.style.display = "none";
+            btnText.innerHTML = "Read less";
+            moreText.style.display = "inline";
+        }
     }
 </script>
 

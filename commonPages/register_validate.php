@@ -60,6 +60,11 @@ function generate_unique_code($con){
         $insert_restaurant = mysqli_query($con, "insert into restaurant(res_name, res_code, owner_uid, res_address)
         values('$res_name', '$res_code', '$u_id', '$res_add')");
         
+        session_start();
+        $_SESSION['is_login'] = true;
+        $_SESSION['res_code'] = $res_code;
+        $_SESSION['u_id'] = $u_id;
+
         mysqli_close($con);
         header("Location: ../adminModule/adminDashboard.php");
     }

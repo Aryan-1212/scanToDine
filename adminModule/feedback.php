@@ -1,4 +1,9 @@
-<?php include("../commonPages/index_header.php"); ?>
+<?php 
+include("../commonPages/index_header.php"); 
+if(!isset($_SESSION)){
+    session_start();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,12 +11,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <link rel="stylesheet" href="slick.css"> -->
-    <!-- <link rel="stylesheet" href="style.css"> -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <!-- <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> -->
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <title>Feedback</title>
@@ -20,13 +20,24 @@
 
 <style>
 
+    *{
+        margin: 0;
+        padding: 0;
+        font-family: 'Poppins', sans-serif;
+    }
+
     ::-webkit-scrollbar{
         display: none;
     }
     #Feedback {
         width: 100%;
+        min-height: calc(100vh - 100px);
         height: auto;
-        font-family: 'Poppins', sans-serif;
+        background-color: lightsteelblue;
+    }
+
+    #Feedback .FeedbackHeader{
+        padding: 40px 0px 0px 0px;
     }
 
     #Feedback .FeedbackContainer {
@@ -36,12 +47,13 @@
         align-items: center;
         width: 100%;
         height: auto;
+        padding-top: 5%;
     }
 
     #Feedback .FeedbackContainer .Flex1 {
         background-color: whitesmoke;
         position: relative;
-        margin: 5% 0;
+        margin: 0 0 5% 0;
         width: 100%;
         border: 2px solid whitesmoke;
         box-shadow: 5px 6px #888888;
@@ -118,6 +130,11 @@
         padding: 0 30px;
     }
 
+    #Feedback .no-data{
+        color: red;
+        font-size: xx-large;
+    }
+
     @media only screen and (max-width: 1199px) {
         #Feedback .FeedbackContainer .Flex1 {
             width: 100%;
@@ -173,11 +190,14 @@
 
     <section id="Feedback">
         <div class="container">
+            <div class="FeedbackHeader">
+                <h2>Feedbacks</h2>
+            </div>
             <div class="FeedbackContainer" id="FeedbackContainer">
 
             <?php
                 include("../commonPages/dbConnect.php");
-                $res_code = 421340;
+                $res_code = $_SESSION['res_code'];
                 $queryToFetch = "select * from feedbacks where  res_code = $res_code";
                 $result = mysqli_query($con, $queryToFetch);
                 if (mysqli_num_rows($result) > 0) {
@@ -226,7 +246,9 @@
                 <?php 
                     }
                 } else {
-                    echo "No feedback available.";
+                    ?>
+                        <div class="no-data">No Feedbacks Available.</div>
+                    <?php
                 }
                 mysqli_close($con);
                 ?>

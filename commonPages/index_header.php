@@ -1,8 +1,8 @@
-<?php 
-    if(!isset($_SESSION)){
-        session_start();
-    }
- ?>
+<?php
+if (!isset($_SESSION)) {
+    session_start();
+}
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -10,320 +10,271 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            background-color: #f2f2f2;
-        }
-
-        .Header-header {
-            background-color: white;
-            color: #e74c3c;
-            display: flex;
-            /* font-family: 'Poppins', sans-serif; */
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 20px;
-            height: 100px;
-            width: 100%;
-            position: sticky;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .Header-Container {
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .Header-logo {
-            width: 100px;
-        }
-
-        .Header-logo img {
-            width: 100%;
-        }
-
-        .Header-nav-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: end;
-            width: 600px;
-        }
-
-        .Header-nav-list {
-            width: 100%;
-            justify-content: space-between;
-            list-style: none;
-            display: flex;
-        }
-
-        .Header-nav-item {
-            margin-right: 20px;
-        }
-
-        .Header-dropdown{
-            position: relative;
-        }
-
-        .Header-nav-link {
-            text-decoration: none;
-            color: #e74c3c;
-            transition: color 0.3s;
-            font-size: 18px;
-            z-index: 3;
-        }
-
-        .Header-nav-link:hover {
-            color: #c0392b;
-        }
-        .Header-nav-link::before {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background-color: #e74c3c;
-            transform: scaleX(0);
-            transform-origin: bottom right;
-            transition: transform 0.3s ease-in-out;
-        }
-
-        .Header-nav-link:hover::before {
-            transform: scaleX(1);
-            transform-origin: bottom left;
-        }
-        /* .Header-dropdown {
-            position: relative;
-        } */
-
-
-        #Header-mobile-menu {
-            display: none;
-        }
-
-        .Header-sub-menu {
-            padding: 0px;
-            position: absolute;
-            display: none;
-            background-color: white;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            z-index: 1;
-            top: 100%;
-            /* left: 0; */
-            right: 0;
-            width: 100px;
-        }
-        .Header-sub-menu li{
-            width: 100%;
-            margin: 10px 0px;
-            /* border-bottom: 1px solid whitesmoke; */
-            /* border-bottom-style: outset; */
-            text-align: center;
-        }
-
-        .Header-dropdown:hover .Header-sub-menu {
-            display: block;
-        }
-
-
-        /* .Header-sub-item {
-            z-index: 3;
-        } */
-
-        .Header-sub-item a{
-            text-decoration: none;
-            color:#e74c3c;
-        }
-
-        .Header-sub-item a{
-            /* border: 1px solid black; */
-        }
-
-        .Header-sub-item a::before{
-            content: '';
-            position: absolute;
-            /* bottom: 0; */
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background-color: #e74c3c;
-            
-            transform: scaleX(0);
-            transform-origin: bottom right;
-            transition: transform 0.3s ease-in-out;
-        }
-        
-        .Header-sub-item a:hover{
-            color: #c0392b;
-        }
-
-        .Header-sub-item a:hover::before{
-            transform: scaleX(1);
-            transform-origin: bottom left;
-        }
-
-        .Header-sub-item{
-            list-style: none;
-        }
-
-        @media (max-width: 1200px) {
-
-            .Header-sub-menu {
-                position: static;
-                display: none;
-                background-color: white;
-                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-                z-index: 1;
-                top: 100%;
-                left: 0;
-            }
-
-            .Header-dropdown:hover .Header-sub-menu {
-                display: block;
-                position: absolute;
-                width: 100%;
-                left: -100%;
-                top: 0;
-            }
-
-            .Header-dropdown:hover .Header-sub-menu li{
-                border: none;
-            }
-
-            .Header-sub-menu .Header-sub-item {
-                width: 100%;
-            }
-
-            .Header-nav-container {
-                justify-content: right;
-                align-items: center;
-            }
-
-            .Header-nav-list {
-                display: none;
-                flex-direction: column;
-                position: absolute;
-                top: 70px;
-                width: 160px;
-                background-color: white;
-                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-                z-index: 1;
-            }
-
-            #Header-mobile-menu {
-                display: block;
-                /* position: absolute; */
-                top: 20px;
-                right: 20px;
-                cursor: pointer;
-                font-size: 24px;
-            }
-
-            .Header-nav-list.show {
-                display: flex;
-            }
-
-            .Header-nav-item {
-                margin-left: -33px;
-                margin-right: 0;
-                text-align: center;
-                height: 40px;
-            }
-
-            .Header-nav-link {
-                padding: 10px;
-                text-align: center;
-                width: 150px;
-                border-bottom: 1px solid transparent;
-            }
-
-            .Header-nav-link:hover {
-                color: #c0392b;
-                border-bottom: 1px solid #e74c3c;
-            }
-
-        }
-    </style>
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+    <title>header</title>
 </head>
 
-<body>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        font-family: 'Poppins', sans-serif;
+    }
 
+    header {
+        height: 100px;
+        width: 100%;
+        box-sizing: border-box;
+        display: flex;
+        justify-content: center;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        background-color: whitesmoke;
+    }
+
+    header .header-main {
+        height: 100%;
+        width: 90%;
+        display: flex;
+    }
+
+    .header-main-logo {
+        width: 15%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .header-main-logo .header-logo {
+        width: 100px;
+    }
+
+    .header-main-logo .header-logo .header-logo-img {
+        width: 100%;
+    }
+
+    header .header-main .header-main-nav {
+        width: 85%;
+        display: flex;
+        justify-content: end;
+    }
+
+    header .header-main .header-main-nav-items {
+        height: 100px;
+        width: 42vw;
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        font-size: 18px;
+    }
+
+    header .header-main li {
+        list-style: none;
+    }
+
+    header .header-main li a {
+        text-decoration: none;
+        color: #e74c3c;
+        border-bottom: 2px solid #c0392b;
+        border-bottom-style: none;
+    }
+
+    header .header-main li a:hover {
+        color: #c0392b;
+        border-bottom-style: solid;
+    }
+
+    .header-main-nav #header-mobile-nav {
+        display: none;
+    }
+
+    header .header-main .header-main-nav {
+        position: relative;
+    }
+
+    .header-main-nav #header-mobile-nav {
+        font-size: 24px;
+        cursor: pointer;
+        position: absolute;
+        top: 30px;
+        color: #c0392b;
+    }
+
+    .header-main-nav #toggle-nav-items {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 10px;
+        background-color: white;
+        position: absolute;
+        top: 60px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        display: none;
+    }
+
+    .header-main-nav #toggle-nav-items li {
+        margin: 5px 30px;
+    }
+
+    .header-dropdown {
+        /* position: relative; */
+    }
+
+    .header-sub-menu {
+        text-align: center;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 10px;
+        left: -50px;
+        background-color: white;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        position: absolute;
+        display: none;
+        background-color: whitesmoke;
+    }
+
+    .header-sub-menu li {
+        margin: 7px 20px;
+        padding: 10px;
+
+    }
+
+    #header-dropdown-link {
+        position: relative;
+    }
+
+    #header-dropdown-link:hover .header-sub-menu {
+        display: block;
+    }
+
+
+
+    @media screen and (max-width: 1130px) {
+        header .header-main .header-main-nav-items {
+            width: 55vw;
+        }
+
+        header {
+            padding: 0px 20px;
+        }
+    }
+
+    @media screen and (max-width: 800px) {
+        #toggle-nav-items.active {
+            display: flex;
+        }
+
+        header .header-main .header-main-nav-items {
+            display: none;
+        }
+
+        .header-main-nav #header-mobile-nav {
+            display: block;
+        }
+    }
+
+    @media screen and (max-width: 600px) {
+        header {
+            padding: 0px 20px;
+        }
+    }
+</style>
+
+<body>
     <?php
     $is_login = isset($_SESSION['is_login']) ? true : false;
     ?>
-
-    <header class="Header-header">
-        <div class="container Header-Container">
-            <?php
-            if (!$is_login) {
-                ?>
-                <a href="../indexPage/index.php">
-                    <?php
-            } else {
-                ?>
-                    <a href="../adminModule/adminDashboard.php">
+    <header>
+        <div class="header-main">
+            <div class="header-main-logo">
+                <?php
+                if (!$is_login) {
+                    ?>
+                    <a href="../indexPage/index.php">
                         <?php
-            }
-            ?>
-                    <div class="Header-logo">
-                        <img src="../commonPages/logo.png" alt="Logo" class="Header-logo-img">
-                    </div>
-                </a>
-                <nav class="Header-nav-container">
-                    <div id="Header-mobile-menu" onclick="toggleMobileMenu()">☰</div>
-                    <ul class="Header-nav-list">
-                        <?php if (!$is_login) {
-                            ?>
-                            <li class="Header-nav-item"><a href="../indexPage/index.php" class="Header-nav-link">Home</a>
-                            </li>
-                            <li class="Header-nav-item"><a href="../commonPages/about_us.php" class="Header-nav-link">About Us</a></li>
-                            <li class="Header-nav-item"><a href="../commonPages/contactUs.php"
-                                    class="Header-nav-link">Contact Us</a></li>
-                            <li class="Header-nav-item"><a href="../commonPages/login.php" class="Header-nav-link">Log
-                                    in</a></li>
+                } else {
+                    ?>
+                        <a href="../adminModule/adminDashboard.php">
                             <?php
-                        } else {
-                            ?>
-                            <li class="Header-nav-item"><a href="../adminModule/adminDashboard.php" class="Header-nav-link">Dashboard   </a></li>
-                            <li class="Header-nav-item"><a href="../adminModule/menu_choose.php"
-                                    class="Header-nav-link">Menu</a></li>
-                            <li class="Header-nav-item"><a href="#" class="Header-nav-link">Bill</a></li>
-                            <li class="Header-nav-item Header-dropdown"><a href="#" class="Header-nav-link">More</a>
-                                <ul class="Header-sub-menu">
-                                    <li class="Header-sub-item"><a href="../adminModule/feedback.php">Feedbacks</a></li>
-                                    <li class="Header-sub-item"><a href="../adminModule/inventory.php">Inventory</a></li>
-                                </ul>
-                            </li>
-                            <li class="Header-nav-item"><a href="../commonPages/profile.php" class="Header-nav-link">Profile</a></li>
-                            <?php
-                        }
+                }
+                ?>
+                        <div class="header-logo">
+                            <img src="../commonPages/logo.png" alt="Logo" class="header-logo-img">
+                        </div>
+                    </a>
+            </div>
+            <div class="header-main-nav">
+                <div id="header-mobile-nav" onclick="toggleMobileMenu()">☰</div>
+                <ul id="toggle-nav-items">
+                    <?php if (!$is_login) {
                         ?>
-                    </ul>
-                </nav>
+                        <li><a href="../indexPage/index.php">Home</a>
+                        </li>
+                        <li><a href="../commonPages/about_us.php">About Us</a></li>
+                        <li><a href="../commonPages/contactUs.php">Contact Us</a></li>
+                        <li><a href="../commonPages/login.php">Log
+                                in</a></li>
+                        <?php
+                    } else {
+                        ?>
+                        <li><a href="../adminModule/adminDashboard.php">Dashboard </a></li>
+                        <li><a href="../adminModule/menu_choose.php">Menu</a></li>
+                        <li><a href="#">Bill</a></li>
+                        <li class="Header-sub-item"><a href="../adminModule/feedback.php">Feedbacks</a></li>
+                        <li class="Header-sub-item"><a href="../adminModule/inventory.php">Inventory</a></li>
 
+                        <li><a href="../commonPages/profile.php">Profile</a></li>
+                        <?php
+                    }
+                    ?>
+                </ul>
+
+
+                </ul>
+                <ul class="header-main-nav-items">
+                    <?php if (!$is_login) {
+                        ?>
+                        <li><a href="../indexPage/index.php">Home</a>
+                        </li>
+                        <li><a href="../commonPages/about_us.php">About Us</a></li>
+                        <li><a href="../commonPages/contactUs.php">Contact Us</a></li>
+                        <li><a href="../commonPages/login.php">Log
+                                in</a></li>
+                        <?php
+                    } else {
+                        ?>
+                        <li><a href="../adminModule/adminDashboard.php">Dashboard</a></li>
+                        <li><a href="../adminModule/menu_choose.php">Menu</a></li>
+                        <li><a href="#">Bill</a></li>
+                        <li class="header-dropdown" id="header-dropdown-link"><a href="#">More</a>
+                            <ul class="header-sub-menu">
+                                <li class="header-sub-item"><a href="../adminModule/feedback.php">Feedbacks</a></li>
+                                <li class="header-sub-item"><a href="../adminModule/inventory.php">Inventory</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="../commonPages/profile.php">Profile</a></li>
+                        <?php
+                    }
+                    ?>
+                </ul>
+            </div>
         </div>
     </header>
 
-
     <script>
         function toggleMobileMenu() {
-            const nav = document.querySelector('.Header-nav-list');
-            nav.classList.toggle('show');
+            const toggle = document.getElementById('toggle-nav-items');
+            // if(toggle.style.display === "block"){
+            //     toggle.style.display = "none";
+            // }else{
+            //     toggle.style.display = "block";
+            // }
+
+            toggle.classList.toggle("active");
         }
     </script>
-    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
-        crossorigin="anonymous"></script> -->
-
 </body>
 
 </html>

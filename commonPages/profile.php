@@ -1,34 +1,42 @@
 <?php
-    if(!isset($_SESSION)){
-        session_start();
-    }
+if (!isset($_SESSION)) {
+    session_start();
+}
 
-    if(isset($_POST['logout'])){
-        session_destroy();
-        header("Location: ../commonPages/login.php");
-    }
-    include("../commonPages/index_header.php");
-    include("../commonPages/dbConnect.php");
+if (isset($_POST['logout'])) {
+    session_destroy();
+    header("Location: ../commonPages/login.php");
+}
+include("../commonPages/index_header.php");
+include("../commonPages/dbConnect.php");
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
     <title>Profile Page</title>
     <style>
         body {
             margin: 0;
             padding: 0;
+            font-family: 'Poppins', sans-serif;
         }
 
-        ::-webkit-scrollbar{
+        ::-webkit-scrollbar {
             display: none;
         }
 
-        header {
+        .profile-main{
+            background-color: lightsteelblue;
+            padding-bottom: 60px;
+        }
+
+        .profile-header {
             /* background-color: #e74c3c; */
             color: #e74c3c;
             text-align: center;
@@ -37,12 +45,13 @@
 
         .profile-container {
             max-width: 600px;
-            margin: 20px auto;
+            margin: 0px auto;
             background-color: white;
             padding: 40px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
             text-align: center;
+            
         }
 
         .profile-image {
@@ -95,26 +104,28 @@
             background-color: #c0392b;
         }
 
-        @media screen and (max-width: 480px){
+        @media screen and (max-width: 480px) {
             .profile-info div {
                 padding: 10px;
             }
         }
     </style>
 </head>
+
 <body>
-    <header>
+    <div class="profile-main">
+    <div class="profile-header">
         <h1>PROFILE</h1>
-    </header>
+    </div>
 
     <?php
-        
-        $u_id = $_SESSION['u_id'];
 
-        $fetch_query = "select * from users where u_id=$u_id";
-        $result = mysqli_query($con, $fetch_query);
-        $data = mysqli_fetch_assoc($result);
-        ?>
+    $u_id = $_SESSION['u_id'];
+
+    $fetch_query = "select * from users where u_id=$u_id";
+    $result = mysqli_query($con, $fetch_query);
+    $data = mysqli_fetch_assoc($result);
+    ?>
 
     <div class="profile-container">
         <div class="profile-image">
@@ -124,19 +135,27 @@
         <div class="profile-info">
             <div>
                 <strong>Name-</strong>
-                <span><?php echo $data['u_name'] ?> <i class="fas fa-user"></i></span>
+                <span>
+                    <?php echo $data['u_name'] ?> <i class="fas fa-user"></i>
+                </span>
             </div>
             <div>
                 <strong>Email-</strong>
-                <span><?php echo $data['u_email'] ?> <i class="fas fa-envelope"></i></span>
+                <span>
+                    <?php echo $data['u_email'] ?> <i class="fas fa-envelope"></i>
+                </span>
             </div>
             <div>
                 <strong>Phone-</strong>
-                <span><?php echo $data['u_phone'] ?> <i class="fas fa-phone"></i></span>
+                <span>
+                    <?php echo $data['u_phone'] ?> <i class="fas fa-phone"></i>
+                </span>
             </div>
             <div>
                 <strong>Restaurant Code-</strong>
-                <span><?php echo $data['res_code'] ?> <i class="fas fa-key"></i></span>
+                <span>
+                    <?php echo $data['res_code'] ?> <i class="fas fa-key"></i>
+                </span>
             </div>
         </div>
 
@@ -147,5 +166,11 @@
             </form>
         </div>
     </div>
+    </div>
+
+    <?php
+        include("../commonPages/index_footer.html");
+    ?>
 </body>
+
 </html>
