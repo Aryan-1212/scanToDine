@@ -3,7 +3,7 @@ include("../commonPages/dbConnect.php");
 include("../commonPages/index_header.php");
 // $selectedItemsjson = $_POST['selecteditems'];
 // $selectedItems = json_decode($selectedItemsjson, true);
-if(!isset($_SESSION)){
+if (!isset($_SESSION)) {
   session_start();
 }
 // $_SESSION['selectedItems'] = $selectedItems;
@@ -108,7 +108,7 @@ if(!isset($_SESSION)){
     .container {
       /* margin-bottom: 50px;  */
     }
-    
+
     .iFrame-menuItem {
       display: flex;
       width: 100%;
@@ -556,14 +556,27 @@ if(!isset($_SESSION)){
     updated_values['name'] = document.getElementById(`${edit_type_id}-name-update`).value;
     updated_values['price'] = document.getElementById(`${edit_type_id}-price-update`).value;
     updated_values['des'] = document.getElementById(`${edit_type_id}-des-update`).value;
-    updated_values_json = JSON.stringify(updated_values);
-    document.getElementById('hiddenValues').value = updated_values_json;
-    document.getElementById('updateForm').submit();
+
+    let is_undefined = false;
+    for (value in updated_values) {
+      if (updated_values[value].trim() === '') {
+        is_undefined = true;
+      }
+    }
+
+    if (is_undefined) {
+      alert("Please Enter The Valid Details!");
+    } else {
+      updated_values_json = JSON.stringify(updated_values);
+      document.getElementById('hiddenValues').value = updated_values_json;
+      document.getElementById('updateForm').submit();
+    }
+
   }
 
   addItemType = (e) => {
     const add_type_id = e.target.id.replace('-add', '');
-    const item_id = add_type_id.substring(0,6);
+    const item_id = add_type_id.substring(0, 6);
 
     const add_type_name_id = add_type_id + '-type-name';
     const add_type_price_id = add_type_id + '-type-price';
@@ -575,16 +588,26 @@ if(!isset($_SESSION)){
     add_type['add_type_price'] = document.getElementById(add_type_price_id).value;
     add_type['add_type_des'] = document.getElementById(add_type_des_id).value;
 
-    add_type_json = JSON.stringify(add_type);
-    document.getElementById('add-item-id').value = item_id;
-    document.getElementById('add-hidden-values').value = add_type_json;
-    document.getElementById(`add-type`).submit();
-  }
+    let is_undefined = false;
+    for (value in add_type) {
+      if (add_type[value].trim() === '') {
+        is_undefined = true;
+      }
+    }
 
+    if (is_undefined) {
+      alert("Please Enter The Valid Details!");
+    } else {
+      add_type_json = JSON.stringify(add_type);
+      document.getElementById('add-item-id').value = item_id;
+      document.getElementById('add-hidden-values').value = add_type_json;
+      document.getElementById(`add-type`).submit();
+    }
+  }
   remove_btn = (e) => {
-    const remove_type_id = e.target.id.substring(0,8);
+    const remove_type_id = e.target.id.substring(0, 8);
     const confirm_to_remove = confirm("Are You Sure to Remove this Food Type Permanently?");
-    if(confirm_to_remove){
+    if (confirm_to_remove) {
       document.getElementById('hiddenValues-remove').value = remove_type_id;
       document.getElementById('removeForm').submit();
     }
@@ -642,7 +665,7 @@ if(!isset($_SESSION)){
         category.className = "IframeItemDiv";
         category.id = addItemButtonId + "-" + currentIndex;
         <?php $item_index += 1; ?>
-        
+
         category.innerHTML = `<div class="iFrame-menuVarietyItem">
                     <span><input type="text" class="type-input-field ${addItemButtonId}-${currentIndex}" name="name"
                         id="${addItemButtonId}-${currentIndex}-type-name" placeholder="Food item's type"></span>

@@ -1,24 +1,49 @@
 <?php
-session_start();
-if (isset($_SESSION['is_error'])) {
-    $name = $_SESSION['name'];
-    $email = $_SESSION['email'];
-    $phone = $_SESSION['phone'];
-    $password = $_SESSION['password'];
-    $res_name = $_SESSION['res_name'];
-    $res_add = $_SESSION['res_add'];
-    $is_error = $_SESSION['is_error'];
-    session_destroy();
-} else {
-    $name = NULL;
-    $email = NULL;
-    $phone = NULL;
-    $password = NULL;
-    $res_name = NULL;
-    $res_add = NULL;
-    $is_error = NULL;
+if (!isset($_SESSION)) {
+    session_start();
+}
+
+$res_code = $_SESSION['res_code'];
+include("../commonPages/dbConnect.php");
+
+$_SESSION['is_error'] = false;
+if (isset($_POST["name"])) {
+    $name = $_POST["name"];
+    $email = $_POST["email"];
+    $phone = $_POST["phone"];
+    $password = $_POST["password"];
+
+    $checkUser = mysqli_query($con, "select * from users where u_phone='$phone' and res_code=$res_code and role='customer';");
+    if (mysqli_num_rows($checkUser) > 0) {
+        $_SESSION['is_error'] = true;
+    } else {
+        $insertQuery = "insert into users(u_name, u_email, u_phone, password, res_code, role) values('$name', '$email', '$phone', '$password', $res_code, 'customer')";
+        $insert = mysqli_query($con, $insertQuery);
+        if (!$insert) {
+            echo "<script>Unexpected Error Occurs!</script>";
+        } else {
+            $fetchUid = mysqli_query($con, "select u_id from users where u_phone = '$phone' and res_code=$res_code and role='customer'");
+            $data = mysqli_fetch_assoc($fetchUid);
+            $uid = $data['u_id'];
+            $_SESSION['uid'] = $uid;
+            $_SESSION['is_registered_cus'] = true;
+            $_SESSION['is_error'] = false;
+            $name = NULL;
+            $email = NULL;
+            $phone = NULL;
+            $password = NULL;
+            header("Location: ../customerModule/orderCart.php");
+        }
+    }
+}else{
+    $_SESSION['is_error'] = false;
+        $name = NULL;
+        $email = NULL;
+        $phone = NULL;
+        $password = NULL;
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -36,7 +61,7 @@ if (isset($_SESSION['is_error'])) {
             height: 100%;
         }
 
-        ::-webkit-scrollbar{
+        ::-webkit-scrollbar {
             display: none;
         }
 
@@ -80,11 +105,11 @@ if (isset($_SESSION['is_error'])) {
         }
 
 
-        header .HeaderContainer .HeaderSearch {
+        .HeaderSearch {
             width: 20%;
         }
 
-        header .HeaderContainer .HeaderSearch a {
+        .HeaderSearch a {
             padding: 7px 10px;
             font-size: 1.2rem;
             float: right;
@@ -98,14 +123,14 @@ if (isset($_SESSION['is_error'])) {
             border-radius: 10px;
         }
 
-        header .HeaderContainer .HeaderSearch a:hover {
+        .HeaderSearch a:hover {
             background: var(--offwhite);
             border: 2px solid var(--red);
             color: var(--red);
         }
 
         .RegisterPage {
-            height: auto;
+            height: 690px;
             width: 100%;
             background-color: var(--offwhite);
             display: flex;
@@ -376,7 +401,7 @@ if (isset($_SESSION['is_error'])) {
 
             .RegisterContainer .register {
                 width: 100%;
-                background-image: url("login_img.jpg");
+                background-image: url("../commonPages/login_img.jpg");
                 background-repeat: no-repeat;
                 background-position: center;
                 background-size: 50% 80%;
@@ -385,7 +410,7 @@ if (isset($_SESSION['is_error'])) {
                 align-items: center;
             }
 
-            header .HeaderContainer .HeaderSearch a {
+            .HeaderSearch a {
                 padding: 6px 1px;
                 font-size: .9rem;
                 float: right;
@@ -404,37 +429,25 @@ if (isset($_SESSION['is_error'])) {
             color: red;
             margin-bottom: 18px;
         }
+
+        #alreadyCus{
+            color: black;
+        }
     </style>
 </head>
 
 <body>
 
-    <header>
-        <div class="container">
-            <div class="HeaderContainer">
-                <a href="../indexPage/index.php">
-                    <div class="logo">
-                        <img src="logo.png" title="ScanToDine" alt="ScanToDine">
-                    </div>
-                </a>
-                <div class="HeaderSearch">
-                    <a href="login.php" rel="noopener noreferrer">Login</a>
-                </div>
-            </div>
-        </div>
-    </header>
-
     <section class="RegisterPage">
         <div class="container">
             <div class="RegisterContainer">
                 <div class="bgimg">
-                    <img src="login_img.jpg" alt="">
+                    <img src="../commonPages/login_img.jpg" alt="">
                 </div>
                 <div class="register">
                     <div class="register-box">
                         <h2>Register</h2>
-                        <form method="POST" action="register_validate.php" onsubmit="return validate()">
-
+                        <form method="POST" action="#" onsubmit="return validate()">
                             <div class="user-box">
                                 <input type="text" name="name" value="<?php echo $name; ?>" required="">
                                 <label>Your Name</label>
@@ -445,7 +458,7 @@ if (isset($_SESSION['is_error'])) {
                             </div>
 
                             <div class="user-box">
-                                <input type="text" name="phone" value="<?php echo $phone; ?>" maxlength="10"
+                                <input type="text" name="phone" maxlength="10" value="<?php echo $phone; ?>"
                                     required="">
                                 <label>Phone</label>
                             </div>
@@ -464,20 +477,9 @@ if (isset($_SESSION['is_error'])) {
                                 <label>Confirm Password</label>
                             </div>
 
-                            <div class="user-box">
-                                <input type="text" name="res_name" value="<?php echo $res_name; ?>" required="">
-                                <label>Restaurant Name</label>
-                            </div>
-
-                            <div class="user-box">
-                                <input type="text" name="res_add" value="<?php echo $res_add; ?>" required="">
-                                <label>Restaurant Address</label>
-                            </div>
-
-
                             <div class="user-box" id="error">
                                 <?php
-                                if ($is_error) {
+                                if ($_SESSION['is_error'] == true) {
                                     ?>
                                     <script>
                                         document.getElementsByName('phone')[0].style.borderColor = 'red';
@@ -494,8 +496,10 @@ if (isset($_SESSION['is_error'])) {
                                 <span></span>
                                 <span></span>
                                 <input type="submit" value="register">
+
                             </div>
                         </form>
+                        <a id="alreadyCus" href="../customerModule/customerLogin.php">Already a Customer?</a>
                     </div>
                 </div>
             </div>
@@ -537,12 +541,5 @@ if (isset($_SESSION['is_error'])) {
         return true;
     }
 </script>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-    crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"
-    integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 </html>

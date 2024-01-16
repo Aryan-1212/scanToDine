@@ -400,11 +400,11 @@ if ($_POST['selecteditems']) {
                     <div class="iFrame-menuVarietyItem">
                       <span><input type="text" class="type-input-field <?php echo $item_id . "-" . $item_index; ?>"
                           name="name" id="<?php echo $item_id . "-" . $item_index . '-type-name' ?>"
-                          placeholder="Food item's type"></span>
+                          placeholder="Food item's type" required></span>
                       <div class="iFrame-priceItem">
                         <input type="number" class="type-input-field <?php echo $item_id . "-" . $item_index; ?>" name="price"
                           id="<?php echo $item_id . "-" . $item_index . '-type-price' ?>" placeholder="Price-₹"
-                          class="iFrame-price">
+                          class="iFrame-price" required>
                       </div>
                     </div>
                     <div class="iFrame-foodDes">
@@ -495,11 +495,11 @@ if ($_POST['selecteditems']) {
 
         category.innerHTML = `<div class="iFrame-menuVarietyItem">
                     <span><input type="text" class="type-input-field ${addItemButtonId}-${currentIndex}" name="name"
-                        id="${addItemButtonId}-${currentIndex}-type-name" placeholder="Food item's type"></span>
+                        id="${addItemButtonId}-${currentIndex}-type-name" placeholder="Food item's type" required></span>
                     <div class="iFrame-priceItem">
                       <input type="number" class="type-input-field ${addItemButtonId}-${currentIndex}" name="price"
                         id="${addItemButtonId}-${currentIndex}-type-price"" placeholder="Price-₹"
-                        class="iFrame-price">
+                        class="iFrame-price" required>
                     </div>
                   </div>
                   <div class="iFrame-foodDes">
@@ -523,9 +523,24 @@ if ($_POST['selecteditems']) {
         itemValues[itemId][field.name] = field.value;
       });
 
-      itemValuesJson = JSON.stringify(itemValues);
-      document.getElementById("hiddenValue").value = itemValuesJson;
-      document.getElementById("formToSubmit").submit();
+      let is_undefined = false;
+      for(const value in itemValues){
+        for(const v in itemValues[value]){
+          if(itemValues[`${value}`][`${v}`].trim() === ''){
+            is_undefined = true;
+          }
+        }
+      }
+
+      if(is_undefined){
+        console.log("please enter valid details first");
+        alert("Fill All The Details Of All Types!");
+      }else{
+        itemValuesJson = JSON.stringify(itemValues);
+        document.getElementById("hiddenValue").value = itemValuesJson;
+        document.getElementById("formToSubmit").submit();
+      }
+
     });
   });
 </script>

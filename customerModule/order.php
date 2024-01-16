@@ -1,3 +1,14 @@
+<?php
+if (!isset($_SESSION)) {
+    session_start();
+}
+include("../commonPages/dbConnect.php");
+// $res_code = $_SESSION['res_code'];
+$res_code = $_GET['res_code'];
+$table_num = $_GET['table_num'];
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -19,9 +30,13 @@
         padding: 0;
     }
 
+    ::-webkit-scrollbar{
+        display: none;
+    }
+
     .OrderMenu .OrderContainer {
         display: flex;
-        justify-content: space-between;
+        justify-content: space-evenly;
         align-items: center;
         flex-wrap: wrap;
     }
@@ -34,7 +49,7 @@
     .OrderMenu .OrderContainer .OrderBox {
         width: 250px;
         height: 250px;
-        margin: 30px 0;
+        margin: 40px 5px;
         border-radius: 20px;
         transition: all ease-in-out 0.5s;
     }
@@ -67,34 +82,42 @@
 </style>
 
 <body>
-
     <section class="OrderMenu">
         <div class="container">
+
+            <?php
+            $fetchItemsQuery = "select distinct food_id from food_items where res_id=$res_code";
+            $fetchItems = mysqli_query($con, $fetchItemsQuery);
+            $data = mysqli_fetch_all($fetchItems, MYSQLI_ASSOC);
+            ?>
+
             <div class="OrderContainer">
-                <a href="confirmOrder.html">
-                    <div class="OrderBox">
-                        <img src="../default_items2/101252-idlisambhar-southindian.jpg" alt="">
-                        <p>Burger</p>
-                    </div>
-                </a>
-                <a href="confirmOrder.html">
-                    <div class="OrderBox">
-                        <img src="../default_items2/101126-poha-others.jpg" alt="">
-                        <p>Burger</p>
-                    </div>
-                </a>
-                <a href="confirmOrder.html">
-                    <div class="OrderBox">
-                        <img src="../default_items2/101336-pasta-others.jpeg" alt="">
-                        <p>Burger</p>
-                    </div>
-                </a>
-                <a href="confirmOrder.html">
-                    <div class="OrderBox">
-                        <img src="../default_items2/101126-poha-others.jpg" alt="">
-                        <p>Burger</p>
-                    </div>
-                </a>
+
+                <?php
+                foreach ($data as $dataItem) {
+                    $food_id = $dataItem['food_id'];
+
+                    $fetchItemDetailsQuery = "select * from default_item where item_id=$food_id";
+                    $fetchItemDetails = mysqli_query($con, $fetchItemDetailsQuery);
+                    $data = mysqli_fetch_all($fetchItemDetails, MYSQLI_ASSOC);
+                    foreach ($data as $dataItem) {
+                        $item_id = $dataItem['item_id'];
+                        $item_name = $dataItem['item_name'];
+                        $category = $dataItem['category'];
+                        $ext = $dataItem['extension'];
+                        ?>
+
+                        <a href="confirmOrder.php?food_id=<?php echo $item_id; ?>">
+                            <div class="OrderBox">
+                                <img src="../default_items2/<?php echo $item_id."-".$item_name."-".$category.".".$ext ?>" alt="">
+                                <p><?php echo str_replace("_",' ',ucfirst($item_name)); ?></p>
+                            </div>
+                        </a>
+
+                        <?php
+                    }
+                }
+                ?>
             </div>
         </div>
     </section>

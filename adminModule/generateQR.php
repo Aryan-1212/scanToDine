@@ -7,7 +7,7 @@ use Endroid\QrCode\Label\Label;
 
 include('../commonPages/dbConnect.php');
 
-$table_num = $_POST['tables_num'];
+$table_num = $_POST['num'];
 $res_code = $_POST['res_code'];
 
 function insertQuery($con, $res_code, $num){
@@ -18,14 +18,16 @@ function insertQuery($con, $res_code, $num){
     }
 }
 
+$ip_add = "192.168.165.135";
+
 for ($num = 1; $num <= $table_num; $num++) {
-    $url = " 192.168.128.135/restaurant/temp/qrTest.php?res_code=$res_code&table_num=$num";
+    $url = "$ip_add/dashboard/restaurant/customerModule/order.php?res_code=$res_code&table_num=$num";
 
     $qr_code = QrCode::create($url)
         ->setSize(500)
         ->setMargin(40);
 
-    $label = Label::create("Table - $num")->setTextColor(new Color(186, 24, 27, 1));
+    $label = Label::create("Table - $num");
 
     $writter = new PngWriter;
     $res = $writter->write($qr_code, null, $label);
@@ -34,4 +36,5 @@ for ($num = 1; $num <= $table_num; $num++) {
 
     $res->saveToFile("../qr-images/$res_code-qr-$num.png");
 }
+header("Location: ../temp/qrAdmin.php");
 ?>
