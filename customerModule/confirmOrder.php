@@ -34,6 +34,12 @@ $food_id = $_GET['food_id'];
             display: none;
         }
 
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
         body {
             min-height: calc(100vh - 100px);
         }
@@ -145,10 +151,35 @@ $food_id = $_GET['food_id'];
         #cart {
             display: none;
         }
+
+        .backdiv {
+            height: 80px;
+            display: flex;
+            align-items: center;
+            padding: 0px 125px;
+        }
+
+        .backdiv a {
+            padding: 12px 20px;
+            color: red;
+            text-decoration: none;
+            background-color: white;
+            border: 1px solid red;
+        }
+        .backdiv a:hover {
+            background-color: red;
+            color: white;
+            transition-duration: 0.7s;
+            box-shadow: 5px 5px 10px 5px rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        }
     </style>
 </head>
 
 <body>
+
+    <div class="backdiv">
+        <a href="../customerModule/order.php">BACK</a>
+    </div>
 
     <?php
     $fetchItemTypesQuery = "select * from food_items where food_id=$food_id and res_id=$res_code";
@@ -208,7 +239,7 @@ $food_id = $_GET['food_id'];
                         <div class="btn addAfterFirst" id="<?php echo 'change-type-' . $food_type_id; ?>"><button
                                 class="arithmetic" onclick="minus(event)"
                                 id="<?php echo 'minus-' . $food_type_id; ?>">-</button><input id="<?php
-                                   echo 'num-' . $food_type_id; ?>" type="number"><button onclick="plus(event)"
+                                     echo 'num-' . $food_type_id; ?>" type="number"><button onclick="plus(event)"
                                 id="<?php echo 'plus-' . $food_type_id; ?>" class="arithmetic">+</button></div>
                     </div>
                 </div>
@@ -238,6 +269,28 @@ $food_id = $_GET['food_id'];
         }
     }
 
+    document.addEventListener("DOMContentLoaded", function () {
+        const cartItem = JSON.parse(localStorage.getItem("cartItems"));
+        if (Object.keys(cartItem).length > 0) {
+            for (const item in cartItem) {
+                selectedTypes[item] = cartItem[item];
+            }
+        }
+
+        for (const type in selectedTypes) {
+            const id = type;
+            const value = selectedTypes[type];
+            if (document.getElementById(`num-${id}`)) {
+                document.getElementById(`num-${id}`).value = value;
+                checkcount(selectedTypes, id);
+                checkCart();
+            } else {
+                checkCart();
+                continue ;
+            }
+        }
+    })
+
     checkcount = (selectedTypes, id) => {
         if (selectedTypes[id] === 0) {
             delete selectedTypes[id];
@@ -247,11 +300,13 @@ $food_id = $_GET['food_id'];
             document.getElementById(`add-type-${id}`).style.display = 'none';
             document.getElementById(`change-type-${id}`).style.display = 'block';
         }
+        localStorage.setItem("cartItems", JSON.stringify(selectedTypes));
     }
 
     addItem = (e) => {
         const type_id = e.target.id.replace(`add-type-`, '');
         selectedTypes[type_id] = 1;
+        // localStorage.setItem("cartItems", JSON.stringify(selectedTypes));
         document.getElementById(`num-${type_id}`).value = selectedTypes[type_id];
         checkcount(selectedTypes, type_id);
         checkCart();
@@ -260,6 +315,7 @@ $food_id = $_GET['food_id'];
     function minus(e) {
         const type_id = e.target.id.replace(`minus-`, '');
         selectedTypes[type_id]--;
+        // localStorage.setItem("cartItems", JSON.stringify(selectedTypes));
         document.getElementById(`num-${type_id}`).value = selectedTypes[type_id];
         checkcount(selectedTypes, type_id);
         checkCart();
@@ -267,6 +323,7 @@ $food_id = $_GET['food_id'];
     function plus(e) {
         const type_id = e.target.id.replace(`plus-`, '');
         selectedTypes[type_id]++;
+        // localStorage.setItem("cartItems", JSON.stringify(selectedTypes));
         document.getElementById(`num-${type_id}`).value = selectedTypes[type_id];
         checkcount(selectedTypes, type_id);
         checkCart();

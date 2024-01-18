@@ -6,6 +6,7 @@ include("../commonPages/dbConnect.php");
 // $res_code = $_SESSION['res_code'];
 $res_code = $_GET['res_code'];
 $table_num = $_GET['table_num'];
+$res_code = $_SESSION['res_code'];
 ?>
 
 
@@ -30,7 +31,7 @@ $table_num = $_GET['table_num'];
         padding: 0;
     }
 
-    ::-webkit-scrollbar{
+    ::-webkit-scrollbar {
         display: none;
     }
 
@@ -68,6 +69,33 @@ $table_num = $_GET['table_num'];
         border-radius: 20px;
         height: auto;
         width: 100%;
+    }
+
+    .cart {
+        position: fixed;
+        bottom: 50px;
+        right: 50px;
+        z-index: 1000;
+        display: none;
+    }
+
+    .cart i {
+        padding: 30px 20px;
+        border: 2px solid;
+        border-radius: 100px;
+        transition: all ease-in-out 0.5s;
+        cursor: pointer;
+        background-color: whitesmoke;
+        box-shadow: 5px 5px 10px 5px rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+
+    .cart i:hover {
+        background-color: green;
+        border: 2px solid green;
+    }
+
+    #cart {
+        display: none;
     }
 
 
@@ -109,8 +137,11 @@ $table_num = $_GET['table_num'];
 
                         <a href="confirmOrder.php?food_id=<?php echo $item_id; ?>">
                             <div class="OrderBox">
-                                <img src="../default_items2/<?php echo $item_id."-".$item_name."-".$category.".".$ext ?>" alt="">
-                                <p><?php echo str_replace("_",' ',ucfirst($item_name)); ?></p>
+                                <img src="../default_items2/<?php echo $item_id . "-" . $item_name . "-" . $category . "." . $ext ?>"
+                                    alt="">
+                                <p>
+                                    <?php echo str_replace("_", ' ', ucfirst($item_name)); ?>
+                                </p>
                             </div>
                         </a>
 
@@ -122,7 +153,24 @@ $table_num = $_GET['table_num'];
         </div>
     </section>
 
+    <div class="cart" id="cart">
+        <form action="orderCart.php" method="POST" id="formToSubmit">
+            <input type="hidden" id="hiddenField" name="order">
+            <i onclick="submitCart()" class="fa-solid fa-cart-shopping fa-lg" style="color: #000000;"></i>
+        </form>
+    </div>
+
 </body>
+
+<script>
+    
+    submitCart = () => {
+        document.getElementById("hiddenField").value = selectedTypesJson;
+        document.getElementById("formToSubmit").submit();
+
+    }
+</script>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
     crossorigin="anonymous"></script>

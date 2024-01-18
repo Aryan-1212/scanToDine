@@ -14,6 +14,16 @@
             padding: 0;
         }
 
+        ::-webkit-scrollbar{
+            display: none;
+        }
+
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
         body {
             background-color: lightsteelblue;
             font-family: 'Poppins', sans-serif;
@@ -121,23 +131,23 @@
                 <div class="AddText">
                     <table>
                         <tr>
-                            <th>Tax rates:</th>
-                            <td><input type="number" placeholder="Enter.."></td>
+                            <th>Tax rate:</th>
+                            <td><input type="number" placeholder="Enter tax rate"></td>
                             <td>%</td>
                         </tr>
                         <tr>
                             <th>Any additional charges:</th>
-                            <td><input type="number" placeholder="Enter.."></td>
+                            <td><input type="number" placeholder="Additional charges"></td>
                             <td>₹</td>
                         </tr>
                         <tr>
                             <th>Discount:</th>
-                            <td><input type="number" placeholder="Enter.."></td>
+                            <td><input type="number" placeholder="Any discount %"></td>
                             <td>%</td>
                         </tr>
                         <tr>
                             <th>UPI id:</th>
-                            <td><input type="number" placeholder="Enter.."></td>
+                            <td><input type="text" placeholder="UPI id to receive payment"></td>
                         </tr>
                     </table>
                 </div>
