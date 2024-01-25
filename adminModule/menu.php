@@ -105,6 +105,11 @@ if (!isset($_SESSION)) {
       overflow-y: scroll;
     }
 
+    .menu{
+      min-height: calc(100vh - 350px);
+      margin-bottom: 100px
+    }
+
     .container {
       /* margin-bottom: 50px;  */
     }
@@ -524,7 +529,9 @@ if (!isset($_SESSION)) {
     </form> -->
   </section>
 
-
+    <?php
+      include("../commonPages/index_footer.html");
+    ?>
 
 </body>
 

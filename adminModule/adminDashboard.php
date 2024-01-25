@@ -1,5 +1,15 @@
 <?php
+
+if(!isset($_SESSION)){
+    session_start();
+}
+
+if(!isset($_SESSION['is_login'])){
+    header("Location: ../indexPage/index.php");
+    exit();
+}
 include("../commonPages/index_header.php");
+
 
 /*$link = mysqli_connect("localhost", "root", "", "admin_info"); //taru je database hoi ae muki deje
 
@@ -244,6 +254,11 @@ $test1 = array(
             <div class="chartContainer" id="chartContainer1"></div>
         </div>
     </div>
+
+    <?php
+        include("../commonPages/index_footer.html"); 
+    ?>
+
 </body>
 <script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
 <script>

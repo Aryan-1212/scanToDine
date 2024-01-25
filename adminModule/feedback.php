@@ -31,7 +31,7 @@ if(!isset($_SESSION)){
     }
     #Feedback {
         width: 100%;
-        min-height: calc(100vh - 100px);
+        min-height: calc(100vh - 250px);
         height: auto;
         background-color: lightsteelblue;
     }
@@ -256,7 +256,9 @@ if(!isset($_SESSION)){
         </div>
     </section>
 
-
+    <?php
+        include("../commonPages/index_footer.html");
+    ?>
 
 </body>
 <script>

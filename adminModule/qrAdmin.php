@@ -4,6 +4,18 @@ if (!isset($_SESSION)) {
 }
 $res_code = $_SESSION['res_code'];
 include("../commonPages/dbConnect.php");
+include("../commonPages/redirectPage.php");
+
+if(isset($_POST['deleteQRs'])){
+    $deleteQuery = "delete from tables where res_id = $res_code";
+    $delete = mysqli_query($con, $deleteQuery);
+    if(!$delete){
+        echo "<script>alert('Unexpected Error Occurs!');<script>";
+    }
+    reDirect("../adminModule/qrAdmin.php");
+}
+
+
 ?>
 
 <!DOCTYPE html>
@@ -37,7 +49,7 @@ include("../commonPages/dbConnect.php");
         }
 
         .qrGenerator {
-            height: 230px;
+            height: 300px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -46,7 +58,7 @@ include("../commonPages/dbConnect.php");
             background-color: lightsteelblue;
         }
 
-        .qrGenerator .numForm{
+        .qrGenerator .numForm {
             display: flex;
             justify-content: center;
         }
@@ -96,6 +108,7 @@ include("../commonPages/dbConnect.php");
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            text-decoration: none;
         }
 
         .btn:hover {
@@ -157,10 +170,19 @@ include("../commonPages/dbConnect.php");
             border-radius: 10px;
         }
 
-        .no-qr{
+        .no-qr {
             display: flex;
             justify-content: center;
             color: red;
+        }
+
+        .btns {
+            height: 80px;
+            align-items: center;
+            display: flex;
+            width: 400px;
+            /* background-color: blue; */
+            justify-content: space-evenly;
         }
     </style>
 </head>
@@ -178,7 +200,7 @@ include("../commonPages/dbConnect.php");
             </div>
             <label for='tableCountInput'>Enter the number of tables to generate QR codes for tables:</label>
             <div class="numForm">
-                <form action='../adminModule/generateQR.php' method='POST'>
+                <form action='../adminModule/qrGenerateQR.php' method='POST'>
                     <input type='number' id='tableCountInput' min='1' name='num'>
                     <input type='hidden' name='res_code' value='<?php echo $res_code; ?>'>
                     <input type='submit' class='btn' value='Submit'>
@@ -200,29 +222,43 @@ include("../commonPages/dbConnect.php");
             </div>
             <h3>Use these QR codes for your restaurant tables.</h3>
             <label>Customers can get access to your restaurant's menu by scanning these QRs.</label>
+            <div class="btns">
+                <form action="" method="POST">
+                    <!-- <div><a href="" class="btn">Reset QRs</a></div> -->
+                    <input type="hidden" name="deleteQRs">
+                    <div><input type="submit" class="btn" value="RESET QRs"></div>
+                </form>
+
+                <form action="../adminModule/qrGenerateSingleQR.php" method="POST">
+                    <!-- <div><a href="" class="btn">Reset QRs</a></div> -->
+                    <input type="hidden" name="addQR" value="<?php echo $res_code; ?>">
+                    <div><input type="submit" class="btn" value="ADD a QR"></div>
+                </form>
+            </div>
         </div>
-        
+
         <div class="qrCodes">
             <div id="qrCodeContainer">
-        <?php
-            foreach($data as $value){
-                $tableNum = $value["table_num"];
-        ?>
-                <div class="qr-img">
-                    <div class="img">
-                        <img src="<?php echo "../qr-images/".$res_code."-qr-".$tableNum.".png"; ?>" class="qr" alt="">
-                    </div>
-                    <div class="download">
-                        <a href="<?php echo "../qr-images/".$res_code."-qr-".$tableNum.".png"; ?>" download="">
-                            Click To download
-                        </a>
-                    </div>
-                </div>
-                
                 <?php
-        }
-        ?>
-        </div>
+                foreach ($data as $value) {
+                    $tableNum = $value["table_num"];
+                    ?>
+                    <div class="qr-img">
+                        <div class="img">
+                            <img src="<?php echo "../qr-images/" . $res_code . "-qr-" . $tableNum . ".png"; ?>" class="qr"
+                                alt="">
+                        </div>
+                        <div class="download">
+                            <a href="<?php echo "../qr-images/" . $res_code . "-qr-" . $tableNum . ".png"; ?>" download="">
+                                Click To download
+                            </a>
+                        </div>
+                    </div>
+
+                    <?php
+                }
+                ?>
+            </div>
         </div>
         <?php
     }

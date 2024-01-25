@@ -138,7 +138,6 @@ if (!isset($_SESSION)) {
     .header-sub-menu li {
         margin: 7px 20px;
         padding: 10px;
-
     }
 
     #header-dropdown-link {
@@ -221,9 +220,10 @@ if (!isset($_SESSION)) {
                         ?>
                         <li><a href="../adminModule/adminDashboard.php">Dashboard </a></li>
                         <li><a href="../adminModule/menu_choose.php">Menu</a></li>
-                        <li><a href="#">Bill</a></li>
+                        <li><a href="#">Orders</a></li>
                         <li class="Header-sub-item"><a href="../adminModule/feedback.php">Feedbacks</a></li>
                         <li class="Header-sub-item"><a href="../adminModule/inventory.php">Inventory</a></li>
+                        <li class="Header-sub-item"><a href="../adminModule/bill_structure1.php">Manage Bills</a></li>
 
                         <li><a href="../commonPages/profile.php">Profile</a></li>
                         <?php
@@ -247,11 +247,12 @@ if (!isset($_SESSION)) {
                         ?>
                         <li><a href="../adminModule/adminDashboard.php">Dashboard</a></li>
                         <li><a href="../adminModule/menu_choose.php">Menu</a></li>
-                        <li><a href="#">Bill</a></li>
+                        <li><a href="#">Orders</a></li>
                         <li class="header-dropdown" id="header-dropdown-link"><a href="#">More</a>
                             <ul class="header-sub-menu">
                                 <li class="header-sub-item"><a href="../adminModule/feedback.php">Feedbacks</a></li>
                                 <li class="header-sub-item"><a href="../adminModule/inventory.php">Inventory</a></li>
+                                <li class="header-sub-item"><a href="../adminModule/bill_structure1.php">Manage Bills</a></li>
                             </ul>
                         </li>
                         <li><a href="../commonPages/profile.php">Profile</a></li>

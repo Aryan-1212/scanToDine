@@ -4,6 +4,15 @@
 //     session_destroy();
 // }
 
+    if(!isset($_SESSION)){
+        session_start();
+    }
+
+    if(isset($_SESSION['is_login'])){
+        header("Location: ../adminModule/adminDashboard.php");
+        exit();
+    }
+
 ?>
 
 <!DOCTYPE html>
@@ -37,6 +46,15 @@
         align-items: center;
     }
 </style> -->
+<style>
+    .boxShadow1 {
+        box-shadow: 5px 7px #888888;
+    }
+
+    .boxShadow2 {
+        box-shadow: -5px -7px 0 0 var(--red);
+    }
+</style>
 
 <body>
 
@@ -53,7 +71,7 @@
                     <a href="../commonPages/register.php">Try for Demo</a>
                 </div>
                 <div class="Restaurant">
-                    <img src="restaurant_maker.jpg" title="Manage Your Restaurant Digitally" alt="">
+                    <img src="restaurant_maker.jpg" class="boxShadow1" title="Manage Your Restaurant Digitally" alt="">
                 </div>
             </div>
         </div>
@@ -63,7 +81,7 @@
         <div class="container">
             <div class="QRCode">
                 <div class="MenuforRestaurants">
-                    <img src="QR.jpg" title="Scan To Order" alt="">
+                    <img src="QR.jpg" title="Scan To Order" class="boxShadow2" alt="">
                 </div>
                 <div class="WhatIsQRCode">
                     <h2>Just Scan and Order</h2>
@@ -83,7 +101,7 @@
                         and adjusting spice levels as per their taste. </p>
                 </div>
                 <div class="CustomizeIngredientsImage">
-                    <img src="CustomizeIngredients.jpg" title="Customization Option" alt="">
+                    <img src="CustomizeIngredients.jpg" class="boxShadow1" title="Customization Option" alt="">
                 </div>
             </div>
         </div>
@@ -93,7 +111,7 @@
         <div class="container">
             <div class="BillAndPay">
                 <div class="BillAndPayImage">
-                    <img src="bill_and_pay.jpg" title="Digitally Payment" alt="">
+                    <img src="bill_and_pay.jpg" class="boxShadow2" title="Digitally Payment" alt="">
                 </div>
                 <div class="DigitallyPayment">
                     <h2>Digitally Payment</h2>
@@ -113,7 +131,7 @@
                     </p>
                 </div>
                 <div class="FoodStatusImage">
-                    <img src="food_status.jpg" title="Food Status" alt="">
+                    <img src="food_status.jpg" class="boxShadow1" title="Food Status" alt="">
                 </div>
             </div>
         </div>
@@ -123,7 +141,7 @@
         <div class="container">
             <div class="feedback">
                 <div class="FeedbackImage">
-                    <img src="feedbacks.jpg" title="Feedback" alt="">
+                    <img src="feedbacks.jpg" class="boxShadow2" title="Feedback" alt="">
                 </div>
                 <div class="FeedbackAndImprovements">
                     <h2>Feedback and Improvements</h2>
@@ -139,7 +157,7 @@
     </div> -->
 
     <?php
-        include("../commonPages/index_footer.html"); 
+    include("../commonPages/index_footer.html");
     ?>
 
 </body>

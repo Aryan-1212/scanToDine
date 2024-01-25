@@ -83,8 +83,10 @@ if (isset($_POST["editedData"])) {
             background-color: lightsteelblue;
         }
 
-        .Inventory-container {
+        .Inventory{
+            margin-bottom: 100px;
             margin-top: 30px;
+            min-height: 315px;
         }
 
         .table-heading {
@@ -327,6 +329,9 @@ if (isset($_POST["editedData"])) {
             </div>
         </div>
     </section>
+    <?php
+        include("../commonPages/index_footer.html");
+    ?>
 </body>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
