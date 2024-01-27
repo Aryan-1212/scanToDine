@@ -253,6 +253,7 @@ if (!isset($_SESSION)) {
                                 <li class="header-sub-item"><a href="../adminModule/feedback.php">Feedbacks</a></li>
                                 <li class="header-sub-item"><a href="../adminModule/inventory.php">Inventory</a></li>
                                 <li class="header-sub-item"><a href="../adminModule/bill_structure1.php">Manage Bills</a></li>
+                                <li class="header-sub-item"><a href="../adminModule/qrAdmin.php">QR codes</a></li>
                             </ul>
                         </li>
                         <li><a href="../commonPages/profile.php">Profile</a></li>

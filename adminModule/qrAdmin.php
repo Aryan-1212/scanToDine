@@ -8,6 +8,14 @@ include("../commonPages/redirectPage.php");
 
 if(isset($_POST['deleteQRs'])){
     $deleteQuery = "delete from tables where res_id = $res_code";
+
+    $qrCodeImages = scandir("../qr-images/");
+    foreach($qrCodeImages as $imageName){
+        if(str_contains($imageName, $res_code)){
+            unlink("../qr-images/$imageName");
+        }
+    }
+
     $delete = mysqli_query($con, $deleteQuery);
     if(!$delete){
         echo "<script>alert('Unexpected Error Occurs!');<script>";
@@ -119,9 +127,9 @@ if(isset($_POST['deleteQRs'])){
 
 
         .qrCodes {
-            min-height: calc(100vh - 230px - 40px);
+            min-height: calc(100vh - 590px);
             background-color: whitesmoke;
-            padding: 20px;
+            padding: 20px 20px 100px 20px;
             transition: opacity 0.5s ease-in-out;
             background-color: lightsteelblue;
         }
@@ -174,6 +182,7 @@ if(isset($_POST['deleteQRs'])){
             display: flex;
             justify-content: center;
             color: red;
+            padding-bottom: 20px;
         }
 
         .btns {
@@ -190,6 +199,7 @@ if(isset($_POST['deleteQRs'])){
 <body>
 
     <?php
+    include("../commonPages/index_header.php");
     $checkQRAvailableQuery = "select * from tables where res_id = $res_code";
     $checkQRAvailable = mysqli_query($con, $checkQRAvailableQuery);
     if (mysqli_num_rows($checkQRAvailable) == 0) {
@@ -269,6 +279,11 @@ if(isset($_POST['deleteQRs'])){
             const tableNum = document.getElementById('tableCountInput').value;
         });
     </script>
+
+
+<?php
+    include("../commonPages/index_footer.html");
+?>
 </body>
 
 </html>
