@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order History</title>
+    <link
+        href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&amp;subset=cyrillic,cyrillic-ext,greek,greek-ext,latin-ext,vietnamese"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css"
+        rel="stylesheet" />
+    <style>
+        html {
+            padding: 50px;
+        }
+
+        table.dataTable thead th.sorting:hover:after {
+            opacity: 1;
+            transform: translate(0);
+        }
+
+        table.dataTable thead th.sorting:after,
+        table.dataTable thead th.sorting_asc:after,
+        table.dataTable thead th.sorting_desc:after {
+            font-family: FontAwesome;
+            position: relative !important;
+            display: inline-block !important;
+            font-size: 14px !important;
+            top: unset !important;
+            right: unset !important;
+            content: "\f062" !important;
+            transform-origin: center center;
+            transition: 200ms ease-out;
+            padding-top: 0 !important;
+        }
+
+        table.dataTable thead th.sorting:after {
+            transform: translateY(5px);
+            opacity: 0;
+            color: #b0bec5 !important;
+        }
+
+        table.dataTable thead th.sorting:after,
+        table.dataTable thead th.sorting_asc:after,
+        table.dataTable thead th.sorting_desc:after {
+            margin-left: 10px;
+        }
+
+        table.dataTable thead th.sorting_asc:after,
+        table.dataTable thead th.sorting_desc:after {
+            color: #4285f4;
+        }
+
+        table.dataTable thead th.sorting_desc:after {
+            transform: rotate(180deg);
+        }
+
+        table.dataTable thead th.sorting_desc:before,
+        table.dataTable thead th.sorting_asc:before {
+            display: none;
+        }
+
+
+        .orders-div{
+            width: 100%;
+            background-color: lightsteelblue;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="orders-div">
+        <div class="table-responsive pb-5">
+            <table id="tbOrderHistory" class="table border ps-table w-100 mb-3">
+                <thead>
+                    <tr>
+                        <th class="font-weight-bold py-2 border-0">Order Id</th>
+                        <th class="font-weight-bold py-2 border-0 quantity">Cus Id</th>
+                        <th class="font-weight-bold py-2 border-0 ">Order Date</th>
+                        <th class="font-weight-bold py-2 border-0 ">Table Num</th>
+                        <th class="font-weight-bold py-2 border-0 ">Res Id</th>
+                        <th class="font-weight-bold py-2 border-0 ">Items Det</th>
+                        <th class="font-weight-bold py-2 border-0 ">Amount</th>
+                        <th class="font-weight-bold py-2 border-0 ">Order Notes</th>
+                    </tr>
+                    <tr>
+                        <td>Order</td>
+                        <td>448484848</td>
+                        <td>08/29/2018</td>
+                        <td>----</td>
+                        <td>92929</td>
+                        <td>ddjdjdj</td>
+                        <td>JDJDJ</td>
+                        <td>JDJDJ</td>
+                    </tr>
+                    <tr>
+                        <td>Order</td>
+                        <td>448484848</td>
+                        <td>08/29/2018</td>
+                        <td>----</td>
+                        <td>92929</td>
+                        <td>ddjdjdj</td>
+                        <td>JDJDJ</td>
+                        <td>JDJDJ</td>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>

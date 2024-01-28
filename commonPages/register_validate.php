@@ -2,7 +2,7 @@
 
 function generate_unique_code($con){
     $random = random_int(100000, 999999);
-    $random_query = mysqli_query($con, "select res_code from users where res_code=$random;");
+    $random_query = mysqli_query($con, "select res_code from users where res_code=$random and role='manager';");
     if (mysqli_num_rows($random_query) > 0){
         return generate_unique_code($con);
     }
@@ -31,7 +31,7 @@ function generate_unique_code($con){
         exit();
     }
 
-    $query = mysqli_query($con, "select * from users where u_phone='$user_phone';");
+    $query = mysqli_query($con, "select * from users where u_phone='$user_phone' and role='manager';");
     if(mysqli_num_rows($query)!=0){
         $_SESSION['is_error'] = true;
     }
@@ -50,10 +50,10 @@ function generate_unique_code($con){
         session_destroy();
 
         $res_code = generate_unique_code($con);
-        $insert_users = mysqli_query($con, "insert into users(u_name, u_email, u_phone, password, res_code) 
+        $insert_users = mysqli_query($con, "insert into users(u_name, u_email, u_phone, password, res_code)
         values('$user_name', '$user_email', '$user_phone', '$password', '$res_code');");
 
-        $fetch_uid = mysqli_query($con, "select u_id from users where u_phone = $user_phone;");
+        $fetch_uid = mysqli_query($con, "select u_id from users where u_phone = $user_phone and role='manager';");
         $data = mysqli_fetch_assoc($fetch_uid);
         $u_id = $data['u_id'];
 

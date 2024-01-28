@@ -4,9 +4,16 @@ if (!isset($_SESSION)) {
 }
 include("../commonPages/dbConnect.php");
 // $res_code = $_SESSION['res_code'];
-$res_code = $_GET['res_code'];
-$table_num = $_GET['table_num'];
-$res_code = $_SESSION['res_code'];
+if(isset($_GET['res_code'])){
+    $res_code = $_GET['res_code'];
+    $table_num = $_GET['table_num'];
+    $_SESSION['res_code'] = $res_code;
+    $_SESSION['table_num'] = $table_num;
+}else{
+    $res_code = $_SESSION['res_code'];
+    $table_num = $_SESSION['table_num'];
+}
+// $res_code = $_SESSION['res_code'];
 ?>
 
 
@@ -19,6 +26,9 @@ $res_code = $_SESSION['res_code'];
     <title>Order</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
     </style>
@@ -163,8 +173,29 @@ $res_code = $_SESSION['res_code'];
 </body>
 
 <script>
+    const selectedTypes = {};
+
+    document.addEventListener("DOMContentLoaded", function(){
+
+        const cartItem = JSON.parse(localStorage.getItem("cartItems"));
+        if (Object.keys(cartItem).length > 0) {
+            for (const item in cartItem) {
+                selectedTypes[item] = cartItem[item];
+            }
+        }
+
+        if (Object.keys(selectedTypes).length === 0) {
+            document.getElementById("cart").style.display = 'none';
+        } else if (Object.keys(selectedTypes).length > 0) {
+            document.getElementById("cart").style.display = "flex";
+        }
+    });
+
+
     
     submitCart = () => {
+        const selectedTypesJson = JSON.stringify(selectedTypes);
+
         document.getElementById("hiddenField").value = selectedTypesJson;
         document.getElementById("formToSubmit").submit();
 

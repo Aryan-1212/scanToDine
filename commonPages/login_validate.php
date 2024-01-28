@@ -13,7 +13,7 @@
         <?php
         exit();
     }
-    $query = mysqli_query($con, "select * from users where u_phone='$phone';");
+    $query = mysqli_query($con, "select * from users where u_phone='$phone' and role='manager';");
     if (mysqli_num_rows($query)==0){
         $_SESSION['is_error']=true;
     }

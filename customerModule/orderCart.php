@@ -147,6 +147,12 @@ include("../commonPages/dbConnect.php");
         background-color: green;
         color: whitesmoke;
     }
+
+    .input-instruction{
+        padding: 5px;
+        border: none;
+        border-bottom: 1px solid black;
+    }
 </style>
 
 <body>
@@ -161,6 +167,7 @@ include("../commonPages/dbConnect.php");
             <div class="cartItemsHead">
                 <div class="flex1">No.</div>
                 <div class="flex2">Item Name</div>
+                <div class="flex1">Order Instructions</div>
                 <div class="flex1">Price</div>
                 <div class="flex1">Qty</div>
                 <div class="flex1">Total</div>
@@ -191,6 +198,7 @@ include("../commonPages/dbConnect.php");
                     <div class="cartItems">
                         <?php echo "<div class='flex1'>". $index ."</div>" ?>
                         <?php echo "<div class='flex2'>". $order_name ."</div>" ?>
+                        <?php echo "<div class='flex1'><input id='". $id ."-instruction' type='text' placeholder='Instruction for Order' class='input-instruction'></div>" ?>
                         <?php echo "<div class='flex1'>". $order_price ."</div>" ?>
                         <?php echo "<div class='flex1'>". $qun ."</div>" ?>
                         <?php
@@ -202,6 +210,14 @@ include("../commonPages/dbConnect.php");
                     $index++;
                 }
             }
+
+            $fetchResRatesQuery = "select * from bill_info where res_code = $res_code";
+            $fetchResRates = mysqli_query($con, $fetchResRatesQuery);
+            $data = mysqli_fetch_assoc($fetchResRates);
+            $tax_rate = $data['tax_rate'];
+            $add_charge = $data['add_charge'];
+            $dis = $data['dis'];
+
             ?>
 
 
@@ -218,18 +234,18 @@ include("../commonPages/dbConnect.php");
                 ?>
             </div>
             <div class="taxCharges charge">
-                <div class="chargeFlex3">Tax(18%):</div>
+                <div class="chargeFlex3"><?php echo "Tax(".$tax_rate."%):" ?></div>
                 <?php
-                    $tax = $subTotal * 0.18;
+                    $tax = ($subTotal * $tax_rate) / 100;
                     $subTotalWithTax = $subTotal + $tax;
                     echo "<div class='chargeFlex1'>". $subTotalWithTax ." ₹</div>";
                 ?>
                 
             </div>
             <div class="addiCharges charge">
-                <div class="chargeFlex3">Additional Charges(20₹):</div>
+                <div class="chargeFlex3"><?php echo "Additional Charges(".$add_charge."₹):" ?></div>
                 <?php
-                    $subTotalAddCharge = $subTotalWithTax + 20;
+                    $subTotalAddCharge = $subTotalWithTax + $add_charge;
                     echo "<div class='chargeFlex1'>". $subTotalAddCharge ." ₹</div>";
                 ?>
                 
@@ -238,7 +254,7 @@ include("../commonPages/dbConnect.php");
                 <div class="chargeFlex3">Discount:</div>
                 <div class="chargeFlex1">2%</div>
                 <?php
-                    $discount = $subTotalAddCharge * 0.02;
+                    $discount = ($subTotalAddCharge * $dis) / 100;
                     $Total = $subTotalAddCharge - $discount;
                 ?>
 
@@ -248,16 +264,20 @@ include("../commonPages/dbConnect.php");
                 <?php
                     echo "<div class='chargeFlex1'>₹ ". $Total ."</div>";
                 ?>
-                
             </div>
 
         </div>
 
         <div class="payToOrder">
 
+            <form action="../customerModule/orderSubmit.php" method="POST" id="formToSubmit">
+                <input type="hidden" id="orderDet" name="orderDet">
+                <input type="hidden" name="totalPrice" value="<?php echo $Total; ?>">
+            </form>
+
             <?php
                 if(isset($_SESSION['is_registered_cus'])){
-                    echo "<a href='#'><div class='pay'>Pay to Order</div></a>";
+                    echo "<a href='#' onclick='submitDet()'><div class='pay'>Pay to Order</div></a>";
                 }else{
                     echo "<a href='../customerModule/customerRegister.php'><div class='pay'>Register to Proceed</div></a>";
                 }
@@ -265,9 +285,16 @@ include("../commonPages/dbConnect.php");
         </div>
     </div>
     <script>
-        localStorage.getItem("cartItems");
+        const orderDet = JSON.parse(localStorage.getItem("cartItems"));
 
-
+        submitDet = () =>{
+            for(const id in orderDet){
+                const orderInst = document.getElementById(`${id}-instruction`).value;
+                orderDet[`${id}-inst`] = orderInst;
+            }
+            document.getElementById("orderDet").value = JSON.stringify(orderDet);
+            document.getElementById("formToSubmit").submit();
+        }
 
 
     </script>
