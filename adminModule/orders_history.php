@@ -6,27 +6,6 @@ if (!isset($_SESSION)) {
 include("../commonPages/dbConnect.php");
 include("../commonPages/redirectPage.php");
 $res_code = $_SESSION['res_code'];
-$_SESSION['wrong_code'] = false;
-
-if(isset($_POST['verification_code'])){
-    $code = $_POST['verification_code'];
-    $verifyCodeQuery = "select order_id from orders where res_id=$res_code and completion_code=$code and order_status='placed'";
-    $verifyCode = mysqli_query($con, $verifyCodeQuery);
-    if(mysqli_num_rows($verifyCode)>0){
-        $order_id = mysqli_fetch_assoc($verifyCode)['order_id'];
-        $updateStatusQuery = "update orders set order_status='finished' where order_id=$order_id;";
-        $updateStatus = mysqli_query($con, $updateStatusQuery);
-        if(!$updateStatus){
-            echo "<script>Unexpected Error Occurs!</script>";
-        }
-        reDirect("../adminModule/orders.php");
-
-    }else{
-        echo "<script>alert('Enter a Valid Code to Finish Order!');</script>";
-        // reDirect("../adminModule/orders.php");
-    }
-}
-
 ?>
 
 <!DOCTYPE html>
@@ -54,11 +33,6 @@ if(isset($_POST['verification_code'])){
             -webkit-appearance: none;
             margin: 0;
         }
-
-        body.popup-open {
-            overflow: hidden;
-        }
-
         .orders-div {
             width: 100%;
             min-height: calc(100vh - 410px);
@@ -70,91 +44,6 @@ if(isset($_POST['verification_code'])){
             padding: 80px 0px;
         }
 
-        .pop-up {
-            /* position: absolute; */
-            position: fixed;
-            background-color: whitesmoke;
-            background-color: rgb(216, 216, 216);
-            /* border: 2px solid black; */
-            border-radius: 10px;
-            box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
-            top: 25%;
-            left: 25%;
-            height: 50vh;
-            width: 50vw;
-            z-index: 3;
-            padding: 20px;
-            box-sizing: border-box;
-            display: none;
-        }
-
-        .pop-up .close-btn {
-            position: absolute;
-            right: 0;
-            top: 0;
-        }
-
-        .pop-up .close-btn button {
-            padding: 10px;
-            background-color: red;
-            border-top-right-radius: 10px;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-
-        .pop-up .close-btn button:hover {
-            box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
-        }
-
-        .pop-up .title {
-            margin-top: 40px;
-            font-size: 20px;
-            width: 100%;
-            text-align: center;
-        }
-
-        .pop-up .code-input {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .pop-up .code-input input {
-            border: none;
-            background-color: transparent;
-            margin: 7px 0px;
-            border-bottom: 1px solid black;
-            padding: 10px;
-            text-align: center;
-            font-size: large;
-        }
-
-        .pop-up .verify-btn {
-            height: 50px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .pop-up .verify-btn .button {
-            background-color: green;
-            border-radius: 10px;
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-size: 15px;
-            padding: 5px 20px;
-        }
-
-        .pop-up .verify-btn .button:hover {
-            box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
-        }
-
-        .pop-up .note {
-            text-align: center;
-            font-size: 15px;
-        }
         .orders {
             box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
             width: 90vw;
@@ -245,41 +134,6 @@ if(isset($_POST['verification_code'])){
             justify-content: center;
             height: calc(100vh - 250px);
         }
-
-        .wrong-code{
-            color: red;
-            height: 50px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        @media screen and (max-width: 900px) {
-            .pop-up {
-                width: 70vw;
-                left: 15%;
-            }
-
-            .pop-up .title {
-                font-size: 15px;
-            }
-
-            .pop-up .code-input input {
-                width: 30%;
-                padding: 5px 10px;
-                font-size: smaller;
-            }
-        }
-
-        @media screen and (max-width: 490px) {
-            .pop-up {
-                width: 90vw;
-                left: 5%;
-                height: 70vh;
-                top: 15%;
-                padding-top: 50px;
-            }
-        }
     </style>
 
 </head>
@@ -288,7 +142,7 @@ if(isset($_POST['verification_code'])){
     <?php
     include("../commonPages/index_header.php");
 
-    $fetchOrdersQuery = "select * from orders where res_id = $res_code and order_status = 'placed'";
+    $fetchOrdersQuery = "select * from orders where res_id = $res_code;";
     $fetchOrders = mysqli_query($con, $fetchOrdersQuery);
     if (!$fetchOrders) {
         echo "<script>alert('Unexpected Error Occurs!');</script>";
@@ -297,26 +151,7 @@ if(isset($_POST['verification_code'])){
     $orders = mysqli_fetch_all($fetchOrders, MYSQLI_ASSOC);
     ?>
 
-    <div class="pop-up" id="pop-up-box">
-        <div class="close-btn"><button onclick="closeBtn()">Close</button></div>
-        <div class="title">
-            <p>Verification Required: Please Validate the Code to Proceed with Order Completion.</p>
-        </div>
-        <form action="" method="post">
-            <div class="code-input">
-                <input type="text" minlength="6" maxlength="6" name="verification_code" placeholder="Code to complete order" Required>
-            </div>
-            <div class="verify-btn">
-                <input type="submit" class="button" value="VERIFY">
-            </div>
-        </form>
-        <div class="note">
-            <p>Kindly Request Your Customer for a 6-digit Completion Code for This Order(orderID- <span id='order-id'></span>)</p>
-        </div>
-    </div>
-
     <div class="orders-div" id="orders-div">
-
         <div class="orders">
             <div class="order-index">
                 <div class="flex1">Order-ID</div>
@@ -327,7 +162,7 @@ if(isset($_POST['verification_code'])){
                 <div class="flex1">Table-Num</div>
                 <div class="flex1">Cus-ID</div>
                 <div class="flex1">Order-Date</div>
-                <div class="flex1">&nbsp;</div>
+                <div class="flex1">Order-Status</div>
             </div>
 
             <?php
@@ -338,6 +173,7 @@ if(isset($_POST['verification_code'])){
                 $table_num = $order['table_num'];
                 $items_det = $order['items_det'];
                 $amount = $order['amount'];
+                $order_status = $order['order_status'];
                 $items_det_array = json_decode($items_det, true);
                 ?>
 
@@ -396,10 +232,12 @@ if(isset($_POST['verification_code'])){
                     echo "<div class='flex1'>" . $table_num . "</div>";
                     echo "<div class='flex1'>" . $cus_id . "</div>";
                     echo "<div class='flex1'>" . $order_date . "</div>";
+                    if($order_status == 'placed'){
+                        echo "<div class='flex1' style='color: green;'>Ongoing</div>";
+                    }else{
+                        echo "<div class='flex1' style='color: red;'>" . ucfirst($order_status) . "</div>";
+                    }
                     ?>
-
-                    <div class="flex1"><button class="btn" id="<?php echo "finishOrder-" . $order_id; ?>"
-                            onclick="finishOrder(event)">FINISH</button></div>
                 </div>
 
                 <?php
@@ -415,43 +253,8 @@ if(isset($_POST['verification_code'])){
     </div>
     <?php
     }
+    include("../commonPages/index_footer.html");
     ?>
-
-    <?php
-        include("../commonPages/index_footer.html");
-    ?>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const pop_up_box = document.getElementById("pop-up-box");
-            // const finishOrderBtn = document.getElementById("finishOrder");
-
-            let finishOrderBtn;
-            finishOrder = (e) => {
-                pop_up_box.style.display = "block";
-                document.body.classList.add("popup-open");
-                const id = e.target.id;
-                finishOrderBtn = document.getElementById(id);
-                document.getElementById('order-id').innerHTML = id.replace('finishOrder-','');
-                document.getElementById("orders-div").style.filter = "blur(8px)";
-            }
-
-            closeBtn = () => {
-                pop_up_box.style.display = "none";
-                document.body.classList.remove("popup-open");
-                document.getElementById("orders-div").style.filter = "blur(0px)";
-            }
-
-            document.addEventListener("click", function (event) {
-                if (!pop_up_box.contains(event.target) && event.target !== finishOrderBtn) {
-                    pop_up_box.style.display = "none";
-                    document.body.classList.remove("popup-open");
-                    document.getElementById("orders-div").style.filter = "blur(0px)";
-                }
-            })
-        })
-
-    </script>
 </body>
 
 </html>

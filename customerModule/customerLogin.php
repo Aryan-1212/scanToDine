@@ -15,11 +15,15 @@
         $check = mysqli_query($con, $checkUser);
         if(mysqli_num_rows($check)>0){
             $fetchUid = mysqli_query($con, "select u_id from users where u_phone = '$phone' and res_code=$res_code and role='customer'");
-            $data = mysqli_fetch_assoc($fetchUid);
-            $uid = $data['u_id'];
-            $_SESSION['uid'] = $uid;
-            $_SESSION['is_registered_cus'] = true;
-            header("Location: ../customerModule/orderCart.php");
+            if(mysqli_num_rows($fetchUid)>0){
+                $data = mysqli_fetch_assoc($fetchUid);
+                $uid = $data['u_id'];
+                $_SESSION['uid'] = $uid;
+                $_SESSION['is_registered_cus'] = true;
+                header("Location: ../customerModule/orderCart.php");
+            }else{
+                $_SESSION['wrong_phone'] = true;    
+            }
         }else{
             $_SESSION['wrong_phone'] = true;
         }
@@ -516,7 +520,7 @@
                                 <input type="submit" value="LOGIN">
                             </div>
                         </form>
-                        <a id="alreadyCus" href="../customerModule/customerRegister.php">Wants to Register?</a>
+                        <a id="alreadyCus" href="../customerModule/customerRegister.php">Want to Register?</a>
                     </div>
                 </div>
             </div>

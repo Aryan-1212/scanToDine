@@ -8,10 +8,10 @@ $res_code = $_SESSION['res_code'];
 
 if (isset($_POST['ChangedData'])) {
     $change_data = json_decode($_POST['ChangedData'],true);
-    $tax = $change_data['tax'];
-    $charges = $change_data['charges'];
-    $discount = $change_data['discount'];
-    $upi = $change_data['upi'];
+    $tax = (trim($change_data['tax'])=='')?0:$change_data['tax'];
+    $charges = (trim($change_data['charges'])=='')?0:$change_data['charges'];
+    $discount = (trim($change_data['discount'])=='')?0:$change_data['discount'];
+    $upi = (trim($change_data['upi'])=='')?'-':$change_data['upi'];
 
     $updateRowQuery = "update bill_info set tax_rate=$tax, add_charge=$charges, dis=$discount, upi_id='$upi' where res_code = $res_code";
 
@@ -26,10 +26,10 @@ if (isset($_POST['ChangedData'])) {
 
 if (isset($_POST['data'])) {
     $data = json_decode($_POST['data'], true);
-    $tax = $data['tax'];
-    $charges = $data['charges'];
-    $discount = $data['discount'];
-    $upi = $data['upi'];
+    $tax = (trim($data['tax'])=='')?0:$data['tax'];
+    $charges = (trim($data['charges'])=='')?0:$data['charges'];
+    $discount = (trim($data['discount'])=='')?0:$data['discount'];
+    $upi = (trim($data['upi'])=='')?'-':$data['upi'];
 
     $insertRowQuery = "insert into bill_info(res_code, tax_rate, add_charge, dis, upi_id) values($res_code, $tax, $charges, $discount, '$upi')";
     $insertRow = mysqli_query($con, $insertRowQuery);

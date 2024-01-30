@@ -2,7 +2,7 @@
 if (!isset($_SESSION)) {
     session_start();
 }
-$res_code = $_SESSION['res_code'];
+$res_code = $_SESSION['res_code_for_cus'];
 
 include("../commonPages/dbConnect.php");
 
@@ -148,7 +148,7 @@ include("../commonPages/dbConnect.php");
         color: whitesmoke;
     }
 
-    .input-instruction{
+    .input-instruction {
         padding: 5px;
         border: none;
         border-bottom: 1px solid black;
@@ -176,10 +176,10 @@ include("../commonPages/dbConnect.php");
 
             <?php
 
-            if(isset($_POST["order"])){
+            if (isset($_POST["order"])) {
                 $orders = json_decode($_POST["order"], true);
                 $_SESSION['orders'] = $orders;
-            }else{
+            } else {
                 $orders = $_SESSION['orders'];
             }
 
@@ -196,73 +196,91 @@ include("../commonPages/dbConnect.php");
                     $order_des = $type["type_des"];
                     ?>
                     <div class="cartItems">
-                        <?php echo "<div class='flex1'>". $index ."</div>" ?>
-                        <?php echo "<div class='flex2'>". $order_name ."</div>" ?>
-                        <?php echo "<div class='flex1'><input id='". $id ."-instruction' type='text' placeholder='Instruction for Order' class='input-instruction'></div>" ?>
-                        <?php echo "<div class='flex1'>". $order_price ."</div>" ?>
-                        <?php echo "<div class='flex1'>". $qun ."</div>" ?>
+                        <?php echo "<div class='flex1'>" . $index . "</div>" ?>
+                        <?php echo "<div class='flex2'>" . $order_name . "</div>" ?>
+                        <?php echo "<div class='flex1'><input id='" . $id . "-instruction' type='text' placeholder='Instruction for Order' class='input-instruction'></div>" ?>
+                        <?php echo "<div class='flex1'>" . $order_price . "</div>" ?>
+                        <?php echo "<div class='flex1'>" . $qun . "</div>" ?>
                         <?php
-                            $orderItemsTotal[$index] = $order_price*$qun;
+                        $orderItemsTotal[$index] = $order_price * $qun;
                         ?>
-                        <?php echo "<div class='flex1'>". $order_price*$qun ."</div>" ?>
+                        <?php echo "<div class='flex1'>" . $order_price * $qun . "</div>" ?>
                     </div>
                     <?php
                     $index++;
                 }
             }
 
-            $fetchResRatesQuery = "select * from bill_info where res_code = $res_code";
-            $fetchResRates = mysqli_query($con, $fetchResRatesQuery);
-            $data = mysqli_fetch_assoc($fetchResRates);
-            $tax_rate = $data['tax_rate'];
-            $add_charge = $data['add_charge'];
-            $dis = $data['dis'];
-
             ?>
-
-
-
             <div class="subtot charge">
                 <div class="chargeFlex3">Sub Total:</div>
 
                 <?php
-                    $subTotal = 0;
-                    foreach($orderItemsTotal as $ItemTotal){
-                        $subTotal = $subTotal + $ItemTotal;
-                    }
-                    echo "<div class='chargeFlex1'>". $subTotal ." ₹</div>";
+                $subTotal = 0;
+                foreach ($orderItemsTotal as $ItemTotal) {
+                    $subTotal = $subTotal + $ItemTotal;
+                }
+                echo "<div class='chargeFlex1'>" . $subTotal . " ₹</div>";
                 ?>
             </div>
+
+            <?php
+
+            $fetchResRatesQuery = "select * from bill_info where res_code = $res_code";
+            $fetchResRates = mysqli_query($con, $fetchResRatesQuery);
+            if (mysqli_num_rows($fetchResRates) == 0) {
+                $tax_rate = 0;
+                $add_charge = 0;
+                $dis = 0;
+                $Total = $subTotal;
+            } else {
+                $data = mysqli_fetch_assoc($fetchResRates);
+                $tax_rate = $data['tax_rate'];
+                $add_charge = $data['add_charge'];
+                $dis = $data['dis'];
+            ?>
+
+
+
             <div class="taxCharges charge">
-                <div class="chargeFlex3"><?php echo "Tax(".$tax_rate."%):" ?></div>
+                <div class="chargeFlex3">
+                    <?php echo "Tax(" . $tax_rate . "%):" ?>
+                </div>
                 <?php
-                    $tax = ($subTotal * $tax_rate) / 100;
-                    $subTotalWithTax = $subTotal + $tax;
-                    echo "<div class='chargeFlex1'>". $subTotalWithTax ." ₹</div>";
-                ?>
-                
-            </div>
-            <div class="addiCharges charge">
-                <div class="chargeFlex3"><?php echo "Additional Charges(".$add_charge."₹):" ?></div>
-                <?php
-                    $subTotalAddCharge = $subTotalWithTax + $add_charge;
-                    echo "<div class='chargeFlex1'>". $subTotalAddCharge ." ₹</div>";
-                ?>
-                
-            </div>
-            <div class="discount charge">
-                <div class="chargeFlex3">Discount:</div>
-                <div class="chargeFlex1">2%</div>
-                <?php
-                    $discount = ($subTotalAddCharge * $dis) / 100;
-                    $Total = $subTotalAddCharge - $discount;
+                $tax = ($subTotal * $tax_rate) / 100;
+                $subTotalWithTax = $subTotal + $tax;
+                echo "<div class='chargeFlex1'>" . $subTotalWithTax . " ₹</div>";
                 ?>
 
             </div>
+            <div class="addiCharges charge">
+                <div class="chargeFlex3">
+                    <?php echo "Additional Charges(" . $add_charge . "₹):" ?>
+                </div>
+                <?php
+                $subTotalAddCharge = $subTotalWithTax + $add_charge;
+                echo "<div class='chargeFlex1'>" . $subTotalAddCharge . " ₹</div>";
+                ?>
+
+            </div>
+            <div class="discount charge">
+                <div class="chargeFlex3">Discount:</div>
+                <?php
+                    echo "<div class='chargeFlex1'>".$dis."%</div>";
+                ?>
+                <?php
+                $discount = ($subTotalAddCharge * $dis) / 100;
+                $Total = $subTotalAddCharge - $discount;
+                ?>
+            </div>
+
+            <?php
+            }
+            ?>
             <div class="total charge">
                 <div class="chargeFlex3">Total:</div>
                 <?php
-                    echo "<div class='chargeFlex1'>₹ ". $Total ."</div>";
+                echo "<div class='chargeFlex1'>₹ " . $Total . "</div>";
                 ?>
             </div>
 
@@ -276,19 +294,19 @@ include("../commonPages/dbConnect.php");
             </form>
 
             <?php
-                if(isset($_SESSION['is_registered_cus'])){
-                    echo "<a href='#' onclick='submitDet()'><div class='pay'>Pay to Order</div></a>";
-                }else{
-                    echo "<a href='../customerModule/customerRegister.php'><div class='pay'>Register to Proceed</div></a>";
-                }
+            if (isset($_SESSION['is_registered_cus'])) {
+                echo "<a href='#' onclick='submitDet()'><div class='pay'>Pay to Order</div></a>";
+            } else {
+                echo "<a href='../customerModule/customerRegister.php'><div class='pay'>Register to Proceed</div></a>";
+            }
             ?>
         </div>
     </div>
     <script>
         const orderDet = JSON.parse(localStorage.getItem("cartItems"));
 
-        submitDet = () =>{
-            for(const id in orderDet){
+        submitDet = () => {
+            for (const id in orderDet) {
                 const orderInst = document.getElementById(`${id}-instruction`).value;
                 orderDet[`${id}-inst`] = orderInst;
             }

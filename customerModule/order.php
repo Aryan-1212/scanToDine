@@ -5,12 +5,13 @@ if (!isset($_SESSION)) {
 include("../commonPages/dbConnect.php");
 // $res_code = $_SESSION['res_code'];
 if(isset($_GET['res_code'])){
+    echo "<script>localStorage.clear();</script>";
     $res_code = $_GET['res_code'];
     $table_num = $_GET['table_num'];
-    $_SESSION['res_code'] = $res_code;
+    $_SESSION['res_code_for_cus'] = $res_code;
     $_SESSION['table_num'] = $table_num;
 }else{
-    $res_code = $_SESSION['res_code'];
+    $res_code = $_SESSION['res_code_for_cus'];
     $table_num = $_SESSION['table_num'];
 }
 // $res_code = $_SESSION['res_code'];
@@ -108,6 +109,20 @@ if(isset($_GET['res_code'])){
         display: none;
     }
 
+    .no-items{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100vh;
+        text-align: center;
+    }
+    .no-items h1{
+        color: red;
+        text-decoration: underline;
+    }
+
 
     @media only screen and (max-width: 500px) {
         .OrderMenu .OrderContainer {
@@ -126,6 +141,7 @@ if(isset($_GET['res_code'])){
             <?php
             $fetchItemsQuery = "select distinct food_id from food_items where res_id=$res_code";
             $fetchItems = mysqli_query($con, $fetchItemsQuery);
+            if(mysqli_num_rows($fetchItems)>0){
             $data = mysqli_fetch_all($fetchItems, MYSQLI_ASSOC);
             ?>
 
@@ -169,6 +185,17 @@ if(isset($_GET['res_code'])){
             <i onclick="submitCart()" class="fa-solid fa-cart-shopping fa-lg" style="color: #000000;"></i>
         </form>
     </div>
+
+    <?php
+    }else{
+    ?>
+    <div class="no-items">
+        <h1>Menu upgrade in progress</h1>
+        <h3>Visit our manager for assistance. Thank you for your understanding!</h3>
+    </div>
+    <?php
+    }
+    ?>
 
 </body>
 
