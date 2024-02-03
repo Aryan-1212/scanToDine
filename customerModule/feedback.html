@@ -40,14 +40,15 @@
       font-weight: bold;
       margin-bottom: 5px;
     }
-        input[type="text"],
-        textarea,
-        select {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 15px;
-            box-sizing: border-box;
-        }
+
+    input[type="text"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 15px;
+      box-sizing: border-box;
+    }
 
 
     input[type="text"],
@@ -63,23 +64,23 @@
       margin-top: 10px;
     }
 
-        .rating {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+    .rating {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
-        .star {
-            cursor: pointer;
-            font-size: 24px;
-            color: #ccc;
-            transition: color 0.2s;
-        }
+    .star {
+      cursor: pointer;
+      font-size: 70px;
+      color: #ccc;
+      transition: color 0.2s;
+    }
 
-        .star:hover,
-        .star.active {
-            color: #ffcc00;
-        }
+    .star:hover,
+    .star.active {
+      color: #ffcc00;
+    }
 
     .indicator {
       width: 20px;
@@ -88,7 +89,7 @@
       border: 2px solid #ccc;
       margin-right: 10px;
     }
-    
+
 
 
     .selected {
@@ -121,56 +122,56 @@
       <div class="input-field">
         <label for="subject">Subject :</label>
         <select id="subject" name="subject" required>
-            <option value="" disabled selected>Select Subject</option>
-            <option value="General Feedback">General Feedback</option>
-            <option value="Issues">Issues</option>
-            <option value="Suggestions">Suggestions</option>
-            <option value="Other">Other</option>
+          <option value="" disabled selected>Select Subject</option>
+          <option value="General Feedback">General Feedback</option>
+          <option value="Issues">Issues</option>
+          <option value="Suggestions">Suggestions</option>
+          <option value="Other">Other</option>
         </select>
-        
-        
-      <div class="input-field">
-        <label for="feedback">Feedback :</label>
-        <textarea id="feedback" name="feedback" rows="4" style="resize:vertical" required></textarea>
-      </div>
-      <div class="options-container">
-        <label for="experience"><u>Rate Us :</u></label>
-<div class="rating">
-    <span class="star" onclick="rate(1)">★</span>
-    <span class="star" onclick="rate(2)">★</span>
-    <span class="star" onclick="rate(3)">★</span>
-    <span class="star" onclick="rate(4)">★</span>
-    <span class="star" onclick="rate(5)">★</span>
-</div>
-<script>
-    let selectedRating = 0;
 
-    function rate(rating) {
-        selectedRating = rating;
-        console.log(selectedRating);
-        resetStars();
-        highlightStars(rating);
-        // You can use 'selectedRating' for further processing, like sending it to the server.
-    }
 
-    function resetStars() {
-        const stars = document.querySelectorAll('.star');
-        stars.forEach(star => {
-            star.classList.remove('active');
-        });
-    }
+        <div class="input-field">
+          <label for="feedback">Feedback :</label>
+          <textarea id="feedback" name="feedback" rows="4" style="resize:vertical" required></textarea>
+        </div>
+        <div class="options-container">
+          <label for="experience"><u>Rate Us :</u></label>
+          <div class="rating">
+            <span class="star" onclick="rate(1)">★</span>
+            <span class="star" onclick="rate(2)">★</span>
+            <span class="star" onclick="rate(3)">★</span>
+            <span class="star" onclick="rate(4)">★</span>
+            <span class="star" onclick="rate(5)">★</span>
+          </div>
+          <script>
+            let selectedRating = 0;
 
-    function highlightStars(count) {
-        const stars = document.querySelectorAll('.star');
-        for (let i = 0; i < count; i++) {
-            stars[i].classList.add('active');
-        }
-    }
-</script>
-      <button type="submit">Submit</button>
+            function rate(rating) {
+              selectedRating = rating;
+              console.log(selectedRating);
+              resetStars();
+              highlightStars(rating);
+              // You can use 'selectedRating' for further processing, like sending it to the server.
+            }
+
+            function resetStars() {
+              const stars = document.querySelectorAll('.star');
+              stars.forEach(star => {
+                star.classList.remove('active');
+              });
+            }
+
+            function highlightStars(count) {
+              const stars = document.querySelectorAll('.star');
+              for (let i = 0; i < count; i++) {
+                stars[i].classList.add('active');
+              }
+            }
+          </script>
+          <button type="submit">Submit</button>
     </form>
   </div>
-    
+
 </body>
 
 </html>

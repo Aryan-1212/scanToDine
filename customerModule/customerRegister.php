@@ -3,7 +3,7 @@ if (!isset($_SESSION)) {
     session_start();
 }
 
-$res_code = $_SESSION['res_code'];
+$res_code = $_SESSION['res_code_for_cus'];
 include("../commonPages/dbConnect.php");
 
 $_SESSION['is_error'] = false;

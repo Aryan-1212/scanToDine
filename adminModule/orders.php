@@ -382,7 +382,7 @@ if(isset($_POST['verification_code'])){
                         <div class="item-det item-note">
                             <?php
                             for ($item_no = 1; $item_no <= count($itemDetails); $item_no++) {
-                                if (trim($itemDetails[$item_no]['note']) == '') {
+                                if (trim(strval($itemDetails[$item_no]['note'])) == '') {
                                     echo "<p>-</p>";
                                 } else {
                                     echo "<marquee behavior='scroll' direction='left' scrollamount='2'><p>" . $itemDetails[$item_no]['note'] . "</p></marquee>";

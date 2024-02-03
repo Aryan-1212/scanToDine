@@ -49,6 +49,7 @@ include("../commonPages/dbConnect.php");
     }
 
     .cart .cartDes .cartItemsHead {
+        text-align: center;
         display: flex;
         background-color: blue;
         width: 100vw;
@@ -81,8 +82,9 @@ include("../commonPages/dbConnect.php");
         /* text-align: center; */
         text-align: center;
         display: flex;
+        padding: 0px 65px;
         justify-content: center;
-        flex: 3;
+        flex: 2;
     }
 
     .cart .cartDes .charge {
@@ -102,9 +104,11 @@ include("../commonPages/dbConnect.php");
         display: flex;
         align-items: center;
         flex: 5;
+        text-align: right;
     }
 
     .cart .cartDes .charge .chargeFlex1 {
+        margin: 0px 40px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -149,13 +153,57 @@ include("../commonPages/dbConnect.php");
     }
 
     .input-instruction {
+        width: 100%;
         padding: 5px;
         border: none;
         border-bottom: 1px solid black;
     }
+
+    .view-order {
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: end;
+        padding: 0px 130px;
+    }
+
+    .view-order a {
+        padding: 12px 20px;
+        color: green;
+        text-decoration: none;
+        background-color: white;
+        border: 1px solid green;
+    }
+
+    .view-order a:hover {
+        background-color: green;
+        color: white;
+        transition-duration: 0.7s;
+        box-shadow: 5px 5px 10px 5px rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+
+    @media screen and (max-width:580px) {
+        .cartItemsHead{
+            font-size: 12px;
+        }
+        .cart .cartDes .flex2 {
+            padding: 0px 10px
+        }
+    }
 </style>
 
 <body>
+
+<?php
+    if (isset($_SESSION['is_registered_cus']) && isset($_SESSION['uid'])) {
+        $uid = $_SESSION['uid'];
+        $isAnyOrderQurey = "select order_id from orders where cus_id=$uid and res_id=$res_code and order_status='placed'";
+        $isAnyOrder = mysqli_query($con, $isAnyOrderQurey);
+        if (mysqli_num_rows($isAnyOrder) > 0) {
+            echo "<div class='view-order'><a href='../customerModule/orderStatus.php'>View Ongoing Orders</a></div>";
+        }
+    }
+    ?>
 
 
     <div class="cart">
@@ -163,14 +211,14 @@ include("../commonPages/dbConnect.php");
             Order Items
         </div>
         <div class="cartDes">
-
+            <div class="details">
             <div class="cartItemsHead">
                 <div class="flex1">No.</div>
                 <div class="flex2">Item Name</div>
                 <div class="flex1">Order Instructions</div>
                 <div class="flex1">Price</div>
                 <div class="flex1">Qty</div>
-                <div class="flex1">Total</div>
+                <div class="flex1">Total&nbsp;₹</div>
             </div>
 
 
@@ -197,7 +245,8 @@ include("../commonPages/dbConnect.php");
                     ?>
                     <div class="cartItems">
                         <?php echo "<div class='flex1'>" . $index . "</div>" ?>
-                        <?php echo "<div class='flex2'>" . $order_name . "</div>" ?>
+                        <?php //echo "<div class='flex2'>" . $order_name . "</div>" ?>
+                        <?php echo "<div class='flex2'><marquee scrollamount='3'>" . $order_name . "</marquee></div>" ?>
                         <?php echo "<div class='flex1'><input id='" . $id . "-instruction' type='text' placeholder='Instruction for Order' class='input-instruction'></div>" ?>
                         <?php echo "<div class='flex1'>" . $order_price . "</div>" ?>
                         <?php echo "<div class='flex1'>" . $qun . "</div>" ?>
@@ -206,12 +255,14 @@ include("../commonPages/dbConnect.php");
                         ?>
                         <?php echo "<div class='flex1'>" . $order_price * $qun . "</div>" ?>
                     </div>
+                    
                     <?php
                     $index++;
                 }
             }
 
             ?>
+            </div>
             <div class="subtot charge">
                 <div class="chargeFlex3">Sub Total:</div>
 
@@ -220,7 +271,7 @@ include("../commonPages/dbConnect.php");
                 foreach ($orderItemsTotal as $ItemTotal) {
                     $subTotal = $subTotal + $ItemTotal;
                 }
-                echo "<div class='chargeFlex1'>" . $subTotal . " ₹</div>";
+                echo "<div class='chargeFlex1'>" . $subTotal . "&nbsp;₹</div>";
                 ?>
             </div>
 
@@ -249,7 +300,7 @@ include("../commonPages/dbConnect.php");
                 <?php
                 $tax = ($subTotal * $tax_rate) / 100;
                 $subTotalWithTax = $subTotal + $tax;
-                echo "<div class='chargeFlex1'>" . $subTotalWithTax . " ₹</div>";
+                echo "<div class='chargeFlex1'>" . $subTotalWithTax . "&nbsp;₹</div>";
                 ?>
 
             </div>
@@ -259,7 +310,7 @@ include("../commonPages/dbConnect.php");
                 </div>
                 <?php
                 $subTotalAddCharge = $subTotalWithTax + $add_charge;
-                echo "<div class='chargeFlex1'>" . $subTotalAddCharge . " ₹</div>";
+                echo "<div class='chargeFlex1'>" . $subTotalAddCharge . "&nbsp;₹</div>";
                 ?>
 
             </div>
@@ -280,7 +331,7 @@ include("../commonPages/dbConnect.php");
             <div class="total charge">
                 <div class="chargeFlex3">Total:</div>
                 <?php
-                echo "<div class='chargeFlex1'>₹ " . $Total . "</div>";
+                echo "<div class='chargeFlex1'>" . $Total. "&nbsp;₹</div>";
                 ?>
             </div>
 

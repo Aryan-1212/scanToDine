@@ -128,7 +128,8 @@ if (!isset($_SESSION)) {
         flex-direction: column;
         align-items: center;
         padding: 10px;
-        left: -50px;
+        width: 200px;
+        left: -85px;
         background-color: white;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         position: absolute;

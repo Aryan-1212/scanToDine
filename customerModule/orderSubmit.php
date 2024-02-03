@@ -25,11 +25,12 @@
     }
 
     if ($_POST) {
+
+        exec("php ../notification/send.php");
         echo "<script>localStorage.clear()</script>";
         $table_num = $_SESSION['table_num'];
         date_default_timezone_set("Asia/Calcutta");
         $cid = $_SESSION['uid'];
-        echo $cid;
         $date_time = date("Y-m-d h:i:s");
         $orderDet = $_POST['orderDet'];
         $amount = $_POST['totalPrice'];
@@ -38,7 +39,7 @@
 
         $queryToInsert = "insert into orders(cus_id, order_date, table_num, res_id, items_det, amount, completion_code, order_status) values($cid, '$date_time', $table_num, $res_code, '$orderDet', $amount, $completion_code, '$order_status')";
 
-        echo $queryToInsert;
+
 
         $insertRow = mysqli_query($con, $queryToInsert);
         reDirect("../customerModule/orderSubmit.php");

@@ -4,7 +4,7 @@ if (!isset($_SESSION)) {
 }
 include("../commonPages/dbConnect.php");
 
-$res_code = $_SESSION['res_code'];
+$res_code = $_SESSION['res_code_for_cus'];
 $food_id = $_GET['food_id'];
 ?>
 
@@ -65,7 +65,7 @@ $food_id = $_GET['food_id'];
         }
 
         .ConfirmOrder .ConfirmOrderContainer .addOrder {
-            width: 20%;
+            width: 100px;
         }
 
         .ConfirmOrder .ConfirmOrderContainer .addOrder img {
@@ -152,33 +152,81 @@ $food_id = $_GET['food_id'];
             display: none;
         }
 
-        .backdiv {
-            height: 80px;
+        .btn-divs{
             display: flex;
+            height: 80px;
             align-items: center;
-            padding: 0px 125px;
+            padding: 0px 130px;
+            justify-content: space-between;
         }
 
-        .backdiv a {
+        .btn-divs a {
             padding: 12px 20px;
-            color: red;
             text-decoration: none;
             background-color: white;
-            border: 1px solid red;
         }
-        .backdiv a:hover {
-            background-color: red;
+
+        .btn-divs a:hover {
             color: white;
             transition-duration: 0.7s;
             box-shadow: 5px 5px 10px 5px rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        }
+
+        .backdiv a{
+            color: red;
+            border: 1px solid red;
+        }
+
+        .backdiv a:hover{
+            background-color: red;
+        }
+
+        .view-order a{
+            color: green;
+            border: 1px solid green;
+        }
+        .view-order a:hover{
+            background-color: green;
+        }
+
+        @media screen and (max-width: 740px) {
+                .btn-divs {
+                    padding: 0px 70px;
+                }
+        }
+        @media screen and (max-width: 500px) {
+            .btn-divs {
+                    padding: 0px 30px;
+                }
+            .ConfirmOrder .ConfirmOrderContainer {
+                flex-direction: column;
+            }
+            .ConfirmOrder .ConfirmOrderContainer .ConfirmOrderInformation{
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
         }
     </style>
 </head>
 
 <body>
 
-    <div class="backdiv">
-        <a href="../customerModule/order.php">BACK</a>
+    <div class="btn-divs">
+        <div class="backdiv">
+            <a href="../customerModule/order.php">BACK</a>
+        </div>
+
+        <?php
+        if (isset($_SESSION['is_registered_cus']) && isset($_SESSION['uid'])) {
+            $uid = $_SESSION['uid'];
+            $isAnyOrderQurey = "select order_id from orders where cus_id=$uid and res_id=$res_code and order_status='placed'";
+            $isAnyOrder = mysqli_query($con, $isAnyOrderQurey);
+            if (mysqli_num_rows($isAnyOrder) > 0) {
+                echo "<div class='view-order'><a href='../customerModule/orderStatus.php'>View Ongoing Orders</a></div>";
+            }
+        }
+        ?>
     </div>
 
     <?php
@@ -286,7 +334,7 @@ $food_id = $_GET['food_id'];
                 checkCart();
             } else {
                 checkCart();
-                continue ;
+                continue;
             }
         }
     })

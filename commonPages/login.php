@@ -28,6 +28,12 @@ if (isset($_SESSION['is_error'])) {
             height: 100%;
         }
 
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
         :root {
             --red: #cf3427;
             --white: #ffffff;
@@ -128,11 +134,7 @@ if (isset($_SESSION['is_error'])) {
             align-items: center;
         }
 
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Poppins', sans-serif;
-        }
+        
 
         .login-box {
             width: 400px;

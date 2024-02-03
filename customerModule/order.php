@@ -4,13 +4,13 @@ if (!isset($_SESSION)) {
 }
 include("../commonPages/dbConnect.php");
 // $res_code = $_SESSION['res_code'];
-if(isset($_GET['res_code'])){
+if (isset($_GET['res_code'])) {
     echo "<script>localStorage.clear();</script>";
     $res_code = $_GET['res_code'];
     $table_num = $_GET['table_num'];
     $_SESSION['res_code_for_cus'] = $res_code;
     $_SESSION['table_num'] = $table_num;
-}else{
+} else {
     $res_code = $_SESSION['res_code_for_cus'];
     $table_num = $_SESSION['table_num'];
 }
@@ -27,7 +27,7 @@ if(isset($_GET['res_code'])){
     <title>Order</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
@@ -109,7 +109,7 @@ if(isset($_GET['res_code'])){
         display: none;
     }
 
-    .no-items{
+    .no-items {
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -118,11 +118,35 @@ if(isset($_GET['res_code'])){
         height: 100vh;
         text-align: center;
     }
-    .no-items h1{
+
+    .no-items h1 {
         color: red;
         text-decoration: underline;
     }
 
+    .view-order {
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: end;
+        padding: 0px 130px;
+    }
+
+    .view-order a {
+        padding: 12px 20px;
+        color: green;
+        text-decoration: none;
+        background-color: white;
+        border: 1px solid green;
+    }
+
+    .view-order a:hover {
+        background-color: green;
+        color: white;
+        transition-duration: 0.7s;
+        box-shadow: 5px 5px 10px 5px rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+    
 
     @media only screen and (max-width: 500px) {
         .OrderMenu .OrderContainer {
@@ -135,74 +159,86 @@ if(isset($_GET['res_code'])){
 </style>
 
 <body>
+
+    <?php
+    if (isset($_SESSION['is_registered_cus']) && isset($_SESSION['uid'])) {
+        $uid = $_SESSION['uid'];
+        $isAnyOrderQurey = "select order_id from orders where cus_id=$uid and res_id=$res_code and order_status='placed'";
+        $isAnyOrder = mysqli_query($con, $isAnyOrderQurey);
+        if (mysqli_num_rows($isAnyOrder) > 0) {
+            echo "<div class='view-order'><a href='../customerModule/orderStatus.php'>View Ongoing Orders</a></div>";
+        }
+    }
+    ?>
+
     <section class="OrderMenu">
         <div class="container">
 
             <?php
             $fetchItemsQuery = "select distinct food_id from food_items where res_id=$res_code";
             $fetchItems = mysqli_query($con, $fetchItemsQuery);
-            if(mysqli_num_rows($fetchItems)>0){
-            $data = mysqli_fetch_all($fetchItems, MYSQLI_ASSOC);
-            ?>
-
-            <div class="OrderContainer">
-
-                <?php
-                foreach ($data as $dataItem) {
-                    $food_id = $dataItem['food_id'];
-
-                    $fetchItemDetailsQuery = "select * from default_item where item_id=$food_id";
-                    $fetchItemDetails = mysqli_query($con, $fetchItemDetailsQuery);
-                    $data = mysqli_fetch_all($fetchItemDetails, MYSQLI_ASSOC);
-                    foreach ($data as $dataItem) {
-                        $item_id = $dataItem['item_id'];
-                        $item_name = $dataItem['item_name'];
-                        $category = $dataItem['category'];
-                        $ext = $dataItem['extension'];
-                        ?>
-
-                        <a href="confirmOrder.php?food_id=<?php echo $item_id; ?>">
-                            <div class="OrderBox">
-                                <img src="../default_items2/<?php echo $item_id . "-" . $item_name . "-" . $category . "." . $ext ?>"
-                                    alt="">
-                                <p>
-                                    <?php echo str_replace("_", ' ', ucfirst($item_name)); ?>
-                                </p>
-                            </div>
-                        </a>
-
-                        <?php
-                    }
-                }
+            if (mysqli_num_rows($fetchItems) > 0) {
+                $data = mysqli_fetch_all($fetchItems, MYSQLI_ASSOC);
                 ?>
+
+                <div class="OrderContainer">
+
+                    <?php
+                    foreach ($data as $dataItem) {
+                        $food_id = $dataItem['food_id'];
+
+                        $fetchItemDetailsQuery = "select * from default_item where item_id=$food_id";
+                        $fetchItemDetails = mysqli_query($con, $fetchItemDetailsQuery);
+                        $data = mysqli_fetch_all($fetchItemDetails, MYSQLI_ASSOC);
+                        foreach ($data as $dataItem) {
+                            $item_id = $dataItem['item_id'];
+                            $item_name = $dataItem['item_name'];
+                            $category = $dataItem['category'];
+                            $ext = $dataItem['extension'];
+                            ?>
+
+                            <a href="confirmOrder.php?food_id=<?php echo $item_id; ?>">
+                                <div class="OrderBox">
+                                    <img src="../default_items2/<?php echo $item_id . "-" . $item_name . "-" . $category . "." . $ext ?>"
+                                        alt="">
+                                    <p>
+                                        <?php echo str_replace("_", ' ', ucfirst($item_name)); ?>
+                                    </p>
+                                </div>
+                            </a>
+
+                            <?php
+                        }
+                    }
+                    ?>
+                </div>
             </div>
+        </section>
+
+        <div class="cart" id="cart">
+            <form action="orderCart.php" method="POST" id="formToSubmit">
+                <input type="hidden" id="hiddenField" name="order">
+                <i onclick="submitCart()" class="fa-solid fa-cart-shopping fa-lg" style="color: #000000;"></i>
+            </form>
         </div>
-    </section>
 
-    <div class="cart" id="cart">
-        <form action="orderCart.php" method="POST" id="formToSubmit">
-            <input type="hidden" id="hiddenField" name="order">
-            <i onclick="submitCart()" class="fa-solid fa-cart-shopping fa-lg" style="color: #000000;"></i>
-        </form>
-    </div>
-
-    <?php
-    }else{
-    ?>
-    <div class="no-items">
-        <h1>Menu upgrade in progress</h1>
-        <h3>Visit our manager for assistance. Thank you for your understanding!</h3>
-    </div>
-    <?php
-    }
-    ?>
+        <?php
+            } else {
+                ?>
+        <div class="no-items">
+            <h1>Menu upgrade in progress</h1>
+            <h3>Visit our manager for assistance. Thank you for your understanding!</h3>
+        </div>
+        <?php
+            }
+            ?>
 
 </body>
 
 <script>
     const selectedTypes = {};
 
-    document.addEventListener("DOMContentLoaded", function(){
+    document.addEventListener("DOMContentLoaded", function () {
 
         const cartItem = JSON.parse(localStorage.getItem("cartItems"));
         if (Object.keys(cartItem).length > 0) {
@@ -219,7 +255,7 @@ if(isset($_GET['res_code'])){
     });
 
 
-    
+
     submitCart = () => {
         const selectedTypesJson = JSON.stringify(selectedTypes);
 
