@@ -2,7 +2,34 @@
 if (!isset($_SESSION)) {
     session_start();
 }
+
+$uid = $_SESSION['uid'];
+$res_code = $_SESSION['res_code_for_cus'];
+
 include("../commonPages/dbConnect.php");
+include("../commonPages/redirectPage.php");
+
+if (isset($_POST['fb-email'])) {
+    $email = $_POST['fb-email'];
+    $subject = $_POST['fb-subject'];
+    $feedback = $_POST['fb-feedback'];
+
+    $uNameQuery = mysqli_query($con, "select u_name from users where u_id = $uid");
+    $uName = mysqli_fetch_assoc($uNameQuery)['u_name'];
+    $fbInsertQuery = "insert into feedbacks(res_code, username, fb_email, fb_subject, fb_description) values($res_code, '$uName', '$email', '$subject', '$feedback')";
+
+    if(isset($_POST['fb-rating'])){
+        $rating = $_POST["fb-rating"];
+        $fbInsertQuery = "insert into feedbacks(res_code, username, fb_email, fb_subject, fb_description,  rating) values($res_code, '$uName', '$email', '$subject', '$feedback', $rating)";
+    }
+
+    $fbInsert = mysqli_query($con, $fbInsertQuery);
+    if(!$fbInsert){
+        echo "<script>alert('Unexpected Error Occurs!');</script>";
+    }
+
+    reDirect("../customerModule/orderStatus.php");
+}
 ?>
 
 <!DOCTYPE html>
@@ -25,6 +52,97 @@ include("../commonPages/dbConnect.php");
         ::-webkit-scrollbar {
             display: none;
         }
+
+        body.popup-open {
+            overflow: hidden;
+        }
+
+        .pop-up {
+            /* position: absolute; */
+            position: fixed;
+            background-color: rgb(216, 216, 216);
+            box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgb(209, 213, 219) 0px 0px 0px 1px inset;
+            top: 15%;
+            left: 25%;
+            height: 70%;
+            width: 50vw;
+            z-index: 3;
+            padding: 20px;
+            box-sizing: border-box;
+            display: none;
+        }
+
+        .pop-up .close-btn {
+            position: absolute;
+            right: 0;
+            top: 0;
+        }
+
+        .pop-up .close-btn button {
+            padding: 10px;
+            background-color: red;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .pop-up .close-btn button:hover {
+            box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
+        }
+
+        .FeedbackPage .FeedbackContainer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
+        .FeedbackPage .FeedbackContainer .FeedbackForm {
+            width: 75%;
+        }
+
+        .FeedbackPage .FeedbackContainer .FeedbackForm h2 {
+            text-align: center;
+        }
+
+        .FeedbackPage .FeedbackContainer .FeedbackForm button {
+            display: block;
+            width: 100%;
+            padding: 5px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .FeedbackPage .FeedbackContainer .FeedbackForm .rating {
+            text-align: center;
+        }
+
+        .star {
+            cursor: pointer;
+            font-size: 42px;
+            color: #ccc;
+            color: whitesmoke;
+            transition: color 0.2s;
+        }
+
+        .FeedbackPage .FeedbackContainer .FeedbackForm .star:hover,
+        .star.active {
+            color: #ffcc00;
+        }
+
+        .FeedbackPage .FeedbackContainer .FeedbackForm input,
+        table,
+        select,
+        textarea,
+        button {
+            padding: 5px 0px;
+            width: 100%;
+            resize: vertical;
+        }
+
 
         .main-div {
             height: auto;
@@ -169,14 +287,46 @@ include("../commonPages/dbConnect.php");
             box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
         }
 
-        .com-code{
+        .com-code {
             color: green;
         }
-        .finished{
+
+        .finished {
             color: red;
         }
 
+        .menu-btns{
+            display: flex;
+            font-size: 20px;
+            margin-bottom: 50px;
+            align-items: center;
+            justify-content: space-between;
+            height: 40px;
+        }
+
+        .menu-btns .btn{
+            text-align: center;
+            color: blue;
+            padding: 12px 20px;
+            text-decoration: none;
+            background-color: white;
+            border: 1px solid blue;
+        }
+
+        .menu-btns .btn:hover{
+            cursor: pointer;
+            background-color: blue;
+            color: white;
+            transition-duration: 0.7s;
+            box-shadow: 5px 5px 10px 5px rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        }
+
         @media screen and (max-width: 930px) {
+            .pop-up {
+                width: 70vw;
+                left: 15%;
+            }
+
             .status-div .status-head {
                 padding: 0px 50px;
             }
@@ -199,6 +349,31 @@ include("../commonPages/dbConnect.php");
         }
 
         @media screen and (max-width: 540px) {
+            .menu-btns .btn{
+                padding: 3px 7px;
+                font-size: 15px;
+            }
+
+            .menu-btns a{
+                margin-right: 10px;
+            }
+
+            .pop-up {
+                width: 90vw;
+                left: 5%;
+                height: 70vh;
+                top: 15%;
+                padding-top: 50px;
+            }
+
+            .star {
+                font-size: 40px;
+            }
+
+            .FeedbackPage .FeedbackContainer .FeedbackForm {
+                width: 95%;
+            }
+
             .status-div .status-head {
                 flex-direction: column;
                 text-align: center;
@@ -225,7 +400,76 @@ include("../commonPages/dbConnect.php");
 <body>
 
 
+    <div class="pop-up" id="pop-up-box">
+        <div class="close-btn"><button onclick="closeBtn()">Close</button></div>
+        <section class="FeedbackPage">
+            <div class="container">
+                <div class="FeedbackContainer">
+                    <div class="FeedbackForm">
+                        <h2>Feedback</h2>
+                        <form action="" method="POST">
+                            <table>
+                                <tr>
+                                    <th>Email:</th>
+                                </tr>
+                                <tr>
+                                    <td><input type="email" name="fb-email" id="fb-email" placeholder="Write your email here" required>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Subject:</th>
+                                </tr>
+                                <tr>
+                                    <td><select name="fb-subject" id="fb-subject" required>
+                                            <option value="" disabled selected>Select Subject</option>
+                                            <option value="General Feedback">General Feedback</option>
+                                            <option value="Issues">Issues</option>
+                                            <option value="Suggestions">Suggestions</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Feedback:</th>
+                                </tr>
+                                <tr>
+                                    <td><textarea name="fb-feedback" id="fb-feedback" cols="30" rows="3"
+                                            placeholder='Give us Feedback'></textarea></td>
+                                </tr>
+                                <tr>
+                                    <th><u>Rate Us:</u></th>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="rating">
+                                            <span class="star" onclick="rate(1)">★</span>
+                                            <span class="star" onclick="rate(2)">★</span>
+                                            <span class="star" onclick="rate(3)">★</span>
+                                            <span class="star" onclick="rate(4)">★</span>
+                                            <span class="star" onclick="rate(5)">★</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <button type="submit" id="submitData">Submit</button>
+                                    </td>
+                                </tr>
+                            </table>
+                            <input type="hidden" name="fb-rating" id="rating">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    
     <div class="main-div">
+        <div class="menu-btns">
+            <a href="../customerModule/order.php" class="btn">Order Again?</a>
+            <div class="btn" onclick="pop_up_open()">Give Us Feedback</div>
+        </div>
         <div class="status-div">
             <div class="status-head">
                 <div class="head-title">
@@ -279,37 +523,40 @@ include("../commonPages/dbConnect.php");
                             <div class="flex1">Notes</div>
                         </div>
                         <div class="details">
-
-                            <div class="detail">
-                                <?php
-                                for ($item_no = 1; $item_no <= count($itemDetails); $item_no++) {
+                            <?php
+                            for ($item_no = 1; $item_no <= count($itemDetails); $item_no++) {
+                                ?>
+                                <div class="detail">
+                                    <?php
                                     echo "<div class='flex2'>" . $itemDetails[$item_no]['qun'] . " × " . $itemDetails[$item_no]['name'] . "</div>";
                                     echo (trim(strval($itemDetails[$item_no]['note'])) == '') ? "<div class='flex1'>-</div>" : "<marquee behavior='scroll' class='flex1' direction='left' scrollamount='2'>" . $itemDetails[$item_no]['note'] . "</marquee>";
-                                }
-                                ?>
-                            </div>
+                                    ?>
+                                </div>
+                                <?php
+                            }
+                            ?>
                         </div>
                     </div>
                     <div class="other-details status">
                         <div class="other-details-head">
-                            <?php 
-                                echo "<div>Order Id- ".$order_id."</div>";
-                                echo "<div>Table No- ".$table_num."</div>";
-                                echo "<div>".$order_date."</div>";
+                            <?php
+                            echo "<div>Order Id- " . $order_id . "</div>";
+                            echo "<div>Table No- " . $table_num . "</div>";
+                            echo "<div>" . $order_date . "</div>";
                             ?>
                         </div>
                         <div class="other-details-body">
                             <?php
-                                echo "<div class='total'><p>Total - ".$total." ₹</p></div>";
+                            echo "<div class='total'><p>Total - " . $total . " ₹</p></div>";
 
-                                if($order_status == 'placed'){
-                                    echo "<h3 class='com-code'>Completion Code - ".$completion_code."</h3>";
-                                    echo "<p>Share this code with your restaurant manager only, once you receive your order.</p>";
-                                }else{
-                                    echo "<h3 class='finished'>Finished<h3>";
-                                }
+                            if ($order_status == 'placed') {
+                                echo "<h3 class='com-code'>Completion Code - " . $completion_code . "</h3>";
+                                echo "<p>Share this code with your restaurant manager only, once you receive your order.</p>";
+                            } else {
+                                echo "<h3 class='finished'>Finished<h3>";
+                            }
                             ?>
-                            
+
                         </div>
                     </div>
                 </div>
@@ -321,7 +568,62 @@ include("../commonPages/dbConnect.php");
     </div>
 
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const pop_up_box = document.getElementById("pop-up-box");
+            
+            const email = document.getElementById('fb-email');
+            const subject = document.getElementById('fb-subject');
+            const fb = document.getElementById('fb-feedback');
+            // const finishOrderBtn = document.getElementById("finishOrder");
 
+            email.addEventListener("change",()=>{
+                if(!(email.value.trim() === '' || subject.value.trim() === '' || fb.value.trim() === '')){
+                    document.getElementById('submitData').disabled = false;
+                    document.getElementById('submitData').style.backgroundColor = 'black';
+                }
+            })
+
+            pop_up_open = () => {
+                pop_up_box.style.display = "block";
+                document.body.classList.add("popup-open");
+            }
+
+            closeBtn = () => {
+                pop_up_box.style.display = "none";
+                document.body.classList.remove("popup-open");
+            }
+
+            setInterval(() => {
+                pop_up_open();
+            }, 1000 * (60 * 3));
+        })
+
+    </script>
+    <script>
+        let selectedRating = 0;
+
+        function rate(rating) {
+            document.getElementById("rating").value = rating;
+            selectedRating = rating;
+            resetStars();
+            highlightStars(rating);
+        }
+
+        function resetStars() {
+            const stars = document.querySelectorAll('.star');
+            stars.forEach(star => {
+                star.classList.remove('active');
+            });
+        }
+
+        function highlightStars(count) {
+            const stars = document.querySelectorAll('.star');
+            for (let i = 0; i < count; i++) {
+                stars[i].classList.add('active');
+            }
+        }
+    </script>
 </body>
 
 </html>

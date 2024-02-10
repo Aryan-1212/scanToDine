@@ -189,6 +189,13 @@ include("../commonPages/dbConnect.php");
         .cart .cartDes .flex2 {
             padding: 0px 10px
         }
+        .view-order {
+            font-size: 15px;
+            padding: 0px 50px;
+        }
+        .view-order a {
+            padding: 12px 15px;
+        }
     }
 </style>
 
@@ -197,7 +204,9 @@ include("../commonPages/dbConnect.php");
 <?php
     if (isset($_SESSION['is_registered_cus']) && isset($_SESSION['uid'])) {
         $uid = $_SESSION['uid'];
-        $isAnyOrderQurey = "select order_id from orders where cus_id=$uid and res_id=$res_code and order_status='placed'";
+        $isAnyOrderQurey = "select order_id from orders 
+                            where cus_id=$uid and res_id=$res_code and order_status='placed'
+                            AND TIMESTAMPDIFF(HOUR, order_date, NOW()) <= 24";
         $isAnyOrder = mysqli_query($con, $isAnyOrderQurey);
         if (mysqli_num_rows($isAnyOrder) > 0) {
             echo "<div class='view-order'><a href='../customerModule/orderStatus.php'>View Ongoing Orders</a></div>";

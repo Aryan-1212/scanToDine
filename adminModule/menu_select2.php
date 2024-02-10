@@ -22,7 +22,7 @@
             padding: 0;
         }
 
-        ::-webkit-scrollbar{
+        ::-webkit-scrollbar {
             display: none;
         }
 
@@ -164,38 +164,40 @@
             .Menu .MenuContainer .MenuBox .MenuHeading {
                 position: relative;
             }
-            .Menu .MenuContainer .MenuBox .MenuHeading marquee{
-            text-align: center;
-            font-size: 1.2em;
-            position: absolute;
-            top: 26%;
-            text-decoration: none;
-            background-color: white;
-            overflow: hidden;
-            height: 100%;
-            color: black;
-            width: 100%;
-            /* margin: 10px 0; */
-            font-family: 'Poppins', sans-serif;
-        }
-            .Menu .MenuContainer .MenuBox {
 
+            .Menu .MenuContainer .MenuBox .MenuHeading marquee {
+                text-align: center;
+                font-size: 1.2em;
+                position: absolute;
+                top: 26%;
+                text-decoration: none;
+                background-color: white;
+                overflow: hidden;
+                height: 100%;
+                color: black;
+                width: 100%;
+                /* margin: 10px 0; */
+                font-family: 'Poppins', sans-serif;
             }
+
+            .Menu .MenuContainer .MenuBox {}
         }
+
         @media only screen and (max-width: 1024px) {
-            .Menu .MenuContainer .MenuBox .MenuHeading marquee{
-            text-align: center;
-            font-size: 1.2em;
-            position: absolute;
-            top: 26%;
-            text-decoration: none;
-            overflow: hidden;
-            height: 100%;
-            color: black;
-            width: 100%;
-            /* margin: 10px 0; */
-            font-family: 'Poppins', sans-serif;
-        }
+            .Menu .MenuContainer .MenuBox .MenuHeading marquee {
+                text-align: center;
+                font-size: 1.2em;
+                position: absolute;
+                top: 26%;
+                text-decoration: none;
+                overflow: hidden;
+                height: 100%;
+                color: black;
+                width: 100%;
+                /* margin: 10px 0; */
+                font-family: 'Poppins', sans-serif;
+            }
+
             header .HeaderContainer .HeaderLinks {
                 display: none;
             }
@@ -254,24 +256,24 @@
                 font-family: 'Poppins', sans-serif;
                 font-weight: bold;
             }
-            
+
             #sidebarmenu ul li a:hover {
                 background-color: var(--offwhite);
             }
-            
+
             header .HeaderContainer .Profile img {
                 display: block;
                 margin-right: 150px;
             }
         }
-        
-        .Menu{
+
+        .Menu {
             background-color: whitesmoke;
             height: 100%;
             width: 100%;
         }
 
-        .Menu h1{
+        .Menu h1 {
             color: #cf3427;
             background-color: white;
             border-bottom: 1px solid black;
@@ -280,16 +282,16 @@
             text-align: center;
             font-size: 3.2rem;
         }
-        
-        .Menu .MenuContainer{
+
+        .Menu .MenuContainer {
             display: flex;
             align-items: center;
             justify-items: center;
             justify-content: space-evenly;
             flex-wrap: wrap;
         }
-        
-        .Menu .MenuContainer .MenuBox{
+
+        .Menu .MenuContainer .MenuBox {
             border: 2px solid black;
             width: 250px;
             height: 250px;
@@ -300,14 +302,14 @@
             flex-wrap: wrap;
         }
 
-        .Menu .MenuContainer .MenuBox .MenuImg{
-            width: 100%;    
+        .Menu .MenuContainer .MenuBox .MenuImg {
+            width: 100%;
             height: 80%;
             margin: 0;
             padding: 0;
         }
-        
-        .Menu .MenuContainer .MenuBox .MenuHeading{
+
+        .Menu .MenuContainer .MenuBox .MenuHeading {
             width: 100%;
             background-color: white;
             border-top: 2px solid;
@@ -316,19 +318,19 @@
             padding: 0;
             position: relative;
         }
-        
-        .Menu .MenuContainer .MenuBox img{
+
+        .Menu .MenuContainer .MenuBox img {
             width: 100%;
             border-bottom: 2px solid black;
             height: 200px;
         }
 
-        .Menu .MenuContainer a{
+        .Menu .MenuContainer a {
             text-decoration: none;
         }
-        
-        
-        .Menu .MenuContainer .MenuBox marquee{
+
+
+        .Menu .MenuContainer .MenuBox marquee {
             text-align: center;
             position: absolute;
             top: 25%;
@@ -341,32 +343,37 @@
             /* margin: 10px 0; */
             font-family: 'Poppins', sans-serif;
         }
-        
-        .Menu .MenuContainer .active{
-            border: 3px solid rgba(0,255,0);
+
+        .Menu .MenuContainer .active {
+            border: 3px solid rgba(0, 255, 0);
             box-shadow: rgba(0, 255, 0, 0.3) 0px 19px 38px, rgba(0, 255, 0, 0.22) 0px 15px 12px;
         }
 
-        .Button{
+        .Menu .MenuContainer .alreadySelected {
+            border: 3px solid rgba(0,0,255);
+            box-shadow: rgba(0, 0, 255, 0.3) 0px 19px 38px, rgba(0, 255, 0, 0.22) 0px 15px 12px;
+        }
+
+        .Button {
             width: 100%;
             margin: 50px 0;
             display: flex;
-            justify-content: center;   
+            justify-content: center;
         }
-        
-        #subBtn{
+
+        #subBtn {
             background-color: greenyellow;
             border: 1px solid Green;
             padding: 7px 20px;
         }
-        #subBtn:hover{
+
+        #subBtn:hover {
             background-color: green;
             color: white;
             transition-duration: 0.7s;
             border: 1px solid greenyellow;
         }
-
-        </style>
+    </style>
 
 </head>
 
@@ -375,39 +382,39 @@
         <h1>Select Food Items</h1>
         <div class="container">
             <div class="MenuContainer">
-            <?php
-                    if(isset($_GET['name'])){
-                        $category = $_GET['name'];
-                    }
-                    else{
-                        ?>
-                        <script>
-                            document.querySelector("h1").innerHTML = 'Select category First';
-                        </script>
-                        <?php
-                        exit();
-                    }
+                <?php
+                if (isset($_GET['name'])) {
+                    $category = $_GET['name'];
+                } else {
+                    ?>
+                    <script>
+                        document.querySelector("h1").innerHTML = 'Select category First';
+                    </script>
+                    <?php
+                    exit();
+                }
 
-                    $con = mysqli_connect("localhost", "root", "", "scantodine");
-                    $select_item = mysqli_query($con, "select * from default_item where category='$category'");
-                    $items = mysqli_fetch_all($select_item, MYSQLI_ASSOC);
-                    foreach($items as $item){
+                $con = mysqli_connect("localhost", "root", "", "scantodine");
+                $select_item = mysqli_query($con, "select * from default_item where category='$category'");
+                $items = mysqli_fetch_all($select_item, MYSQLI_ASSOC);
+                foreach ($items as $item) {
                     $item_id = $item['item_id'];
                     $item_name = $item['item_name'];
                     $item_extension = $item['extension'];
-                ?>
-                <div class="MenuBox" div_id="<?php echo $item_id; ?>">
-                <div class="MenuImg">
-                    <img src="../default_items2/<?php echo $item_id."-".$item_name."-".$category.".".$item_extension ?>" alt="<?php echo $item_name ?>">
-                </div>
-                <div class="MenuHeading">
-                    <marquee direction="left" scrolldelay=20>
-                        <?php echo $item_name; ?>
-                    </marquee>
-                </div>
-                </div>
-                <?php
-                    }
+                    ?>
+                    <div class="MenuBox" div_id="<?php echo $item_id; ?>">
+                        <div class="MenuImg">
+                            <img src="../default_items2/<?php echo $item_id . "-" . $item_name . "-" . $category . "." . $item_extension ?>"
+                                alt="<?php echo $item_name ?>">
+                        </div>
+                        <div class="MenuHeading">
+                            <marquee direction="left" scrolldelay=20>
+                                <?php echo $item_name; ?>
+                            </marquee>
+                        </div>
+                    </div>
+                    <?php
+                }
                 ?>
             </div>
         </div>
@@ -419,40 +426,52 @@
             <button type="submit" id="subBtn">Submit</button>
         </div>
     </form>
-        
+    <script>
+        document.addEventListener("DOMContentLoaded", ()=>{
+            const addItemsValues = JSON.parse(localStorage.getItem('addItemValues'));
 
-        <script>
+            const menuBox =document.querySelectorAll(".MenuBox");
+            for(let box=0;box<menuBox.length;box++){
+                const id = menuBox[box].getAttribute('div_id');
+                if(addItemsValues.includes(id)){
+                    menuBox[box].classList.add("alreadySelected");
+                    menuBox[box].style.pointerEvents = 'none';
+                }
+            }
+        })
+
+        
         var selected_items = JSON.parse(localStorage.getItem('selected_items')) || [];
         const itemDivs = document.querySelectorAll('.MenuBox');
 
         var selectedItemsInput = document.getElementById('selectedItemsInput');
 
-        function updateSelectedItemsInput(){
+        function updateSelectedItemsInput() {
             selectedItemsInput.value = JSON.stringify(selected_items);
-            localStorage.setItem("selected_items",JSON.stringify(selected_items));
+            localStorage.setItem("selected_items", JSON.stringify(selected_items));
         }
 
-        itemDivs.forEach(function(div){
+        itemDivs.forEach(function (div) {
             const div_id = div.getAttribute('div_id');
-            if (selected_items.includes(div_id)){
+            if (selected_items.includes(div_id)) {
                 div.classList.add("active");
             }
-            div.addEventListener('click',function(){
+            div.addEventListener('click', function () {
 
-                var selectedDiv = div.classList.contains('active'); // true or false
+                var selectedDiv = div.classList.contains('active');
 
-                if(selectedDiv){
+                if (selectedDiv) {
                     div.classList.remove('active');
                     const index = selected_items.indexOf(div_id);
                     selected_items.splice(index, 1);
                     updateSelectedItemsInput();
                 }
-                else{
+                else {
                     div.classList.add('active');
                     selected_items.push(div_id);
                     updateSelectedItemsInput();
                 }
-                
+
             })
         })
     </script>

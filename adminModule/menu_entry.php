@@ -35,5 +35,5 @@
             $isError = True;
         }
     }
-    header("Location: menu.php");
+    header("Location: ../adminModule/menu_choose.php");
 ?>

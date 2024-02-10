@@ -1,6 +1,5 @@
 <?php
 include("../commonPages/dbConnect.php");
-include("../commonPages/index_header.php");
 // $selectedItemsjson = $_POST['selecteditems'];
 // $selectedItems = json_decode($selectedItemsjson, true);
 if (!isset($_SESSION)) {
@@ -106,7 +105,7 @@ if (!isset($_SESSION)) {
     }
 
     .menu{
-      min-height: calc(100vh - 350px);
+      min-height: calc(100vh - 448px);
       margin-bottom: 100px
     }
 
@@ -427,6 +426,7 @@ if (!isset($_SESSION)) {
         $item_category = $data['category'];
         $item_extension = $data['extension'];
         ?>
+        
         <button class="collapsible">
           <?php echo ucfirst($data['item_name']); ?>
         </button>
@@ -530,7 +530,7 @@ if (!isset($_SESSION)) {
   </section>
 
     <?php
-      include("../commonPages/index_footer.html");
+      // include("../commonPages/index_footer.html");
     ?>
 
 </body>

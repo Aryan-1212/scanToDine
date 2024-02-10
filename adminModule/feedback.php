@@ -11,6 +11,7 @@ if(!isset($_SESSION)){
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../commonPages/logo.ico">
     <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
@@ -54,10 +55,10 @@ if(!isset($_SESSION)){
         background-color: whitesmoke;
         position: relative;
         margin: 0 0 5% 0;
-        width: 100%;
+        width: 48%;
         border: 2px solid whitesmoke;
-        box-shadow: 5px 6px #888888;
-        border-radius: 50px;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+        /* border-radius: 50px; */
     }
 
     #Feedback .FeedbackContainer .Img {
@@ -92,7 +93,8 @@ if(!isset($_SESSION)){
     #Feedback .FeedbackContainer .Cross .I {
         position: absolute;
         width: 350px;
-        top: 0;
+        top: -10;
+        right: 48%;
         bottom: 50%;
         /* right: 40%; */
     }
@@ -121,9 +123,10 @@ if(!isset($_SESSION)){
         background-color: red;
         color: white;
         font-weight: bolder;
+        z-index: 3;
         position: absolute;
-        top: 0;
-        right: 0;
+        top: -5px;
+        right: -5px;
     }
 
     #Feedback .FeedbackContainer .Description p {
@@ -138,7 +141,7 @@ if(!isset($_SESSION)){
     @media only screen and (max-width: 1199px) {
         #Feedback .FeedbackContainer .Flex1 {
             width: 100%;
-            margin: 100px 0;
+            margin: 25px 10px;
         }
 
         #Feedback .FeedbackContainer .Cross .I {
@@ -163,12 +166,29 @@ if(!isset($_SESSION)){
         #Feedback .FeedbackContainer .Cross .I {
             position: absolute;
             width: 350px;
-            top: 0;
+            top: -10;
+            right: 35%;
+        }
+        
+    }
+    
+    @media only screen and (max-width: 537px)   {
+        #Feedback .FeedbackContainer .Cross .I {
+            position: absolute;
+            width: 350px;
+            top: -10;
             left: 0;
         }
-
     }
-
+    
+    @media only screen and (max-width: 400px) {
+        #Feedback .FeedbackContainer .Cross .I {
+            position: absolute;
+            width: 350px;
+            top: -10;
+            right: 0;
+        }
+    }
     @media only screen and (max-width: 391px) {
         #Feedback .FeedbackContainer .Cross .I img {
             width: 81%;
@@ -180,7 +200,8 @@ if(!isset($_SESSION)){
             font-size: 13px;
             position: absolute;
             width: 350px;
-            top: 20px;
+            top: -10px;
+            right: 10px;
             left: 0;
         }
     }
@@ -206,7 +227,7 @@ if(!isset($_SESSION)){
                         $name = $row['username'];
                         $email = $row['fb_email'];
                         $subject = $row['fb_subject'];
-                        $experience = $row['experience'];
+                        $experience = $row['rating'];
                         $description = $row['fb_description'];
                         ?>
                 <div class="Flex1" id="<?php echo $fb_id; ?>">
@@ -234,7 +255,7 @@ if(!isset($_SESSION)){
                                 <img src="../adminModule/user.jpg" alt="">
                             </li>
                             <li class="fb-experience">
-                                <?php echo $experience; ?>
+                                Rating - <?php echo $experience; ?>
                             </li>
                         </ul>
                     </div>

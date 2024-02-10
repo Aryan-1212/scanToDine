@@ -8,46 +8,82 @@ if(!isset($_SESSION['is_login'])){
     header("Location: ../indexPage/index.php");
     exit();
 }
+
+$res_code = $_SESSION['res_code'];
 include("../commonPages/index_header.php");
+include("../commonPages/dbConnect.php");
 
+$numInventoryQuery = mysqli_query($con, "select item_id from inventory where res_code=$res_code");
+$numInventory = mysqli_num_rows($numInventoryQuery);
 
-/*$link = mysqli_connect("localhost", "root", "", "admin_info"); //taru je database hoi ae muki deje
+$numFeedbacksQuery = mysqli_query($con, "select * from feedbacks where res_code=$res_code");
+$numFeedbacks = mysqli_num_rows($numFeedbacksQuery);
+$feedbacks = mysqli_fetch_all($numFeedbacksQuery, MYSQLI_ASSOC);
 
-$test = array();
-$count = 0;
+$numMenuItemsQuery = mysqli_query($con, "select food_type_id from food_items where res_id=$res_code");
+$numMenuItems = mysqli_num_rows($numMenuItemsQuery);
 
-$res = mysqli_query($link, "select * from dishes"); // taru je table hoi ae muki deje
+$numOrdersQuery = mysqli_query($con, "select * from orders where res_id=$res_code");
+$numOrders = mysqli_num_rows($numOrdersQuery);
+$orders = mysqli_fetch_all($numOrdersQuery, MYSQLI_ASSOC);
 
-while ($row = mysqli_fetch_array($res)) {
-    $test[$count]["label"] = $row["Dishes"]; 
-    $test[$count]["y"] = $row["no_of_orders"];
-    $count = $count + 1;
+$orders_count = array();
+
+foreach($orders as $order){
+    $item_det = json_decode($order['items_det'],true);
+    foreach($item_det as $key => $val){
+        if(!strpos($key, '-inst')){
+            $id = substr($key,0,8);
+            $qun = $item_det[$id];
+
+            if(!array_key_exists($id, $orders_count)){
+                $itemNameQuery = mysqli_query($con, "select type_name from food_items where food_type_id=$id");
+                $itemName = mysqli_fetch_array($itemNameQuery)['type_name'];
+                $orders_count[$id] = array('y'=>$qun, 'label'=>$itemName);
+            }else{
+                $orders_count[$id]['y'] += $qun;
+            }
+        }
+    }
 }
 
-$test1 = array();
-$count1 = 0;
-
-$res1 = mysqli_query($link, "select * from feedback"); // taru je table hoi ae muki deje
-
-while ($row1 = mysqli_fetch_array($res1)) {
-    $test1[$count1]["label"] = $row1["Ratings"];
-    $test1[$count1]["y"] = $row1["no_of_customer"];
-    $count1 = $count1 + 1;
+$order_details = array();
+foreach($orders_count as $val){
+    array_push($order_details, $val);
 }
 
-mysqli_close($link);*/
+$feedback_count = array(1=>0, 2=>0, 3=>0, 4=>0, 5=>0);
+foreach($feedbacks as $feedback){
 
-//kindly remove below static data while you creating dynamic charts
+    $rating = $feedback['rating'];
+    switch($feedback['rating']){
+        case 1:
+            $feedback_count[1]++;
+            break;
+        case 2:
+            $feedback_count[2]++;
+            break;
+        case 3:
+            $feedback_count[3]++;
+            break;
+        case 4:
+            $feedback_count[4]++;
+            break;
+        case 5:
+            $feedback_count[5]++;
+            break;
+        default:
+            break;
+    }
+}
 
-$test = array(
-    array("y" => 3373.64, "label" => "Germany"),
-    array("y" => 2435.94, "label" => "France"),
-    array("y" => 1842.55, "label" => "China"),
-    array("y" => 1828.55, "label" => "Russia"),
-    array("y" => 1039.99, "label" => "Switzerland"),
-    array("y" => 765.215, "label" => "Japan"),
-    array("y" => 612.453, "label" => "Netherlands")
-);
+$feedback_details = array();
+foreach($feedback_count as $key => $val){
+    $feedback_details[] = array("label"=>"Rating Star - $key", "y"=>$val);
+}
+
+
+
 $test1 = array(
     array("label" => "Chrome", "y" => 64.02),
     array("label" => "Firefox", "y" => 12.55),
@@ -216,7 +252,9 @@ $test1 = array(
                 </div>
                 <div class="info">
                     <b>No. of Orders:</b>
-                    <b class="btag"> 120 </b>
+                    <?php
+                        echo "<b class='btag'>".$numOrders."</b>";
+                    ?>
                 </div>
             </div>
             <div class="panelItem" style="background-color: #e83010;">
@@ -225,7 +263,9 @@ $test1 = array(
                 </div>
                 <div class="info">
                     <b>Inventory items:</b>
-                    <b class="btag"> 120 </b>
+                    <?php
+                        echo "<b class='btag'>".$numInventory."</b>";
+                    ?>
                 </div>
             </div>
             <div class="panelItem" style="background-color: #e83010;">
@@ -234,7 +274,9 @@ $test1 = array(
                 </div>
                 <div class="info">
                     <b> No. of feedbacks:</b>
-                    <b class="btag"> 120 </b>
+                    <?php
+                        echo "<b class='btag'>".$numFeedbacks."</b>";
+                    ?>
                 </div>
             </div>
             <div class="panelItem" style="background-color: #e83010;">
@@ -243,7 +285,9 @@ $test1 = array(
                 </div>
                 <div class="info">
                     <b>Menu items:</b>
-                    <b class="btag"> 120 </b>
+                    <?php
+                        echo "<b class='btag'>".$numMenuItems."</b>";
+                    ?>
                 </div>
             </div>
         </div>
@@ -276,7 +320,7 @@ $test1 = array(
             data: [{
                 type: "column",
                 yValueFormatString: "#,##0.## orders",
-                dataPoints: <?php echo json_encode($test, JSON_NUMERIC_CHECK); ?>
+                dataPoints: <?php echo json_encode($order_details, JSON_NUMERIC_CHECK); ?>
             }]
         });
         chart.render();
@@ -284,16 +328,16 @@ $test1 = array(
         var chart1 = new CanvasJS.Chart("chartContainer1", {
             animationEnabled: true,
             title: {
-                text: "Reviews of the customer"
+                text: "Ratings from the customer"
             },
             subtitles: [{
-                text: "No. of customer"
+                text: "Number of Ratings"
             }],
             data: [{
                 type: "pie",
                 yValueFormatString: "#,##0.\" Customer\"",
                 indexLabel: "{label} ({y})",
-                dataPoints: <?php echo json_encode($test1, JSON_NUMERIC_CHECK); ?>
+                dataPoints: <?php echo json_encode($feedback_details, JSON_NUMERIC_CHECK); ?>
             }]
         });
         chart1.render();
