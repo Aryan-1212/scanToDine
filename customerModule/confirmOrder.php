@@ -250,7 +250,7 @@ $food_id = $_GET['food_id'];
                             <?php echo ucwords($type_name); ?>
                         </h2>
                         <h4>
-                            <?php echo $type_price . "₹"; ?>
+                            <?php echo "₹" . $type_price; ?>
                         </h4>
 
                         <?php

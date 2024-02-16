@@ -134,7 +134,6 @@ if (isset($_POST["editedData"])) {
             flex-wrap: wrap;
             align-items: center;
             width: 100%;
-            border-bottom: 1px solid gray;
             padding: 10px 0;
         }
 
@@ -149,27 +148,31 @@ if (isset($_POST["editedData"])) {
         .table-row .change {
             flex: 0;
         }
-
+        
         .table-row .change button {
             border: none;
             background-color: transparent;
         }
-
+        
         .table-row .change button:hover {
             box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
             transition-duration: 0.4s;
         }
-
+        
         .table-cell:nth-child(4) {
             flex: 1.5;
         }
-
+        
         #add-item {
-            float: right;
             margin-bottom: 4%;
+            float: right;
         }
 
-
+        #add-category{
+            margin-bottom: 4%;
+            float: right;
+        }
+        
         .btn {
             margin-top: 10px;
             padding: 10px;
@@ -194,6 +197,10 @@ if (isset($_POST["editedData"])) {
             display: none;
             box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
             border-radius: 15px;
+        }
+
+        #form-container2 {
+            padding: 0px 200px;
         }
 
         #row {
@@ -266,9 +273,14 @@ if (isset($_POST["editedData"])) {
             <div class="Inventory-container">
                 <div class="con">
                     <h2>Inventory Management</h2>
+                    <button class="btn" id="add-category">Add Your Own Category</button>
                     <button class="btn" id="add-item">Add Item</button><br>
                 </div><br>
                 <div class="form-container" id="form-container">
+
+                </div><br>
+
+                <div class="form-container" id="form-container2">
 
                 </div><br>
 
@@ -328,6 +340,26 @@ if (isset($_POST["editedData"])) {
 
             </div>
         </div>
+
+
+        <?php
+            $isAnyCatQuery = "select DISTINCT * from inventory where res_code=$res_code and additional_category!='null'";
+            $isAnyCat = mysqli_query($con, $isAnyCatQuery);
+            if(mysqli_num_rows($isAnyCat) != 0){
+                $data = mysqli_fetch_assoc($isAnyCat);
+                $alreadyCat = json_decode($data['additional_category'], true);
+                foreach($alreadyCat as $cat){
+                    echo "
+                    <div class='categories' style='display: none;'>
+                        <option value='".strtoupper($cat)."'>".strtoupper($cat)."</option>
+                    </div>
+                    ";
+                }
+                ?>
+                <?php
+            }
+        ?>
+        
     </section>
     <?php
         include("../commonPages/index_footer.html");
@@ -335,8 +367,18 @@ if (isset($_POST["editedData"])) {
 </body>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
+
+        const categories =document.getElementsByClassName("categories");
+        let cat_str = '';
+        for(let cat=0;cat<categories.length;cat++){
+            const category = categories[cat].textContent.trim();
+            cat_str = cat_str + `<option value="${category}">${category}</option>`
+        }
+
         const addItemButton = document.getElementById("add-item");
+        const addCategory =document.getElementById("add-category");
         const formContainer = document.getElementById("form-container");
+        const formContainer2 = document.getElementById("form-container2");
 
         let isFormAdded = false;
 
@@ -354,6 +396,7 @@ if (isset($_POST["editedData"])) {
                                 <option value="NON-VEGETARIAN">NON-VEGETARIAN</option>
                                 <option value="EGGETARIAN">EGGETARIAN</option>
                                 <option value="JAIN ITEM">JAIN ITEM</option>
+                                ${cat_str}
                             </select>
                         </div>
                         <div class="table-cell"><input type="text" name="item_qun" placeholder="Quantity" required ></div>
@@ -373,11 +416,35 @@ if (isset($_POST["editedData"])) {
                 `;
                 formContainer.insertAdjacentHTML("beforeend", newRowHTML);
                 formContainer.style.display = 'block';
+                formContainer2.style.display = 'none';
                 isFormAdded = true;
             } else {
                 formContainer.innerHTML = '';
                 formContainer.style.display = 'none';
                 isFormAdded = false;
+            }
+        });
+
+        let isCategoryFormAdded = false;
+        addCategory.addEventListener("click", function () {
+            if (!isCategoryFormAdded) {
+                const newRowHTML = `
+                    <form action='inventory_add.php' method='POST'>
+                    <div class="table-row" id="row">
+                        <div class="table-cell">Add Your Own Category - </div>
+                        <div class="table-cell"><input type="text" placeholder="Category Name" name="cat_name" required ></div>
+                    </div><br>
+                    <input type="submit" class="btn" style=" width:10%; margin-bottom: 20px">
+                  </form>
+                `;
+                formContainer2.insertAdjacentHTML("beforeend", newRowHTML);
+                formContainer2.style.display = 'block';
+                formContainer.style.display = 'none';
+                isCategoryFormAdded = true;
+            } else {
+                formContainer2.innerHTML = '';
+                formContainer2.style.display = 'none';
+                isCategoryFormAdded = false;
             }
         });
     });

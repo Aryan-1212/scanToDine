@@ -15,8 +15,8 @@
     $updateRecord = mysqli_query($con, $queryToUpdate);
     if(!$updateRecord){
         $_SESSION['is_error'] = true;
-        header('Location: menu.php');
+        header('Location: menu_choose.php');
     }else{
-        header('Location: menu.php');
+        header('Location: menu_choose.php');
     }
 ?>

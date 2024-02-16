@@ -8,7 +8,8 @@ $res_code = $_SESSION['res_code'];
 
 if (isset($_POST['ChangedData'])) {
     $change_data = json_decode($_POST['ChangedData'],true);
-    $tax = (trim($change_data['tax'])=='')?0:$change_data['tax'];
+    $tax = ($change_data['tax'] == 1)?5:18; // 1 for non-air conditioned
+    echo $tax;
     $charges = (trim($change_data['charges'])=='')?0:$change_data['charges'];
     $discount = (trim($change_data['discount'])=='')?0:$change_data['discount'];
     $upi = (trim($change_data['upi'])=='')?'-':$change_data['upi'];
@@ -26,7 +27,7 @@ if (isset($_POST['ChangedData'])) {
 
 if (isset($_POST['data'])) {
     $data = json_decode($_POST['data'], true);
-    $tax = (trim($data['tax'])=='')?0:$data['tax'];
+    $tax = ($data['tax'] == 1)?5:18; // 1 for non-air conditioned
     $charges = (trim($data['charges'])=='')?0:$data['charges'];
     $discount = (trim($data['discount'])=='')?0:$data['discount'];
     $upi = (trim($data['upi'])=='')?'-':$data['upi'];
@@ -48,7 +49,7 @@ $fetchRow = mysqli_query($con, "select * from bill_info where res_code=$res_code
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add TAX into BillBody</title>
+    <title>Bill Management</title>
     <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
@@ -111,6 +112,10 @@ $fetchRow = mysqli_query($con, "select * from bill_info where res_code=$res_code
         .AddTax .AddContainer .AddText input[type=Submit] {
             padding: 12px 25px;
             font-size: large;
+        }
+
+        .tax-rates{
+            display: flex;
         }
 
         @media screen and (max-width: 992px) {
@@ -238,10 +243,23 @@ $fetchRow = mysqli_query($con, "select * from bill_info where res_code=$res_code
                         ?>
                         <table>
                             <tr>
-                                <th>Tax rates:</th>
+                                <!-- <th>Tax rates:</th>
                                 <td><input type="number" id="tax" oninput="checkTax(event)"
                                         placeholder="Tax rates of your restaurant"></td>
-                                <td>%</td>
+                                <td>%</td> -->
+
+                                <th>
+                                    <select name="tax" id="tax" onchange="resType(event)">
+                                        <option name="Non-Air-Conditioned" value="1" disabled selected>Select Restaurant Type</option>
+                                        <option name="Non-Air-Conditioned" value="1">Non-Air-Conditioned</option>
+                                        <option name="Air-Conditioned" value="2">Air-Conditioned</option>
+                                    </select>
+                                </th>
+                                <td class="tax-rates">
+                                    <div id="default" style="color:grey;">Default: Non-Air-Conditioned</div>
+                                    <div id="cgst"></div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <div id="sgst"></div>
+                                </td>
                             </tr>
                             <tr>
                                 <td></td>
@@ -274,8 +292,9 @@ $fetchRow = mysqli_query($con, "select * from bill_info where res_code=$res_code
                                 <th>
                                     <form action="" id="formToSubmit" method="POST">
                                         <input type="hidden" name="data" id="hiddenData">
-                                        <input class="btn" id="submitBtn" onclick="submitData()" type="submit"
-                                            value="Submit">
+                                        <!-- <input class="btn" id="submitBtn" onclick="submitData()" type="submit"
+                                            value="Submit"> -->
+                                            <button class="btn" id="submitBtn" onclick="submitData()" type="submit">Submit</button>
                                     </form>
                                 </th>
                             </tr>
@@ -294,6 +313,18 @@ $fetchRow = mysqli_query($con, "select * from bill_info where res_code=$res_code
 </body>
 
 <script>
+    resType = (e) => {
+        document.getElementById('default').style.display='none';
+        const resType = e.target.value;
+        if(resType == '1'){
+            document.getElementById('cgst').innerHTML = 'CGST - 2.5%';
+            document.getElementById('sgst').innerHTML = 'SGST - 2.5%';
+        }else{
+            document.getElementById('cgst').innerHTML = 'CGST - 9%';
+            document.getElementById('sgst').innerHTML = 'SGST - 9%';
+        }
+    }
+
     checkTax = (e) => {
         const id = e.target.id;
         const taxRate = e.target.value;
@@ -312,6 +343,7 @@ $fetchRow = mysqli_query($con, "select * from bill_info where res_code=$res_code
     submitData = () => {
         const data = {};
         data['tax'] = document.getElementById('tax').value;
+        console.log(data['tax']);
         data['charges'] = document.getElementById('charges').value;
         data['discount'] = document.getElementById('discount').value;
         data['upi'] = document.getElementById('upi').value;
@@ -323,16 +355,25 @@ $fetchRow = mysqli_query($con, "select * from bill_info where res_code=$res_code
 
     EditData = () =>{
         const tax = document.getElementById('tax').textContent;
+        const air_conditioned = (tax==18)?true:false;
         const charges = document.getElementById('charges').textContent;
         const discount = document.getElementById('discount').textContent;
         const upi = document.getElementById('upi').textContent;
 
         document.getElementById("addText").innerHTML = `<table>
                             <tr>
-                                <th>Tax rates:</th>
-                                <td><input type="number" id="tax" value='${tax}' oninput="checkTax(event)"
-                                        placeholder="Tax rates of your restaurant"></td>
-                                <td>%</td>
+                                <th>
+                                    <select name="tax" id="tax" onchange="resType(event)">
+                                        <option name="Non-Air-Conditioned" value="1" disabled selected>Select Restaurant Type</option>
+                                        <option name="Non-Air-Conditioned" value="1" ${(!air_conditioned)?'selected':''}>Non-Air-Conditioned</option>
+                                        <option name="Air-Conditioned" value="2" ${(air_conditioned)?'selected':''}>Air-Conditioned</option>
+                                    </select>
+                                </th>
+                                <td class="tax-rates">
+                                    <div id="default"></div>
+                                    <div id="cgst">${(air_conditioned)?'CGST - 9%':'2.5%'}</div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <div id="sgst">${(air_conditioned)?'SGST - 9%':'2.5%'}</div>
+                                </td>
                             </tr>
                             <tr>
                                 <td></td>
@@ -376,9 +417,12 @@ $fetchRow = mysqli_query($con, "select * from bill_info where res_code=$res_code
     changeData = () =>{
         const data = {};
         data['tax'] = document.getElementById('tax').value;
+        console.log(data['tax']);
         data['charges'] = document.getElementById('charges').value;
         data['discount'] = document.getElementById('discount').value;
         data['upi'] = document.getElementById('upi').value;
+
+        console.log(data['tax']);
 
         const dataJson = JSON.stringify(data);
         document.getElementById("changedData").value = dataJson;

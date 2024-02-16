@@ -13,8 +13,8 @@
     $deleteRecord = mysqli_query($con, $deleteQuery);
     if(!$deleteRecord){
         $_SESSION['is_error'] = true;
-        header('Location: menu.php');
+        header('Location: menu_choose.php');
     }else{
-        header('Location: menu.php');
+        header('Location: menu_choose.php');
     }
 ?>

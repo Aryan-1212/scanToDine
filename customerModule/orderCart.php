@@ -280,7 +280,7 @@ include("../commonPages/dbConnect.php");
                 foreach ($orderItemsTotal as $ItemTotal) {
                     $subTotal = $subTotal + $ItemTotal;
                 }
-                echo "<div class='chargeFlex1'>" . $subTotal . "&nbsp;₹</div>";
+                echo "<div class='chargeFlex1'>₹" . $subTotal . "</div>";
                 ?>
             </div>
 
@@ -309,17 +309,17 @@ include("../commonPages/dbConnect.php");
                 <?php
                 $tax = ($subTotal * $tax_rate) / 100;
                 $subTotalWithTax = $subTotal + $tax;
-                echo "<div class='chargeFlex1'>" . $subTotalWithTax . "&nbsp;₹</div>";
+                echo "<div class='chargeFlex1'>₹" . $subTotalWithTax . "</div>";
                 ?>
 
             </div>
             <div class="addiCharges charge">
                 <div class="chargeFlex3">
-                    <?php echo "Additional Charges(" . $add_charge . "₹):" ?>
+                    <?php echo "Additional Charges(₹". $add_charge . "):" ?>
                 </div>
                 <?php
                 $subTotalAddCharge = $subTotalWithTax + $add_charge;
-                echo "<div class='chargeFlex1'>" . $subTotalAddCharge . "&nbsp;₹</div>";
+                echo "<div class='chargeFlex1'>₹". $subTotalAddCharge . "</div>";
                 ?>
 
             </div>
@@ -340,7 +340,7 @@ include("../commonPages/dbConnect.php");
             <div class="total charge">
                 <div class="chargeFlex3">Total:</div>
                 <?php
-                echo "<div class='chargeFlex1'>" . $Total. "&nbsp;₹</div>";
+                echo "<div class='chargeFlex1'>₹" . $Total. "</div>";
                 ?>
             </div>
 

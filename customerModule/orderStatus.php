@@ -306,16 +306,16 @@ if (isset($_POST['fb-email'])) {
 
         .menu-btns .btn{
             text-align: center;
-            color: blue;
+            color: green;
             padding: 12px 20px;
             text-decoration: none;
             background-color: white;
-            border: 1px solid blue;
+            border: 1px solid green;
         }
 
         .menu-btns .btn:hover{
             cursor: pointer;
-            background-color: blue;
+            background-color: green;
             color: white;
             transition-duration: 0.7s;
             box-shadow: 5px 5px 10px 5px rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -547,7 +547,7 @@ if (isset($_POST['fb-email'])) {
                         </div>
                         <div class="other-details-body">
                             <?php
-                            echo "<div class='total'><p>Total - " . $total . " ₹</p></div>";
+                            echo "<div class='total'><p>Total - ₹" . $total . "</p></div>";
 
                             if ($order_status == 'placed') {
                                 echo "<h3 class='com-code'>Completion Code - " . $completion_code . "</h3>";

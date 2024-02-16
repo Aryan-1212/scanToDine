@@ -11,6 +11,15 @@
             justify-content: center;
             padding: 30px;
         }
+        .btnDiv .btn {
+            background-color: #cc2828;
+            color: white;
+        }
+
+        .btn:hover {
+            background-color: #a9f33b;
+            transition-duration: 0.5s;
+        }
     </style>
 </head>
 <body>
