@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 10, 2024 at 07:08 AM
+-- Generation Time: Feb 16, 2024 at 03:22 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -41,8 +41,8 @@ CREATE TABLE `bill_info` (
 --
 
 INSERT INTO `bill_info` (`id`, `res_code`, `tax_rate`, `add_charge`, `dis`, `upi_id`) VALUES
-(16, 547902, 2, 2, 8, 'test12334'),
-(20, 421340, 10, 20, 2, 'test2314');
+(20, 421340, 10, 20, 2, 'test2314'),
+(32, 547902, 18, 20, 2, '-');
 
 -- --------------------------------------------------------
 
@@ -211,7 +211,6 @@ INSERT INTO `food_items` (`food_type_id`, `food_id`, `res_id`, `type_name`, `typ
 (41620862, 101315, 421340, 'Undefined', 0, 'Undefined'),
 (42034371, 101175, 454082, 'Dal makhani', 200, 'Very tasty 😋'),
 (43292798, 101203, 236424, 'dhokla simple', 50, 'delicious dhokla'),
-(43380364, 101628, 547902, 'lassi 1 ', 10, 'delicious'),
 (45307434, 101343, 236424, 'ghughra spicy', 50, '2 piece'),
 (47109468, 101600, 547902, 'Panjabi allo paratha', 100, 'with achar'),
 (48014984, 101252, 454082, 'Sambhar', 201, 'Very tasty 😋'),
@@ -268,6 +267,7 @@ CREATE TABLE `inventory` (
   `item_qun` int(6) NOT NULL,
   `mes_unit` varchar(25) NOT NULL,
   `category` varchar(25) NOT NULL,
+  `additional_category` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`additional_category`)),
   `date_added` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -275,16 +275,16 @@ CREATE TABLE `inventory` (
 -- Dumping data for table `inventory`
 --
 
-INSERT INTO `inventory` (`item_id`, `res_code`, `item_name`, `item_qun`, `mes_unit`, `category`, `date_added`) VALUES
-(4, 547902, 'milk', 10, 'LITRE', 'DAIRY ITEM', '2024-01-14'),
-(18, 547902, 'test', 20, 'PIECE', 'EGGETARIAN', '2024-01-14'),
-(19, 547902, 'egges', 20, 'DOZEN', 'EGGETARIAN', '2024-01-14'),
-(23, 771843, 'sample', 30, 'KILOGRAM', 'VEGETARIAN', '2024-01-14'),
-(24, 771843, 'sample2', 11, 'DOZEN', 'JAIN ITEM', '2024-01-14'),
-(26, 547902, 'Garlic', 20, 'KILOGRAM', 'VEGETARIAN', '2024-01-18'),
-(27, 454082, 'Onion', 50, 'KILOGRAM', 'VEGETARIAN', '2024-01-18'),
-(28, 454082, 'Garlic', 29, 'KILOGRAM', 'VEGETARIAN', '2024-01-18'),
-(30, 897801, 'Paneer', 5, 'KILOGRAM', 'DAIRY ITEM', '2024-01-23');
+INSERT INTO `inventory` (`item_id`, `res_code`, `item_name`, `item_qun`, `mes_unit`, `category`, `additional_category`, `date_added`) VALUES
+(23, 771843, 'sample', 30, 'KILOGRAM', 'VEGETARIAN', NULL, '2024-01-14'),
+(24, 771843, 'sample2', 11, 'DOZEN', 'JAIN ITEM', NULL, '2024-01-14'),
+(27, 454082, 'Onion', 50, 'KILOGRAM', 'VEGETARIAN', NULL, '2024-01-18'),
+(28, 454082, 'Garlic', 29, 'KILOGRAM', 'VEGETARIAN', NULL, '2024-01-18'),
+(30, 897801, 'Paneer', 5, 'KILOGRAM', 'DAIRY ITEM', NULL, '2024-01-23'),
+(44, 547902, 'egges', 23, 'DOZEN', 'EGGETARIAN', '[\"test\",\"test2\",\"test3\"]', '2024-02-10'),
+(45, 547902, 'sam', 34, 'KILOGRAM', 'VEGETARIAN', '[\"test\",\"test2\",\"test3\"]', '2024-02-10'),
+(46, 547902, 'paneer', 14, 'KILOGRAM', 'VEGETARIAN', '[\"test\",\"test2\",\"test3\"]', '2024-02-10'),
+(47, 547902, 'good', 10, 'DOZEN', 'TEST2', '[\"test\",\"test2\",\"test3\"]', '2024-02-10');
 
 -- --------------------------------------------------------
 
@@ -339,7 +339,8 @@ INSERT INTO `orders` (`order_id`, `cus_id`, `order_date`, `table_num`, `res_id`,
 (35, 30, '2024-02-06 09:36:04', 2, 547902, '{\"16743016\":1,\"16743016-inst\":\"\"}', 234.6, 196342, 'placed'),
 (36, 26, '2024-02-10 08:57:57', 2, 547902, '{\"28340041\":1,\"37951681\":1,\"28340041-inst\":\"\",\"37951681-inst\":\"\"}', 267.72, 944510, 'placed'),
 (37, 30, '2024-02-10 11:05:43', 1, 547902, '{\"37951681\":1,\"47109468\":1,\"37951681-inst\":\"\",\"47109468-inst\":\"\"}', 123.832, 842384, 'finished'),
-(38, 30, '2024-02-10 11:07:08', 1, 547902, '{\"28340041\":2,\"37951681\":1,\"47109468\":1,\"28340041-inst\":\"\",\"37951681-inst\":\"\",\"47109468-inst\":\"\"}', 499.192, 367912, 'placed');
+(38, 30, '2024-02-10 11:07:08', 1, 547902, '{\"28340041\":2,\"37951681\":1,\"47109468\":1,\"28340041-inst\":\"\",\"37951681-inst\":\"\",\"47109468-inst\":\"\"}', 499.192, 367912, 'placed'),
+(39, 30, '2024-02-16 07:23:06', 2, 547902, '{\"11929655\":2,\"11929655-inst\":\"\"}', 112.112, 779015, 'placed');
 
 -- --------------------------------------------------------
 
@@ -514,7 +515,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `bill_info`
 --
 ALTER TABLE `bill_info`
-  MODIFY `id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT for table `feedbacks`
@@ -526,13 +527,13 @@ ALTER TABLE `feedbacks`
 -- AUTO_INCREMENT for table `inventory`
 --
 ALTER TABLE `inventory`
-  MODIFY `item_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `item_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `order_id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT for table `restaurant`
