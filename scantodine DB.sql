@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 16, 2024 at 03:22 PM
+-- Generation Time: Feb 17, 2024 at 06:22 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -439,6 +439,32 @@ INSERT INTO `users` (`u_id`, `u_name`, `u_email`, `u_phone`, `password`, `res_co
 (29, 'new test', 'new@123', '0101010101', '111111111111', 771843, 'customer'),
 (30, 'Testing', 'Testing@gmail.com', '2121212121', '121212121212', 547902, 'customer');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `verification_codes`
+--
+
+CREATE TABLE `verification_codes` (
+  `id` int(5) NOT NULL,
+  `email` varchar(20) NOT NULL,
+  `code` int(4) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `verification_codes`
+--
+
+INSERT INTO `verification_codes` (`id`, `email`, `code`) VALUES
+(22, 'aryanparvani12@gmail', 3386),
+(35, 'shivangpandya6212@gm', 3940),
+(36, 'shivangpandya6212@gm', 3235),
+(37, 'shivangpandya6212@gm', 1807),
+(38, 'shivangpandya6212@gm', 2153),
+(39, 'shivangpandya6212@gm', 6070),
+(40, 'shivangpandya6212@gm', 7940),
+(48, 'aryanparvani12@gmail', 5526);
+
 --
 -- Indexes for dumped tables
 --
@@ -508,6 +534,12 @@ ALTER TABLE `users`
   ADD UNIQUE KEY `u_phone` (`u_phone`,`res_code`);
 
 --
+-- Indexes for table `verification_codes`
+--
+ALTER TABLE `verification_codes`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -552,6 +584,12 @@ ALTER TABLE `tables`
 --
 ALTER TABLE `users`
   MODIFY `u_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+
+--
+-- AUTO_INCREMENT for table `verification_codes`
+--
+ALTER TABLE `verification_codes`
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 
 --
 -- Constraints for dumped tables
