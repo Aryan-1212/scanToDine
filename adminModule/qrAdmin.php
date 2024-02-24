@@ -2,22 +2,27 @@
 if (!isset($_SESSION)) {
     session_start();
 }
+
+if (!isset($_SESSION['is_login'])) {
+    header("Location: ../indexPage/index.php");
+    exit();
+}
 $res_code = $_SESSION['res_code'];
 include("../commonPages/dbConnect.php");
 include("../commonPages/redirectPage.php");
 
-if(isset($_POST['deleteQRs'])){
+if (isset($_POST['deleteQRs'])) {
     $deleteQuery = "delete from tables where res_id = $res_code";
 
     $qrCodeImages = scandir("../qr-images/");
-    foreach($qrCodeImages as $imageName){
-        if(str_contains($imageName, $res_code)){
+    foreach ($qrCodeImages as $imageName) {
+        if (str_contains($imageName, $res_code)) {
             unlink("../qr-images/$imageName");
         }
     }
 
     $delete = mysqli_query($con, $deleteQuery);
-    if(!$delete){
+    if (!$delete) {
         echo "<script>alert('Unexpected Error Occurs!');<script>";
     }
     reDirect("../adminModule/qrAdmin.php");
@@ -281,9 +286,9 @@ if(isset($_POST['deleteQRs'])){
     </script>
 
 
-<?php
+    <?php
     include("../commonPages/index_footer.html");
-?>
+    ?>
 </body>
 
 </html>

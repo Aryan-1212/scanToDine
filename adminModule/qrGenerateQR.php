@@ -1,4 +1,13 @@
 <?php
+if (!isset($_SESSION)) {
+    session_start();
+}
+
+if (!isset($_SESSION['is_login'])) {
+    header("Location: ../indexPage/index.php");
+    exit();
+}
+
 require "../vendor/autoload.php";
 use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Writer\PngWriter;
@@ -9,10 +18,11 @@ include('../commonPages/dbConnect.php');
 $table_num = $_POST['num'];
 $res_code = $_POST['res_code'];
 
-function insertQuery($con, $res_code, $num){
+function insertQuery($con, $res_code, $num)
+{
     $query = "insert into tables(res_id, table_num) values($res_code, $num)";
     $insertRow = mysqli_query($con, $query);
-    if(!$insertRow){
+    if (!$insertRow) {
         echo "<script>alert('Unexpected Error!');</script>";
     }
 }
@@ -31,7 +41,7 @@ for ($num = 1; $num <= $table_num; $num++) {
     $writter = new PngWriter;
     $res = $writter->write($qr_code, null, $label);
 
-    insertQuery($con, $res_code ,$num);
+    insertQuery($con, $res_code, $num);
 
     $res->saveToFile("../qr-images/$res_code-qr-$num.png");
 }

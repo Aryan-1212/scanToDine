@@ -1,20 +1,25 @@
 <?php
-    include('../commonPages/dbConnect.php');
-    if(!isset($_SESSION)){
-        session_start();
-    }
-    $_SESSION['is_error'] = false;
-    $res_code = $_SESSION['res_code'];
+include('../commonPages/dbConnect.php');
+if (!isset($_SESSION)) {
+    session_start();
+}
 
-    $id = $_POST['id'];
-    
-    $deleteQuery = "delete from food_items where food_type_id=$id";
+if (!isset($_SESSION['is_login'])) {
+    header("Location: ../indexPage/index.php");
+    exit();
+}
+$_SESSION['is_error'] = false;
+$res_code = $_SESSION['res_code'];
 
-    $deleteRecord = mysqli_query($con, $deleteQuery);
-    if(!$deleteRecord){
-        $_SESSION['is_error'] = true;
-        header('Location: menu_choose.php');
-    }else{
-        header('Location: menu_choose.php');
-    }
+$id = $_POST['id'];
+
+$deleteQuery = "delete from food_items where food_type_id=$id";
+
+$deleteRecord = mysqli_query($con, $deleteQuery);
+if (!$deleteRecord) {
+    $_SESSION['is_error'] = true;
+    header('Location: menu_choose.php');
+} else {
+    header('Location: menu_choose.php');
+}
 ?>

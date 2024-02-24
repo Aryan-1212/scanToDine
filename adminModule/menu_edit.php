@@ -3,7 +3,15 @@ include("../commonPages/dbConnect.php");
 $selectedItemsjson = $_POST['selecteditems'];
 $selectedItems = json_decode($selectedItemsjson, true);
 
-session_start();
+if (!isset($_SESSION)) {
+  session_start();
+}
+
+if (!isset($_SESSION['is_login'])) {
+  header("Location: ../indexPage/index.php");
+  exit();
+}
+
 $_SESSION['selectedItems'] = $selectedItems;
 
 ?>
@@ -36,7 +44,7 @@ if ($_POST['selecteditems']) {
       font-family: 'Poppins', sans-serif;
     }
 
-    ::-webkit-scrollbar{
+    ::-webkit-scrollbar {
       display: none;
     }
 
@@ -258,7 +266,7 @@ if ($_POST['selecteditems']) {
         text-align: center;
       }
 
-      .formToAppend{
+      .formToAppend {
         overflow: scroll;
       }
 
@@ -270,7 +278,7 @@ if ($_POST['selecteditems']) {
         /* height: auto; */
       }
 
-      .iFrameItemDiv{
+      .iFrameItemDiv {
         overflow-y: scroll;
       }
 
@@ -358,8 +366,6 @@ if ($_POST['selecteditems']) {
       justify-content: center;
       align-items: center;
     }
-
-    
   </style>
 </head>
 
@@ -402,14 +408,15 @@ if ($_POST['selecteditems']) {
                           name="name" id="<?php echo $item_id . "-" . $item_index . '-type-name' ?>"
                           placeholder="Food item's type" required></span>
                       <div class="iFrame-priceItem">
-                        <input type="number" class="type-input-field <?php echo $item_id . "-" . $item_index; ?>" name="price"
-                          id="<?php echo $item_id . "-" . $item_index . '-type-price' ?>" placeholder="Price-₹"
-                          class="iFrame-price" required>
+                        <input type="number" class="type-input-field <?php echo $item_id . "-" . $item_index; ?>"
+                          name="price" id="<?php echo $item_id . "-" . $item_index . '-type-price' ?>"
+                          placeholder="Price-₹" class="iFrame-price" required>
                       </div>
                     </div>
                     <div class="iFrame-foodDes">
                       <textarea class="type-input-field <?php echo $item_id . "-" . $item_index; ?>" name="des"
-                        id="<?php echo $item_id . "-" . $item_index . '-type-des' ?>" placeholder="Description"></textarea>
+                        id="<?php echo $item_id . "-" . $item_index . '-type-des' ?>"
+                        placeholder="Description"></textarea>
                     </div>
                   </div>
                   <div class="formToAppend" id="<?php echo 'iFrame-formToAppend-' . $item_id; ?>">
@@ -524,18 +531,18 @@ if ($_POST['selecteditems']) {
       });
 
       let is_undefined = false;
-      for(const value in itemValues){
-        for(const v in itemValues[value]){
-          if(itemValues[`${value}`][`${v}`].trim() === ''){
+      for (const value in itemValues) {
+        for (const v in itemValues[value]) {
+          if (itemValues[`${value}`][`${v}`].trim() === '') {
             is_undefined = true;
           }
         }
       }
 
-      if(is_undefined){
+      if (is_undefined) {
         console.log("please enter valid details first");
         alert("Fill All The Details Of All Types!");
-      }else{
+      } else {
         itemValuesJson = JSON.stringify(itemValues);
         document.getElementById("hiddenValue").value = itemValuesJson;
         document.getElementById("formToSubmit").submit();

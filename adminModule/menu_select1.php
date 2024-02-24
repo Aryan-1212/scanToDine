@@ -1,3 +1,14 @@
+<?php
+    if (!isset($_SESSION)) {
+        session_start();
+    }
+    
+    if (!isset($_SESSION['is_login'])) {
+        header("Location: ../indexPage/index.php");
+        exit();
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 

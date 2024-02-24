@@ -1,4 +1,14 @@
 <?php
+if (!isset($_SESSION)) {
+    session_start();
+}
+
+if (!isset($_SESSION['is_login'])) {
+    header("Location: ../indexPage/index.php");
+    exit();
+}
+
+
 require "../vendor/autoload.php";
 use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Writer\PngWriter;
@@ -35,7 +45,7 @@ if (isset($_POST['addQR'])) {
     insertQuery($con, $res_code, $num);
 
     $res->saveToFile("../qr-images/$res_code-qr-$num.png");
-}else{
+} else {
     echo "<script>alert('Unexpected Error Occurs!');</script>";
 }
 header("Location: ../adminModule/qrAdmin.php");

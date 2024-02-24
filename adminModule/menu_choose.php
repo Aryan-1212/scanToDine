@@ -1,3 +1,14 @@
+<?php
+if (!isset($_SESSION)) {
+    session_start();
+}
+
+if (!isset($_SESSION['is_login'])) {
+    header("Location: ../indexPage/index.php");
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,11 +17,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menu</title>
     <style>
-        .btnDiv{
+        .btnDiv {
             display: flex;
             justify-content: center;
             padding: 30px;
         }
+
         .btnDiv .btn {
             background-color: #cc2828;
             color: white;
@@ -22,14 +34,11 @@
         }
     </style>
 </head>
+
 <body>
     <?php
     include("../commonPages/index_header.php");
     include('../commonPages/dbConnect.php');
-
-    if(!isset($_SESSION)){
-        session_start();
-    }
 
     $res_code = $_SESSION['res_code'];
     $checkMenuQuery = "select * from food_items where res_id = $res_code";
@@ -46,19 +55,19 @@
         echo "<script>alert(Unexpected Error);</script>";
     }
     ?>
-    
-    <?php 
-        include("../commonPages/index_footer.html");
+
+    <?php
+    include("../commonPages/index_footer.html");
     ?>
 
     <script>
 
-        addItem = () =>{
+        addItem = () => {
             const items = document.querySelectorAll('.iFrameItemDiv');
             const itemsArray = [];
-            for(let item=0; item<items.length; item++){
-                const id = items[item].id.substring(0,6);
-                if(!itemsArray.includes(id)){
+            for (let item = 0; item < items.length; item++) {
+                const id = items[item].id.substring(0, 6);
+                if (!itemsArray.includes(id)) {
                     itemsArray.push(id);
                 }
             }

@@ -2,6 +2,10 @@
     if(!isset($_SESSION)){
         session_start();
     }
+    if(!isset($_SESSION['is_order_ongoing'])){
+        header("Location: ../customerModule/order.php");
+        exit();
+    }
     $res_code = $_SESSION['res_code_for_cus'];
 
     include("../commonPages/dbConnect.php");

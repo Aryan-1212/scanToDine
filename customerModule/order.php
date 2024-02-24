@@ -2,19 +2,32 @@
 if (!isset($_SESSION)) {
     session_start();
 }
+
 include("../commonPages/dbConnect.php");
 // $res_code = $_SESSION['res_code'];
 if (isset($_GET['res_code'])) {
     echo "<script>localStorage.clear();</script>";
+    $_SESSION['is_order_ongoing'] = true;
     $res_code = $_GET['res_code'];
     $table_num = $_GET['table_num'];
     $_SESSION['res_code_for_cus'] = $res_code;
     $_SESSION['table_num'] = $table_num;
 } else {
+    if(!isset($_SESSION['is_order_ongoing'])){
+        echo "<script>alert('Please Scan QR to Order!');</script>";
+        echo "<h1>Please Scan QR to Order!</h1>";
+        exit();
+    }
     $res_code = $_SESSION['res_code_for_cus'];
     $table_num = $_SESSION['table_num'];
 }
 // $res_code = $_SESSION['res_code'];
+
+if(!isset($_SESSION['is_order_ongoing'])){
+    echo "<script>alert('Please Scan QR to Order!');</script>";
+    echo "<h1>Please Scan QR to Order!</h1>";
+    exit();
+}
 ?>
 
 
