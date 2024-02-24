@@ -5,6 +5,11 @@ if (!isset($_SESSION)) {
     session_start();
 }
 
+if (!isset($_SESSION['is_login'])) {
+    header("Location: ../indexPage/index.php");
+    exit();
+}
+
 $res_code = $_SESSION['res_code'];
 
 if (isset($_POST["editedData"])) {
@@ -83,7 +88,7 @@ if (isset($_POST["editedData"])) {
             background-color: lightsteelblue;
         }
 
-        .Inventory{
+        .Inventory {
             margin-bottom: 100px;
             margin-top: 30px;
             min-height: 315px;
@@ -148,31 +153,31 @@ if (isset($_POST["editedData"])) {
         .table-row .change {
             flex: 0;
         }
-        
+
         .table-row .change button {
             border: none;
             background-color: transparent;
         }
-        
+
         .table-row .change button:hover {
             box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
             transition-duration: 0.4s;
         }
-        
+
         .table-cell:nth-child(4) {
             flex: 1.5;
         }
-        
+
         #add-item {
             margin-bottom: 4%;
             float: right;
         }
 
-        #add-category{
+        #add-category {
             margin-bottom: 4%;
             float: right;
         }
-        
+
         .btn {
             margin-top: 10px;
             padding: 10px;
@@ -243,7 +248,8 @@ if (isset($_POST["editedData"])) {
             }
         }
 
-        .errorMsg, .no-data {
+        .errorMsg,
+        .no-data {
             color: red;
         }
     </style>
@@ -343,40 +349,40 @@ if (isset($_POST["editedData"])) {
 
 
         <?php
-            $isAnyCatQuery = "select DISTINCT * from inventory where res_code=$res_code and additional_category!='null'";
-            $isAnyCat = mysqli_query($con, $isAnyCatQuery);
-            if(mysqli_num_rows($isAnyCat) != 0){
-                $data = mysqli_fetch_assoc($isAnyCat);
-                $alreadyCat = json_decode($data['additional_category'], true);
-                foreach($alreadyCat as $cat){
-                    echo "
+        $isAnyCatQuery = "select DISTINCT * from inventory where res_code=$res_code and additional_category!='null'";
+        $isAnyCat = mysqli_query($con, $isAnyCatQuery);
+        if (mysqli_num_rows($isAnyCat) != 0) {
+            $data = mysqli_fetch_assoc($isAnyCat);
+            $alreadyCat = json_decode($data['additional_category'], true);
+            foreach ($alreadyCat as $cat) {
+                echo "
                     <div class='categories' style='display: none;'>
-                        <option value='".strtoupper($cat)."'>".strtoupper($cat)."</option>
+                        <option value='" . strtoupper($cat) . "'>" . strtoupper($cat) . "</option>
                     </div>
                     ";
-                }
-                ?>
-                <?php
             }
+            ?>
+            <?php
+        }
         ?>
-        
+
     </section>
     <?php
-        include("../commonPages/index_footer.html");
+    include("../commonPages/index_footer.html");
     ?>
 </body>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
 
-        const categories =document.getElementsByClassName("categories");
+        const categories = document.getElementsByClassName("categories");
         let cat_str = '';
-        for(let cat=0;cat<categories.length;cat++){
+        for (let cat = 0; cat < categories.length; cat++) {
             const category = categories[cat].textContent.trim();
             cat_str = cat_str + `<option value="${category}">${category}</option>`
         }
 
         const addItemButton = document.getElementById("add-item");
-        const addCategory =document.getElementById("add-category");
+        const addCategory = document.getElementById("add-category");
         const formContainer = document.getElementById("form-container");
         const formContainer2 = document.getElementById("form-container2");
 

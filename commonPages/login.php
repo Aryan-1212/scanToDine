@@ -501,7 +501,7 @@ if (isset($_SESSION['is_error'])) {
 
 
                             <div class="user-box">
-                                <a href="" class="forgot">forgot password?</a>
+                                <a href="forgot_pass/sendVerificationCode.php" class="forgot">forgot password?</a>
                             </div>
                             <div class="Submitbtn">
                                 <span></span>

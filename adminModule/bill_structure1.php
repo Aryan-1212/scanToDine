@@ -2,24 +2,29 @@
 if (!isset($_SESSION)) {
     session_start();
 }
+
+if (!isset($_SESSION['is_login'])) {
+    header("Location: ../indexPage/index.php");
+    exit();
+}
 include("../commonPages/dbConnect.php");
 include("../commonPages/redirectPage.php");
 $res_code = $_SESSION['res_code'];
 
 if (isset($_POST['ChangedData'])) {
-    $change_data = json_decode($_POST['ChangedData'],true);
-    $tax = ($change_data['tax'] == 1)?5:18; // 1 for non-air conditioned
+    $change_data = json_decode($_POST['ChangedData'], true);
+    $tax = ($change_data['tax'] == 1) ? 5 : 18; // 1 for non-air conditioned
     echo $tax;
-    $charges = (trim($change_data['charges'])=='')?0:$change_data['charges'];
-    $discount = (trim($change_data['discount'])=='')?0:$change_data['discount'];
-    $upi = (trim($change_data['upi'])=='')?'-':$change_data['upi'];
+    $charges = (trim($change_data['charges']) == '') ? 0 : $change_data['charges'];
+    $discount = (trim($change_data['discount']) == '') ? 0 : $change_data['discount'];
+    $upi = (trim($change_data['upi']) == '') ? '-' : $change_data['upi'];
 
     $updateRowQuery = "update bill_info set tax_rate=$tax, add_charge=$charges, dis=$discount, upi_id='$upi' where res_code = $res_code";
 
     $updateRow = mysqli_query($con, $updateRowQuery);
     if (!$updateRow) {
         echo "<script>alert('Unexpected Error Occurs!');</script>";
-    }else{
+    } else {
         reDirect("../adminModule/bill_structure1.php");
     }
 }
@@ -27,16 +32,16 @@ if (isset($_POST['ChangedData'])) {
 
 if (isset($_POST['data'])) {
     $data = json_decode($_POST['data'], true);
-    $tax = ($data['tax'] == 1)?5:18; // 1 for non-air conditioned
-    $charges = (trim($data['charges'])=='')?0:$data['charges'];
-    $discount = (trim($data['discount'])=='')?0:$data['discount'];
-    $upi = (trim($data['upi'])=='')?'-':$data['upi'];
+    $tax = ($data['tax'] == 1) ? 5 : 18; // 1 for non-air conditioned
+    $charges = (trim($data['charges']) == '') ? 0 : $data['charges'];
+    $discount = (trim($data['discount']) == '') ? 0 : $data['discount'];
+    $upi = (trim($data['upi']) == '') ? '-' : $data['upi'];
 
     $insertRowQuery = "insert into bill_info(res_code, tax_rate, add_charge, dis, upi_id) values($res_code, $tax, $charges, $discount, '$upi')";
     $insertRow = mysqli_query($con, $insertRowQuery);
     if (!$insertRow) {
         echo "<script>alert('Unexpected Error Occurs!');</script>";
-    }else{
+    } else {
         reDirect("../adminModule/bill_structure1.php");
     }
 }
@@ -114,7 +119,7 @@ $fetchRow = mysqli_query($con, "select * from bill_info where res_code=$res_code
             font-size: large;
         }
 
-        .tax-rates{
+        .tax-rates {
             display: flex;
         }
 
@@ -177,7 +182,7 @@ $fetchRow = mysqli_query($con, "select * from bill_info where res_code=$res_code
 <body>
 
     <?php
-        include("../commonPages/index_header.php");
+    include("../commonPages/index_header.php");
     ?>
 
     <section class="AddTax">
@@ -201,7 +206,9 @@ $fetchRow = mysqli_query($con, "select * from bill_info where res_code=$res_code
                         <table>
                             <tr>
                                 <th>Tax rates:</th>
-                                <td id="tax"><span><?php echo $tax; ?></span></td>
+                                <td id="tax"><span>
+                                        <?php echo $tax; ?>
+                                    </span></td>
                                 <td>%</td>
                             </tr>
                             <tr>
@@ -210,7 +217,9 @@ $fetchRow = mysqli_query($con, "select * from bill_info where res_code=$res_code
                             </tr>
                             <tr>
                                 <th>Additional charges:</th>
-                                <td id="charges"><span><?php echo $add_charge; ?></span></td>
+                                <td id="charges"><span>
+                                        <?php echo $add_charge; ?>
+                                    </span></td>
                                 <td>₹</td>
                             </tr>
                             <tr>
@@ -219,7 +228,9 @@ $fetchRow = mysqli_query($con, "select * from bill_info where res_code=$res_code
                             </tr>
                             <tr>
                                 <th>Discount:</th>
-                                <td id="discount"><span><?php echo $dis; ?></span></td>
+                                <td id="discount"><span>
+                                        <?php echo $dis; ?>
+                                    </span></td>
                                 <td>%</td>
                             </tr>
                             <tr>
@@ -228,12 +239,13 @@ $fetchRow = mysqli_query($con, "select * from bill_info where res_code=$res_code
                             </tr>
                             <tr>
                                 <th>UPI id:</th>
-                                <td id="upi"><span><?php echo $upi; ?></span></td>
+                                <td id="upi"><span>
+                                        <?php echo $upi; ?>
+                                    </span></td>
                             </tr>
                             <tr>
                                 <th id="submitAfterEdit">
-                                    <input class="btn" id="updateBtn" onclick="EditData()" type="submit"
-                                        value="Edit">
+                                    <input class="btn" id="updateBtn" onclick="EditData()" type="submit" value="Edit">
                                 </th>
                             </tr>
                         </table>
@@ -250,7 +262,8 @@ $fetchRow = mysqli_query($con, "select * from bill_info where res_code=$res_code
 
                                 <th>
                                     <select name="tax" id="tax" onchange="resType(event)">
-                                        <option name="Non-Air-Conditioned" value="1" disabled selected>Select Restaurant Type</option>
+                                        <option name="Non-Air-Conditioned" value="1" disabled selected>Select Restaurant
+                                            Type</option>
                                         <option name="Non-Air-Conditioned" value="1">Non-Air-Conditioned</option>
                                         <option name="Air-Conditioned" value="2">Air-Conditioned</option>
                                     </select>
@@ -294,7 +307,8 @@ $fetchRow = mysqli_query($con, "select * from bill_info where res_code=$res_code
                                         <input type="hidden" name="data" id="hiddenData">
                                         <!-- <input class="btn" id="submitBtn" onclick="submitData()" type="submit"
                                             value="Submit"> -->
-                                            <button class="btn" id="submitBtn" onclick="submitData()" type="submit">Submit</button>
+                                        <button class="btn" id="submitBtn" onclick="submitData()"
+                                            type="submit">Submit</button>
                                     </form>
                                 </th>
                             </tr>
@@ -308,18 +322,18 @@ $fetchRow = mysqli_query($con, "select * from bill_info where res_code=$res_code
     </section>
 
     <?php
-        include("../commonPages/index_footer.html");
+    include("../commonPages/index_footer.html");
     ?>
 </body>
 
 <script>
     resType = (e) => {
-        document.getElementById('default').style.display='none';
+        document.getElementById('default').style.display = 'none';
         const resType = e.target.value;
-        if(resType == '1'){
+        if (resType == '1') {
             document.getElementById('cgst').innerHTML = 'CGST - 2.5%';
             document.getElementById('sgst').innerHTML = 'SGST - 2.5%';
-        }else{
+        } else {
             document.getElementById('cgst').innerHTML = 'CGST - 9%';
             document.getElementById('sgst').innerHTML = 'SGST - 9%';
         }
@@ -353,9 +367,9 @@ $fetchRow = mysqli_query($con, "select * from bill_info where res_code=$res_code
         document.getElementById("formToSubmit").submit();
     }
 
-    EditData = () =>{
+    EditData = () => {
         const tax = document.getElementById('tax').textContent;
-        const air_conditioned = (tax==18)?true:false;
+        const air_conditioned = (tax == 18) ? true : false;
         const charges = document.getElementById('charges').textContent;
         const discount = document.getElementById('discount').textContent;
         const upi = document.getElementById('upi').textContent;
@@ -365,14 +379,14 @@ $fetchRow = mysqli_query($con, "select * from bill_info where res_code=$res_code
                                 <th>
                                     <select name="tax" id="tax" onchange="resType(event)">
                                         <option name="Non-Air-Conditioned" value="1" disabled selected>Select Restaurant Type</option>
-                                        <option name="Non-Air-Conditioned" value="1" ${(!air_conditioned)?'selected':''}>Non-Air-Conditioned</option>
-                                        <option name="Air-Conditioned" value="2" ${(air_conditioned)?'selected':''}>Air-Conditioned</option>
+                                        <option name="Non-Air-Conditioned" value="1" ${(!air_conditioned) ? 'selected' : ''}>Non-Air-Conditioned</option>
+                                        <option name="Air-Conditioned" value="2" ${(air_conditioned) ? 'selected' : ''}>Air-Conditioned</option>
                                     </select>
                                 </th>
                                 <td class="tax-rates">
                                     <div id="default"></div>
-                                    <div id="cgst">${(air_conditioned)?'CGST - 9%':'2.5%'}</div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <div id="sgst">${(air_conditioned)?'SGST - 9%':'2.5%'}</div>
+                                    <div id="cgst">${(air_conditioned) ? 'CGST - 9%' : '2.5%'}</div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <div id="sgst">${(air_conditioned) ? 'SGST - 9%' : '2.5%'}</div>
                                 </td>
                             </tr>
                             <tr>
@@ -414,7 +428,7 @@ $fetchRow = mysqli_query($con, "select * from bill_info where res_code=$res_code
                         </table>`;
     }
 
-    changeData = () =>{
+    changeData = () => {
         const data = {};
         data['tax'] = document.getElementById('tax').value;
         console.log(data['tax']);

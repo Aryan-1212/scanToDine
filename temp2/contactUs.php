@@ -1,4 +1,6 @@
-<?php include("../commonPages/index_header.php"); ?>
+<?php 
+  include("../commonPages/index_header.php");
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -134,9 +136,9 @@
             $subject=$_POST['subject'];
             $msg=$_POST['message'];
 
-            require 'PHPMailer/PHPMailer/src/Exception.php';
-            require 'PHPMailer/PHPMailer/src/PHPMailer.php';
-            require 'PHPMailer/PHPMailer/src/SMTP.php';
+            require '../PHPMailer/PHPMailer/src/Exception.php';
+            require '../PHPMailer/PHPMailer/src/PHPMailer.php';
+            require '../PHPMailer/PHPMailer/src/SMTP.php';
 
             $mail = new PHPMailer(true);
             try {
@@ -160,10 +162,12 @@
 
               $mail->send();
 
-              echo '<p>Your message has been sent</p>';
+              echo "<script>alert('Your message has been sent');</script>";
+              echo "<script>window.location.replace('../temp2/contactUs.php');</script>";
+
             }
             catch (Exception $e) {
-              echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+              echo "<p style='color:red;'>Message could not be sent. Mailer Error: {$mail->ErrorInfo}<p>";
             }
           }
           ?>
@@ -173,7 +177,7 @@
   </section>
 
   <?php
-    include("./index_footer.html");
+    include("../commonPages/index_footer.html");
   ?>
 
 </body>

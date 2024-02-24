@@ -1,10 +1,10 @@
 <?php
 
-if(!isset($_SESSION)){
+if (!isset($_SESSION)) {
     session_start();
 }
 
-if(!isset($_SESSION['is_login'])){
+if (!isset($_SESSION['is_login'])) {
     header("Location: ../indexPage/index.php");
     exit();
 }
@@ -29,18 +29,18 @@ $orders = mysqli_fetch_all($numOrdersQuery, MYSQLI_ASSOC);
 
 $orders_count = array();
 
-foreach($orders as $order){
-    $item_det = json_decode($order['items_det'],true);
-    foreach($item_det as $key => $val){
-        if(!strpos($key, '-inst')){
-            $id = substr($key,0,8);
+foreach ($orders as $order) {
+    $item_det = json_decode($order['items_det'], true);
+    foreach ($item_det as $key => $val) {
+        if (!strpos($key, '-inst')) {
+            $id = substr($key, 0, 8);
             $qun = $item_det[$id];
 
-            if(!array_key_exists($id, $orders_count)){
+            if (!array_key_exists($id, $orders_count)) {
                 $itemNameQuery = mysqli_query($con, "select type_name from food_items where food_type_id=$id");
                 $itemName = mysqli_fetch_array($itemNameQuery)['type_name'];
-                $orders_count[$id] = array('y'=>$qun, 'label'=>$itemName);
-            }else{
+                $orders_count[$id] = array('y' => $qun, 'label' => $itemName);
+            } else {
                 $orders_count[$id]['y'] += $qun;
             }
         }
@@ -48,15 +48,16 @@ foreach($orders as $order){
 }
 
 $order_details = array();
-foreach($orders_count as $val){
+foreach ($orders_count as $val) {
     array_push($order_details, $val);
 }
+// $order_details = array(0=>array("y"=>"2","label"=>"no Data"));
 
-$feedback_count = array(1=>0, 2=>0, 3=>0, 4=>0, 5=>0);
-foreach($feedbacks as $feedback){
+$feedback_count = array(1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0);
+foreach ($feedbacks as $feedback) {
 
     $rating = $feedback['rating'];
-    switch($feedback['rating']){
+    switch ($feedback['rating']) {
         case 1:
             $feedback_count[1]++;
             break;
@@ -78,21 +79,11 @@ foreach($feedbacks as $feedback){
 }
 
 $feedback_details = array();
-foreach($feedback_count as $key => $val){
-    $feedback_details[] = array("label"=>"Rating Star - $key", "y"=>$val);
+foreach ($feedback_count as $key => $val) {
+    $feedback_details[] = array("label" => "Rating Star - $key", "y" => $val);
 }
 
-
-
-$test1 = array(
-    array("label" => "Chrome", "y" => 64.02),
-    array("label" => "Firefox", "y" => 12.55),
-    array("label" => "IE", "y" => 8.47),
-    array("label" => "Safari", "y" => 6.08),
-    array("label" => "Edge", "y" => 4.29),
-    array("label" => "Others", "y" => 4.59)
-)
-    ?>
+?>
 <!DOCTYPE HTML>
 <html>
 
@@ -110,7 +101,7 @@ $test1 = array(
         background-color: whitesmoke;
     }
 
-    ::-webkit-scrollbar{
+    ::-webkit-scrollbar {
         display: none;
     }
 
@@ -145,7 +136,7 @@ $test1 = array(
     }
 
     .panelItem .info {
-        height:100px ;
+        height: 100px;
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
@@ -169,11 +160,20 @@ $test1 = array(
     }
 
     .chartContainer {
+        width: 100%;
         height: 500px;
         border: 3px solid gray;
         border-radius: 6px;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
         margin-bottom: 20px;
+    }
+
+    .no-data {
+        display: flex;
+        align-items: center;
+        color: red;
+        font-size: 30px;
+        justify-content: center;
     }
 
     .admin {
@@ -196,9 +196,11 @@ $test1 = array(
         height: 585px;
         margin-left: 1%;
     }
+
     .adminPanel .panelItem {
         color: white;
     }
+
     @media (max-width: 1060px) {
         .admin {
             width: 100%;
@@ -231,14 +233,15 @@ $test1 = array(
         }
     }
 
-    .canvasjs-chart-credit{
+    .canvasjs-chart-credit {
         display: none;
     }
 
     a:-webkit-any-link {
         /* display: none !important;      */
     }
-    .btag{
+
+    .btag {
         font-size: 40px;
     }
 </style>
@@ -253,7 +256,7 @@ $test1 = array(
                 <div class="info">
                     <b>No. of Orders:</b>
                     <?php
-                        echo "<b class='btag'>".$numOrders."</b>";
+                    echo "<b class='btag'>" . $numOrders . "</b>";
                     ?>
                 </div>
             </div>
@@ -264,7 +267,7 @@ $test1 = array(
                 <div class="info">
                     <b>Inventory items:</b>
                     <?php
-                        echo "<b class='btag'>".$numInventory."</b>";
+                    echo "<b class='btag'>" . $numInventory . "</b>";
                     ?>
                 </div>
             </div>
@@ -275,7 +278,7 @@ $test1 = array(
                 <div class="info">
                     <b> No. of feedbacks:</b>
                     <?php
-                        echo "<b class='btag'>".$numFeedbacks."</b>";
+                    echo "<b class='btag'>" . $numFeedbacks . "</b>";
                     ?>
                 </div>
             </div>
@@ -286,21 +289,41 @@ $test1 = array(
                 <div class="info">
                     <b>Menu items:</b>
                     <?php
-                        echo "<b class='btag'>".$numMenuItems."</b>";
+                    echo "<b class='btag'>" . $numMenuItems . "</b>";
                     ?>
                 </div>
             </div>
         </div>
+
+
         <div class="graph">
-            <div class="chartContainer" id="chartContainer"></div>
+            <?php
+            if (empty($order_details)) {
+                echo "<div class='chartContainer no-data'>No DATA</div>";
+            } else {
+                echo "<div class='chartContainer' id='chartContainer'></div>";
+            }
+            ?>
         </div>
+        <?php
+        foreach ($feedback_details as $val) {
+            $is_rating_available = ($val['y'] != 0) ? true : false;
+        }
+        ?>
+
         <div class="graph1">
-            <div class="chartContainer" id="chartContainer1"></div>
+            <?php
+            if (empty($is_rating_available)) {
+                echo "<div class='chartContainer no-data'>No DATA</div>";
+            } else {
+                echo "<div class='chartContainer' id='chartContainer1'></div>";
+            }
+            ?>
         </div>
     </div>
 
     <?php
-        include("../commonPages/index_footer.html"); 
+    include("../commonPages/index_footer.html");
     ?>
 
 </body>
@@ -340,6 +363,7 @@ $test1 = array(
                 dataPoints: <?php echo json_encode($feedback_details, JSON_NUMERIC_CHECK); ?>
             }]
         });
+
         chart1.render();
 
     }

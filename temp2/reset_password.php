@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,12 +12,12 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            background-color: #f4f4f4;
+            background-color: lightsteelblue;
         }
 
         .container {
             width: 40%;
-            margin: 150px auto;
+            margin: 80px auto;
             padding: 75px;
             border: 1px solid #ccc;
             border-radius: 10px;
@@ -31,7 +32,7 @@
             margin-bottom: 20px;
             display: flex;
             flex-wrap: wrap;
-            width:auto;
+            width: auto;
         }
 
         .heading {
@@ -46,14 +47,14 @@
             color: #555;
         }
 
-        .email-input {
+        .password-input {
             width: 100%;
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
             box-sizing: border-box;
-            margin-bottom:5%;
-            outline:none;
+            margin-bottom: 5%;
+            outline: none;
         }
 
         .reset-button {
@@ -72,21 +73,24 @@
             color: white;
             transition-duration: 1s;
         }
-        input:focus {
-            box-shadow: 1px 3px 35px 1px green;
-            transition-duration:0.5s;
+        #error {
+            color: red;
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h2 class="heading">Forget Password</h2>
-        <form method="post" action="">
+        <form method="post" action="" id="passwordForm">
             <div class="form-group">
-                <label for="email" class="label">New Password:</label>
-                <input type="Password" id="email" name="email" class="email-input" placeholder="Enter.." required>
-                <label for="email" class="label">Confirm Password:</label>
-                <input type="Password" id="email" name="email" class="email-input" placeholder="Enter.." required>
+                <label for="password" class="label">New Password:</label>
+                <input type="password" id="password" name="password" class="password-input" placeholder="Enter.."
+                    required>
+                <label for="confirmPassword" class="label">Confirm Password:</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" class="password-input"
+                    placeholder="Enter.." required>
+                 <label id="error"></label>
             </div>
             <div class="form-group">
                 <button type="submit" class="reset-button" name="submit">SUBMIT</button>
@@ -94,4 +98,22 @@
         </form>
     </div>
 </body>
+<script>
+    document.getElementById("passwordForm").addEventListener("submit", function(event) {
+    event.preventDefault(); 
+
+     const password = document.getElementById("password");
+     const confirmPassword = document.getElementById("confirmPassword");
+     const passError = document.getElementById("error");
+
+
+    if (password.value !== confirmPassword.value) {
+        passError.innerHTML = "Password must be same!";
+        password.style.borderColor = 'red';
+        confirmPassword.style.borderColor = 'red';
+        return false;
+    } 
+});
+
+</script>
 </html>

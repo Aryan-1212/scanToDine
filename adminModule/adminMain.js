@@ -9,34 +9,34 @@ slides.forEach(
 
 const changeSlide = () => {
     slides.forEach(
-        (slide)=>{
-            slide.style.transform = `translate(-${100*counter}%)`;
+        (slide) => {
+            slide.style.transform = `translate(-${100 * counter}%)`;
         }
     )
 }
 
-const nextSlide = () =>{
+const nextSlide = () => {
     counter++;
-    if(counter>=slides.length){
+    if (counter >= slides.length) {
         counter = 0;
     }
     changeSlide();
 }
 
-const prevSlide = () =>{
+const prevSlide = () => {
     counter--;
-    if(counter<0){
-        counter=slides.length-1;
+    if (counter < 0) {
+        counter = slides.length - 1;
     }
     changeSlide();
 }
 
 setInterval(
-    ()=>{
+    () => {
         counter++;
-        if(counter>=slides.length){
+        if (counter >= slides.length) {
             counter = 0;
         }
         changeSlide();
-    },3000
+    }, 3000
 )

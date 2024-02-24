@@ -1,7 +1,12 @@
-<?php 
-include("../commonPages/index_header.php"); 
-if(!isset($_SESSION)){
+<?php
+include("../commonPages/index_header.php");
+if (!isset($_SESSION)) {
     session_start();
+}
+
+if (!isset($_SESSION['is_login'])) {
+    header("Location: ../indexPage/index.php");
+    exit();
 }
 ?>
 <!DOCTYPE html>
@@ -20,16 +25,16 @@ if(!isset($_SESSION)){
 </head>
 
 <style>
-
-    *{
+    * {
         margin: 0;
         padding: 0;
         font-family: 'Poppins', sans-serif;
     }
 
-    ::-webkit-scrollbar{
+    ::-webkit-scrollbar {
         display: none;
     }
+
     #Feedback {
         width: 100%;
         min-height: calc(100vh - 250px);
@@ -37,7 +42,7 @@ if(!isset($_SESSION)){
         background-color: lightsteelblue;
     }
 
-    #Feedback .FeedbackHeader{
+    #Feedback .FeedbackHeader {
         padding: 40px 0px 0px 0px;
     }
 
@@ -68,7 +73,7 @@ if(!isset($_SESSION)){
         margin-top: 100px;
     }
 
-    #Feedback .FeedbackContainer .Img .fb-experience{
+    #Feedback .FeedbackContainer .Img .fb-experience {
         text-align: center;
     }
 
@@ -133,7 +138,7 @@ if(!isset($_SESSION)){
         padding: 0 30px;
     }
 
-    #Feedback .no-data{
+    #Feedback .no-data {
         color: red;
         font-size: xx-large;
     }
@@ -169,10 +174,10 @@ if(!isset($_SESSION)){
             top: -10;
             right: 35%;
         }
-        
+
     }
-    
-    @media only screen and (max-width: 537px)   {
+
+    @media only screen and (max-width: 537px) {
         #Feedback .FeedbackContainer .Cross .I {
             position: absolute;
             width: 350px;
@@ -180,7 +185,7 @@ if(!isset($_SESSION)){
             left: 0;
         }
     }
-    
+
     @media only screen and (max-width: 400px) {
         #Feedback .FeedbackContainer .Cross .I {
             position: absolute;
@@ -189,6 +194,7 @@ if(!isset($_SESSION)){
             right: 0;
         }
     }
+
     @media only screen and (max-width: 391px) {
         #Feedback .FeedbackContainer .Cross .I img {
             width: 81%;
@@ -216,7 +222,7 @@ if(!isset($_SESSION)){
             </div>
             <div class="FeedbackContainer" id="FeedbackContainer">
 
-            <?php
+                <?php
                 include("../commonPages/dbConnect.php");
                 $res_code = $_SESSION['res_code'];
                 $queryToFetch = "select * from feedbacks where  res_code = $res_code";
@@ -230,45 +236,48 @@ if(!isset($_SESSION)){
                         $experience = $row['rating'];
                         $description = $row['fb_description'];
                         ?>
-                <div class="Flex1" id="<?php echo $fb_id; ?>">
-                    <div class="Cross">
-                        <button class="buttonToBeClicked closeBtn" id="<?php echo "btn-".$fb_id; ?>">X</button>
-                        <div class="I">
-                            <img src="../adminModule/feedback.png" alt="">
-                            <ul>
-                                <li class="fb-name">
-                                    <?php echo $name; ?>
-                                </li>
-                                <li class="fb-email">
-                                    <?php echo $email; ?>
-                                </li>
-                                <li class="fb-subject">
-                                    <?php echo $subject ?>
-                                </li>
-                            </ul>
+                        <div class="Flex1" id="<?php echo $fb_id; ?>">
+                            <div class="Cross">
+                                <button class="buttonToBeClicked closeBtn" id="<?php echo "btn-" . $fb_id; ?>">X</button>
+                                <div class="I">
+                                    <img src="../adminModule/feedback.png" alt="">
+                                    <ul>
+                                        <li class="fb-name">
+                                            <?php echo $name; ?>
+                                        </li>
+                                        <li class="fb-email">
+                                            <?php echo $email; ?>
+                                        </li>
+                                        <li class="fb-subject">
+                                            <?php echo $subject ?>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                            </div>
+                            <div class="Img">
+                                <ul>
+                                    <li style="width: 100px;">
+                                        <img src="../adminModule/user.jpg" alt="">
+                                    </li>
+                                    <li class="fb-experience">
+                                        Rating -
+                                        <?php echo $experience; ?>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="Description">
+                                <p>
+                                    <?php echo $description; ?>
+                                </p>
+                            </div>
                         </div>
 
-                    </div>
-                    <div class="Img">
-                        <ul>
-                            <li style="width: 100px;">
-                                <img src="../adminModule/user.jpg" alt="">
-                            </li>
-                            <li class="fb-experience">
-                                Rating - <?php echo $experience; ?>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="Description">
-                        <p><?php echo $description; ?></p>
-                    </div>
-                </div>
-
-                <?php 
+                    <?php
                     }
                 } else {
                     ?>
-                        <div class="no-data">No Feedbacks Available.</div>
+                    <div class="no-data">No Feedbacks Available.</div>
                     <?php
                 }
                 mysqli_close($con);
@@ -278,21 +287,21 @@ if(!isset($_SESSION)){
     </section>
 
     <?php
-        include("../commonPages/index_footer.html");
+    include("../commonPages/index_footer.html");
     ?>
 
 </body>
 <script>
-        const feedbacks = document.querySelector('#FeedbackContainer');
-        feedbacks.addEventListener('click', function(event){
-            if(event.target.classList.contains('closeBtn')){
-                const fbIdToDelete = event.target.parentNode.parentNode.id;
-                const confirmToDelete = window.confirm("Do You really want to delete this feedback?");
-                if(confirmToDelete){
-                    window.location.href = `./feedbackDelete.php?fb_Id=${fbIdToDelete}`;
-                }
+    const feedbacks = document.querySelector('#FeedbackContainer');
+    feedbacks.addEventListener('click', function (event) {
+        if (event.target.classList.contains('closeBtn')) {
+            const fbIdToDelete = event.target.parentNode.parentNode.id;
+            const confirmToDelete = window.confirm("Do You really want to delete this feedback?");
+            if (confirmToDelete) {
+                window.location.href = `./feedbackDelete.php?fb_Id=${fbIdToDelete}`;
             }
-        })
+        }
+    })
 </script>
 
 

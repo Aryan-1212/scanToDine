@@ -1,5 +1,12 @@
+<?php
+    if(!isset($_SESSION)){
+        session_start();
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -31,7 +38,7 @@
             margin-bottom: 20px;
             display: flex;
             flex-wrap: wrap;
-            width:auto;
+            width: auto;
         }
 
         .heading {
@@ -52,7 +59,7 @@
             border: 1px solid #ccc;
             border-radius: 5px;
             box-sizing: border-box;
-            outline:none;
+            outline: none;
         }
 
         .reset-button {
@@ -73,13 +80,15 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h2 class="heading">Forget Password</h2>
         <form method="post" action="">
             <div class="form-group">
-                <label for="email" class="label">Email:</label>
-                <input type="email" id="email" name="email" class="email-input" placeholder="Enter your email address" required>
+                <label for="email" class="label">Email, of which you want to change the password:</label>
+                <input type="email" id="email" name="email" class="email-input" placeholder="Registered Email ID"
+                    required>
             </div>
             <div class="form-group">
                 <button type="submit" class="reset-button" name="submit">Send Verification Code</button>
@@ -87,20 +96,20 @@
         </form>
 
         <?php
-         use PHPMailer\PHPMailer\PHPMailer;
-         use PHPMailer\PHPMailer\SMTP;
-         use PHPMailer\PHPMailer\Exception;
-       
+        use PHPMailer\PHPMailer\PHPMailer;
+        use PHPMailer\PHPMailer\SMTP;
+        use PHPMailer\PHPMailer\Exception;
+
         // $servername = "localhost";
         // $username = "root";
         // $password = "";
         // $dbname = "forgetpassword";
         
-        include("../commonPages/dbConnect.php");
+        include("../../commonPages/dbConnect.php");
 
         // $con = new mysqli($servername, $username, $password, $dbname);
+        
 
-      
         if ($con->connect_error) {
             die("Connection failed: " . $con->connect_error);
         }
@@ -108,39 +117,45 @@
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (isset($_POST['submit'])) {
                 $email = $_POST['email'];
+                $_SESSION['change_pass_email'] = $email;
+
+                $isEmailRegistered = mysqli_query($con, "select * from users where u_email='$email' and role='manager'");
+                if(mysqli_num_rows($isEmailRegistered)==0){
+                    echo "<script>alert('Check your email, it is not registered!');</script>";
+                    exit();
+                }
 
                 // Validate the email (you can use filter_var or other validation methods).
-
+        
                 // Generate a random verification code.
                 $verificationCode = mt_rand(1000, 9999);
 
                 // Store verification code in the database
                 $sql = "INSERT INTO verification_codes (email, code) VALUES ('$email', '$verificationCode')";
                 if ($con->query($sql) === TRUE) {
-                    require '../PHPMailer/PHPMailer/src/Exception.php';
-                    require '../PHPMailer/PHPMailer/src/PHPMailer.php';
-                    require '../PHPMailer/PHPMailer/src/SMTP.php';
+                    require '../../PHPMailer/PHPMailer/src/Exception.php';
+                    require '../../PHPMailer/PHPMailer/src/PHPMailer.php';
+                    require '../../PHPMailer/PHPMailer/src/SMTP.php';
 
                     $mail = new PHPMailer(true);
-
                     try {
                         // Server settings
                         $mail->isSMTP();
-                        $mail->Host       = 'smtp.gmail.com';
-                        $mail->SMTPAuth   = true;
-                        $mail->Username   = 'scantodine007@gmail.com';
-                        $mail->Password   = 'giun imyp ekzz ptcm';
+                        $mail->Host = 'smtp.gmail.com';
+                        $mail->SMTPAuth = true;
+                        $mail->Username = 'scantodine007@gmail.com';
+                        $mail->Password = 'ioqm oiaq kgll fyuk';
                         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-                        $mail->Port       = 587;
-                
+                        $mail->Port = 587;
+
                         //Recipients
                         $mail->setFrom('scantodine007@gmail.com', 'ScanToDine TEAM');
-                        $mail->addAddress($email);                
+                        $mail->addAddress($email);
 
                         // Content
                         $mail->isHTML(true);
                         $mail->Subject = 'Verification Code for Password Reset';
-                        $mail->Body    = '<h2>Your verification code is: </h2><br><h1>' . $verificationCode .'</h1>';
+                        $mail->Body = '<h2>Your verification code is: </h2><br><h1>' . $verificationCode . '</h1>';
 
                         $mail->send();
 
@@ -160,4 +175,5 @@
         ?>
     </div>
 </body>
+
 </html>

@@ -1,19 +1,19 @@
-body{
+body {
     margin: 0;
     padding: 0;
 }
 
-::-webkit-scrollbar{
+::-webkit-scrollbar {
     display: none;
 }
 
-.slider-div{
+.slider-div {
     background-color: whitesmoke;
     padding-top: 10px;
     padding-bottom: 10px;
 }
 
-.slider{
+.slider {
     margin: 0px 10px;
     height: 500px;
     display: flex;
@@ -22,32 +22,32 @@ body{
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
-.slider .slide{
+.slider .slide {
     position: absolute;
     transition-duration: 1s;
 }
 
-.slider .btn{
+.slider .btn {
     position: absolute;
     padding: 30px 20px;
     background-color: transparent;
     top: 220px;
 }
 
-.slider .btn:hover{
+.slider .btn:hover {
     background-color: white;
     transition-duration: 1s;
 }
 
-.slider #slider-left-btn{
+.slider #slider-left-btn {
     left: 0px;
 }
 
-.slider #slider-right-btn{
+.slider #slider-right-btn {
     right: 0px;
 }
 
-.slider img{
+.slider img {
     height: 100%;
     width: 100%;
 }

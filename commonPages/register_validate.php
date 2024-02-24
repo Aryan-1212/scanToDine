@@ -13,7 +13,7 @@ function generate_unique_code($con){
 
     session_start();
     $user_name = $_POST['name'];
-    $user_email = $_POST['email'];
+    $user_email = strtolower($_POST['email']);
     $user_phone = $_POST['phone'];
     $password = $_POST['password'];
     $res_name = $_POST['res_name'];
@@ -31,7 +31,7 @@ function generate_unique_code($con){
         exit();
     }
 
-    $query = mysqli_query($con, "select * from users where u_phone='$user_phone' and role='manager';");
+    $query = mysqli_query($con, "select * from users where u_phone='$user_phone' or u_email='$user_email' and role='manager';");
     if(mysqli_num_rows($query)!=0){
         $_SESSION['is_error'] = true;
     }

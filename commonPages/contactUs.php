@@ -1,4 +1,6 @@
-<?php include("../commonPages/index_header.php"); ?>
+<?php 
+  include("../commonPages/index_header.php");
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -83,7 +85,6 @@
   textarea {
     resize: vertical;
   }
-
   #submit {
     padding: 10px 20px;
     background-color: #cf3427;
@@ -108,7 +109,7 @@
           </div>
           <p>If you have any questions or inquiries, please feel free to contact us using the form below:</p>
 
-          <form action="#" method="post" id="form">
+          <form action="" method="post" id="form">
             <label for="name">Name:</label>
             <input type="text" id="name" name="name" placeholder="Enter your name.." required>
 
@@ -124,13 +125,60 @@
 
             <button type="submit" name="submit" id="submit">Submit</button>
           </form>
+          <?php 
+          use PHPMailer\PHPMailer\PHPMailer;
+          use PHPMailer\PHPMailer\SMTP;
+          use PHPMailer\PHPMailer\Exception;
+          if(isset($_POST['submit']))
+          {
+            $name=$_POST['name'];
+            $email=$_POST['email'];
+            $subject=$_POST['subject'];
+            $msg=$_POST['message'];
+
+            require '../PHPMailer/PHPMailer/src/Exception.php';
+            require '../PHPMailer/PHPMailer/src/PHPMailer.php';
+            require '../PHPMailer/PHPMailer/src/SMTP.php';
+
+            $mail = new PHPMailer(true);
+            $mail = new PHPMailer(true);
+            try {
+              // Server settings
+              $mail->isSMTP();
+              $mail->Host       = 'smtp.gmail.com';
+              $mail->SMTPAuth   = true;
+              $mail->Username   = 'scantodine007@gmail.com';
+              $mail->Password   = 'ioqm oiaq kgll fyuk';
+              $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+              $mail->Port=587;
+      
+              //Recipients
+              $mail->setFrom($email);
+              $mail->addAddress('scantodine007@gmail.com', 'ScanToDine TEAM');                
+
+              // Content
+              $mail->isHTML(true);
+              $mail->Subject = 'Contact us form';
+              $mail->Body    = '<h2>Name = '.$name.'</h2><br><h2>Email = '.$email.'</h2><br><h2>Subject = '.$subject.'</h2><br><br><h2>Message = '.$msg.'</h2>';
+
+              $mail->send();
+
+              echo "<script>alert('Your message has been sent');</script>";
+              echo "<script>window.location.replace('../commonPages/contactUs.php');</script>";
+
+            }
+            catch (Exception $e) {
+              echo "<p style='color:red;'>Message could not be sent. Mailer Error: {$mail->ErrorInfo}<p>";
+            }
+          }
+          ?>
         </div>
       </div>
     </div>
   </section>
 
   <?php
-    include("./index_footer.html");
+    include("../commonPages/index_footer.html");
   ?>
 
 </body>

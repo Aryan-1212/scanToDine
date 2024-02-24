@@ -481,9 +481,10 @@ if (isset($_SESSION['is_error'])) {
                                     ?>
                                     <script>
                                         document.getElementsByName('phone')[0].style.borderColor = 'red';
+                                        document.getElementsByName('email')[0].style.borderColor = 'red';
                                     </script>
                                     <?php
-                                    echo "This Phone is Already Registered!";
+                                    echo "Phone or Email is Already Registered!";
                                 }
                                 ?>
                             </div>

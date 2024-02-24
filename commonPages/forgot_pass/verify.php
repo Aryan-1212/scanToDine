@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -105,7 +106,7 @@ use PHPMailer\PHPMailer\Exception;
 // $password = "";
 // $dbname = "forgetpassword";
 
-include("../commonPages/dbConnect.php");
+include("../../commonPages/dbConnect.php");
 
 // $con = new mysqli($servername, $username, $password, $dbname);
 
