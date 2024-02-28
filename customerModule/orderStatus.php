@@ -325,6 +325,32 @@ if (isset($_POST['fb-email'])) {
             box-shadow: 5px 5px 10px 5px rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
         }
 
+        /* .bill-btn a{
+            text-decoration: none;
+        } */
+
+        .bill-btn{
+            margin-top: 20px;
+        }
+
+        .bill-btn a{
+            height: 150px;
+            font-size: 15px;
+            font-weight: 500;
+            padding: 8px;
+            text-decoration: none;
+            background-color: #cc2828;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .bill-btn a:hover {
+            background-color: #a9f33b;
+            color: black;
+            transition-duration: 0.5s;
+        }
+
         @media screen and (max-width: 930px) {
             .pop-up {
                 width: 70vw;
@@ -560,7 +586,9 @@ if (isset($_POST['fb-email'])) {
                                 echo "<h3 class='finished'>Finished<h3>";
                             }
                             ?>
-
+                            <div class="bill-btn">
+                                <a href="../adminModule/bill_structure2.php?order_id=<?php echo $order_id; ?>">Download Invoice</a>
+                            </div>
                         </div>
                     </div>
                 </div>

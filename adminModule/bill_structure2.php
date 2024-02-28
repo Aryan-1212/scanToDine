@@ -3,10 +3,10 @@ if (!isset($_SESSION)) {
     session_start();
 }
 
-if (!isset($_SESSION['is_login'])) {
-    header("Location: ../indexPage/index.php");
-    exit();
-}
+$order_id = 2;
+$order_id = $_GET['order_id'];
+include("../commonPages/dbConnect.php");
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -15,6 +15,7 @@ if (!isset($_SESSION['is_login'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bill</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     
@@ -106,7 +107,7 @@ if (!isset($_SESSION['is_login'])) {
             margin: 20px;
         }
 
-        .BillStructure .BillBody .SubTotal table tr:nth-child(3) {
+        .BillStructure .BillBody .total{
             background-color: red;
             color: white;
         }
@@ -131,16 +132,123 @@ if (!isset($_SESSION['is_login'])) {
             margin: 0;
         }
 
+        #downloadButton{
+            position: fixed;
+            top: 5%;
+            right: 2%;
+            padding: 15px;
+            background-color: green;
+            border: none;
+            border-radius: 49%;
+            color: white;
+            border: 2px solid white;
+        }
+        
+        #downloadButton:hover{
+            background-color: white;
+            color: black;
+            transition-duration: 0.7s;
+            border: 2px solid green;
+        }
+
+        @media screen and (max-width: 770px) {
+            .BillStructure .BillBody .SubTotal {
+                flex-direction: column-reverse;
+                justify-content: center;
+            }
+
+            .BillStructure .BillBody .SubTotal table {
+                margin: 0px;
+                width: 100%;
+            }
+            .BillStructure .BillBody .SubTotal .Payment {
+                text-align: center;
+            }
+            .main-bill-title{
+                font-size: 15px;
+            }
+
+        }
+
         @media screen and (max-width: 480px) {
             .BillStructure .BillBody .Invoice {
                 flex-direction: column;
                 align-items: self-start;
+            }
+            .main-bill-title{
+                font-size: 12px;
+            }
+            .MainBill{
+                font-size: 12px;
             }
         }
     </style>
 </head>
 
 <body>
+
+    <?php
+    $fetch_order_details_query = "select * from orders where order_id = $order_id";
+    $fetch_order_details = mysqli_query($con, $fetch_order_details_query);
+    $order_details = mysqli_fetch_assoc($fetch_order_details);
+
+
+    $cus_id = $order_details['cus_id'];
+    $res_code = $order_details['res_id'];
+
+    $fetch_cus_details_query = "select * from users where u_id = $cus_id";
+    $fetch_cus_details = mysqli_query($con, $fetch_cus_details_query);
+    $cus_details = mysqli_fetch_assoc($fetch_cus_details);
+
+    $fetch_bill_details_query = "select * from bill_info where res_code = $res_code";
+    $fetch_bill_details = mysqli_query($con, $fetch_bill_details_query);
+    $bill_details = mysqli_fetch_assoc($fetch_bill_details);
+
+    $is_tax_available = false;
+    $res_upi = '-';
+    if(mysqli_num_rows($fetch_bill_details)>0){
+        $res_upi = $bill_details['upi_id'];
+        $tax = $bill_details['tax_rate'];
+        $add_charge = $bill_details['add_charge'];
+        $dis = $bill_details['dis'];
+
+        $is_tax_available = true;
+    }
+
+
+    $fetch_res_details_query = "select * from restaurant where res_code = $res_code";
+    $fetch_res_details = mysqli_query($con, $fetch_res_details_query);
+    $res_details = mysqli_fetch_assoc($fetch_res_details);
+    
+
+    // Details about bill, fetching
+    
+    $cus_name = $cus_details['u_name'];
+    $order_date = $order_details['order_date'];
+    $table_num = $order_details['table_num'];
+    $res_name = $res_details['res_name'];
+    $res_address = $res_details['res_address'];
+    $contact = $cus_details['u_email'];
+
+    $order = json_decode($order_details['items_det'], true);
+
+    $itemDetails = array(); // itemDetails
+    $index = 1;
+    foreach ($order as $itemId => $val) {
+        if (!str_contains($itemId, 'inst')) {
+            $fetchItemDetQuery = "select * from food_items where res_id = $res_code and food_type_id = $itemId;";
+            $fetchItemDet = mysqli_query($con, $fetchItemDetQuery);
+            $itemDet = mysqli_fetch_assoc($fetchItemDet);
+            $itemDetails[$index] = array("name" => $itemDet['type_name'], "price"=> $itemDet['type_price'], "qun" => $val, "note" => $order["$itemId-inst"]);
+            $index++;
+        }
+    }
+
+    
+
+    ?>
+
+    <button id="downloadButton"><i class="fa-solid fa-download fa-2xl"></i></button>
 
     <section class="BillStructure" id="bill">
         <div class="container">
@@ -160,19 +268,19 @@ if (!isset($_SESSION['is_login'])) {
                                 <table>
                                     <tr>
                                         <th>INVOICE TO:</th>
-                                        <td>Customer Name</td>
+                                        <?php echo "<td>$cus_name</td>"; ?>
                                     </tr>
                                     <tr>
                                         <th>Order Id:</th>
-                                        <td>123456789</td>
+                                        <?php echo "<td>$order_id</td>"; ?>
+                                    </tr>
+                                    <tr>
+                                        <th>Table Num:</th>
+                                        <?php echo "<td>$table_num</td>"; ?>
                                     </tr>
                                     <tr>
                                         <th>Pay through UPI:</th>
-                                        <td>upi@123upi</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Order Notes:</th>
-                                        <td>Extra Order Notes From Customer</td>
+                                        <?php echo "<td>$res_upi</td>"; ?>
                                     </tr>
                                 </table>
                             </div>
@@ -180,7 +288,7 @@ if (!isset($_SESSION['is_login'])) {
                                 <table>
                                     <tr>
                                         <th>DATE:</th>
-                                        <td>05/01/2024</td>
+                                        <?php echo "<td>$order_date</td>"; ?>
                                     </tr>
                                 </table>
                             </div>
@@ -188,58 +296,117 @@ if (!isset($_SESSION['is_login'])) {
                         <hr>
                         <div class="MainBill">
                             <div class="No">
-                                <h5>NO.</h5>
-                                <p>1</p>
-                                <p>2</p>
-                                <p>3</p>
+                                <h5 class="main-bill-title">NO.</h5>
+                                <?php 
+                                    foreach($itemDetails as $key=>$val){
+                                        echo "<p>$key</p>";
+                                    }
+                                ?>
                             </div>
                             <div class="ItemDescription">
-                                <h5>ITEM DESCRIPTION</h5>
-                                <p>Burger1</p>
-                                <p>Burger2</p>
-                                <p>Burger3</p>
+                                <h5 class="main-bill-title">ITEM DESCRIPTION</h5>
+                                <?php 
+                                    foreach($itemDetails as $key=>$val){
+                                        echo "<p>$val[name]</p>";
+                                    }
+                                ?>
                             </div>
                             <div class="Price">
-                                <h5>PRICE</h5>
-                                <p>10$</p>
-                                <p>20$</p>
-                                <p>30$</p>
+                                <h5 class="main-bill-title">PRICE</h5>
+                                <?php 
+                                    foreach($itemDetails as $key=>$val){
+                                        echo "<p>₹$val[price]</p>";
+                                    }
+                                ?>
                             </div>
                             <div class="Qty">
-                                <h5>QTY.</h5>
-                                <p>2</p>
-                                <p>3</p>
-                                <p>4</p>
+                                <h5 class="main-bill-title">QTY.</h5>
+                                <?php 
+                                    foreach($itemDetails as $key=>$val){
+                                        echo "<p>$val[qun]</p>";
+                                    }
+                                ?>
                             </div>
                             <div class="Total">
-                                <h5>TOTAL</h5>
-                                <p>20$</p>
-                                <p>30$</p>
-                                <p>40$</p>
+                                <h5 class="main-bill-title">TOTAL</h5>
+                                <?php 
+                                    $sub_total = 0;
+                                    foreach($itemDetails as $key=>$val){
+                                        $total = $val['price'] * $val['qun'];
+                                        echo "<p>₹$total</p>";
+                                        $sub_total +=$total;
+                                    }
+                                ?>
                             </div>
                         </div>
                         <hr>
                         <div class="SubTotal">
                             <div class="Payment">
                                 <p>Thanks For Your Bussiness</p>
-                                <h6>Your Restaurant Name</h6>
-                                <p>Restayrant Address</p>
-                                <p>Contact</p>
+                                <?php
+                                    echo "<h6>Restaurant - $res_name</h6>";
+                                    echo "<p>Address - $res_address</p>";
+                                    echo "<p>Contact - $contact<p>";
+                                ?>
                             </div>
                             <div class="Total">
                                 <table>
                                     <tr>
                                         <td>SUB TOTAL :</td>
-                                        <th>90$</th>
+
+                                        <?php
+                                            echo "<th>₹$sub_total</th>";
+                                        ?>
+                                    </tr>
+                                    <?php
+                                        if($is_tax_available){
+                                    ?>
+                                    <tr>
+                                        <?php
+                                            echo "<td>TAX ($tax%):</td>";
+                                            $calculated_tax = ($tax * $sub_total) / 100;
+                                            $total_with_tax = $sub_total + $calculated_tax;
+                                            echo "<th>₹$total_with_tax</th>";
+                                        ?>
                                     </tr>
                                     <tr>
-                                        <td>TAX :</td>
-                                        <th>%10</th>
+                                        <?php
+                                            $total_with_charges = $total_with_tax + $add_charge;
+                                            echo "<td>Additional Charges (₹$add_charge):</td>";
+                                            echo "<th>₹$total_with_charges</th>";
+                                        ?>
                                     </tr>
                                     <tr>
+                                        <?php
+                                            $calculated_dis = ($dis * $total_with_charges) / 100;
+                                            $total_with_dis = $total_with_charges - $calculated_dis;
+                                            
+                                            // echo "<td>Discount ($dis%):</td>";
+                                            // echo "<th>₹$total_with_dis</th>";
+
+                                            echo "<td>Discount:</td>";
+                                            echo "<th>$dis%</th>";
+                                        ?>
+                                    </tr>
+                                    <tr class="total">
                                         <th>TOTAL :</th>
-                                        <th>100$</th>
+                                        <?php
+                                            echo "<th>₹$total_with_dis</th>";
+                                        ?>
                                     </tr>
+
+                                    <?php
+                                        }else{
+                                    ?>
+                                    <tr class="total">
+                                        <th>TOTAL :</th>
+                                        <?php
+                                            echo "<th>₹$sub_total</th>";
+                                        ?>
+                                    </tr>
+                                    <?php
+                                        }
+                                    ?>
                                 </table>
                             </div>
                         </div>
@@ -249,9 +416,6 @@ if (!isset($_SESSION['is_login'])) {
         </div>
     </section>
 
-    <button id="downloadButton">download</button>
-
-    <!-- Script tag for your custom JavaScript -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             function downloadPDF() {
@@ -291,7 +455,6 @@ if (!isset($_SESSION['is_login'])) {
                 //     downloadButton.addEventListener('click', downloadPDF);
                 // }
 
-                // Your other code here...
                 </script>
 
 <!-- Bootstrap script -->
