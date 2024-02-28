@@ -119,6 +119,8 @@ if (isset($_SESSION['is_error'])) {
 
         .LoginContainer .bgimg {
             width: 50%;
+            display: flex;
+            justify-content: center;
         }
 
         .LoginContainer .bgimg img {
@@ -407,7 +409,7 @@ if (isset($_SESSION['is_error'])) {
             .LoginContainer .login {
                 width: 100%;
                 height: 100%;
-                background-image: url("login_img.jpg");
+                background-image: url("chef.jpg");
                 background-repeat: no-repeat;
                 background-position: center;
                 background-size: 50% 80%;
@@ -473,12 +475,12 @@ if (isset($_SESSION['is_error'])) {
         <div class="container">
             <div class="LoginContainer">
                 <div class="bgimg">
-                    <img src="login_img.jpg" alt="">
+                    <img src="chef.png" alt="">
                 </div>
                 <div class="login">
                     <div class="login-box">
-                        <h2>Login</h2>
-                        <form method="POST" action="login_validate.php">
+                        <h2>Login as a Chef</h2>
+                        <form method="POST" action="chef_login_validate.php">
                             <div class="user-box">
                                 <input type="text" name="phone" maxlength="10" value="<?php echo $phone; ?>"
                                     required="">
@@ -502,7 +504,7 @@ if (isset($_SESSION['is_error'])) {
 
                             <div class="user-box">
                                 <a href="forgot_pass/sendVerificationCode.php" class="forgot">forgot password?</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <a href="../commonPages/chef_login.php" style="color:blue; text-decoration:none;">Login&nbsp;as&nbsp;a&nbsp;Chef?</a>
+                                <a href="../commonPages/login.php" style="color:blue; text-decoration:none;">Login&nbsp;as&nbsp;a&nbsp;Manager?</a>
                             </div>
                             <div class="Submitbtn">
                                 <span></span>

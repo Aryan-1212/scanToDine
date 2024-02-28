@@ -31,7 +31,7 @@ function generate_unique_code($con){
         exit();
     }
 
-    $query = mysqli_query($con, "select * from users where u_phone='$user_phone' or u_email='$user_email' and role='manager';");
+    $query = mysqli_query($con, "select * from users where (u_phone='$user_phone' or u_email='$user_email') and role='manager';");
     if(mysqli_num_rows($query)!=0){
         $_SESSION['is_error'] = true;
     }

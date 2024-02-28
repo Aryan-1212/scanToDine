@@ -1,13 +1,19 @@
 <?php
-session_start();
+if(!isset($_SESSION)){
+    session_start();
+}
 if (isset($_SESSION['is_error'])) {
+    $name = $_SESSION['name'];
+    $email = $_SESSION['email'];
     $phone = $_SESSION['phone'];
     $password = $_SESSION['password'];
     $is_error = $_SESSION['is_error'];
-    session_destroy();
 } else {
+    $name = NULL;
+    $email = NULL;
     $phone = NULL;
     $password = NULL;
+    $res_name = NULL;
     $is_error = NULL;
 }
 ?>
@@ -17,7 +23,7 @@ if (isset($_SESSION['is_error'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Restaurant Login</title>
+    <title>Chef's register</title>
     <link rel="shortcut icon" type="x-icon" href="icon.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -28,10 +34,8 @@ if (isset($_SESSION['is_error'])) {
             height: 100%;
         }
 
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Poppins', sans-serif;
+        ::-webkit-scrollbar{
+            display: none;
         }
 
         :root {
@@ -44,106 +48,62 @@ if (isset($_SESSION['is_error'])) {
             --gray: gray;
             --green: green;
         }
-
-        header {
-            position: sticky;
-            top: 0;
-            z-index: 10;
-            background-color: rgb(255 255 255/var(--tw-bg-opacity));
-            width: 100%;
-            height: 100%;
-            background-color: var(--offwhite);
-            border-bottom: 1px solid rgb(224 206 206);
-            ;
-        }
-
-        header .HeaderContainer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 100px;
-        }
-
-        header .HeaderContainer .logo {
-            width: 10%;
-        }
-
-        header .HeaderContainer .logo img {
-            width: 100px;
+        
+        .RegisterPage {
             height: auto;
-        }
-
-
-        header .HeaderContainer .HeaderSearch {
-            width: 20%;
-        }
-
-        header .HeaderContainer .HeaderSearch a {
-            padding: 7px 10px;
-            font-size: 1.2rem;
-            float: right;
-            border: none;
-            background: var(--red);
-            border: 2px solid var(--red);
-            color: var(--white);
-            font-family: 'Poppins', sans-serif;
-            text-decoration: none;
-            transition: all ease-in-out 0.6s;
-            border-radius: 10px;
-        }
-
-        header .HeaderContainer .HeaderSearch a:hover {
-            background: var(--offwhite);
-            border: 2px solid var(--red);
-            color: var(--red);
-        }
-
-        .LoginPage {
-            height: 85vh;
             width: 100%;
             background-color: var(--offwhite);
+            background-color: white;
             display: flex;
             align-items: center;
+            margin-bottom: 50px;
         }
 
-        .LoginContainer {
+        .RegisterContainer {
             display: flex;
             justify-content: space-between;
             justify-items: center;
             align-items: center;
             background-color: var(--white);
             border-radius: 50px;
-            height: 80vh;
+            height: auto;
             box-shadow: 0 15px 25px rgba(0, 0, 0, .6);
+            margin-top:2%;
         }
 
-        .LoginContainer .bgimg {
+        .RegisterContainer .bgimg {
             width: 50%;
         }
 
-        .LoginContainer .bgimg img {
-            width: 100%;
+        .RegisterContainer .bgimg img {
+            width: 90%;
             border-radius: 50px;
             height: auto;
+            margin-left:10%;
         }
 
-        .LoginContainer .login {
+        .RegisterContainer .register {
             width: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
-        
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+        }
 
-        .login-box {
+        .register-box {
             width: 400px;
             padding: 40px;
             box-sizing: border-box;
             border-radius: 10px;
+            margin-top:%;
         }
 
-        .login-box h2 {
+        .register-box h2 {
             margin: 0 0 30px;
             padding: 0;
             /* color: var(--red); */
@@ -153,11 +113,11 @@ if (isset($_SESSION['is_error'])) {
             font-family: 'Poppins', sans-serif;
         }
 
-        .login-box .user-box {
+        .register-box .user-box {
             position: relative;
         }
 
-        .login-box .user-box input {
+        .register-box .user-box input {
             width: 100%;
             padding: 10px 0;
             font-size: 16px;
@@ -171,7 +131,7 @@ if (isset($_SESSION['is_error'])) {
             background: transparent;
         }
 
-        .login-box .user-box label {
+        .register-box .user-box label {
             position: absolute;
             top: 0;
             left: 0;
@@ -183,7 +143,7 @@ if (isset($_SESSION['is_error'])) {
             transition: .5s;
         }
 
-        #togglePassword {
+        .togglePassword {
             /* color: var(--red); */
             color: var(--black);
             cursor: pointer;
@@ -192,28 +152,8 @@ if (isset($_SESSION['is_error'])) {
             right: 0;
         }
 
-        .login-box form .user-box a {
-            color: var(--red);
-            /* color: var(--black); */
-            position: relative;
-            padding: 0%;
-            background-color: transparent;
-            text-transform: none;
-            letter-spacing: 0;
-            margin: 0;
-            font-family: sans-serif;
-            transition: all ease-in-out 0.5s;
-        }
-
-        .login-box form .user-box a:hover {
-            color: var(--gray);
-            border-radius: 5px;
-            text-decoration: underline;
-            box-shadow: 0 0;
-        }
-
-        .login-box .user-box input:focus~label,
-        .login-box .user-box input:valid~label {
+        .register-box .user-box input:focus~label,
+        .register-box .user-box input:valid~label {
             top: -20px;
             left: 0;
             color: var(--gray);
@@ -221,7 +161,7 @@ if (isset($_SESSION['is_error'])) {
             font-weight: bold;
         }
 
-        .login-box form .Submitbtn {
+        .register-box form .Submitbtn {
             position: relative;
             overflow: hidden;
             transition: all ease-in-out 0.8s;
@@ -229,7 +169,7 @@ if (isset($_SESSION['is_error'])) {
             margin-top: 30px;
         }
 
-        .login-box form .Submitbtn input {
+        .register-box form .Submitbtn input {
             display: inline-block;
             padding: 10px 20px;
             /* color: var(--red); */
@@ -243,7 +183,7 @@ if (isset($_SESSION['is_error'])) {
             border: none;
         }
 
-        .login-box .Submitbtn:hover {
+        .register-box .Submitbtn:hover {
             /* background-color: var(--red); */
             background-color: var(--green);
             color: #fff;
@@ -258,7 +198,7 @@ if (isset($_SESSION['is_error'])) {
                 0 0 100px var(--green);
         }
 
-        .login-box .Submitbtn input:hover {
+        .register-box .Submitbtn input:hover {
             /* background-color: var(--red); */
             background-color: var(--green);
             color: #fff;
@@ -273,12 +213,12 @@ if (isset($_SESSION['is_error'])) {
                 0 0 100px var(--green);
         }
 
-        .login-box .Submitbtn span {
+        .register-box .Submitbtn span {
             position: absolute;
             display: block;
         }
 
-        .login-box .Submitbtn span:nth-child(1) {
+        .register-box .Submitbtn span:nth-child(1) {
             top: 0;
             left: -100%;
             width: 100%;
@@ -299,7 +239,7 @@ if (isset($_SESSION['is_error'])) {
             }
         }
 
-        .login-box .Submitbtn span:nth-child(2) {
+        .register-box .Submitbtn span:nth-child(2) {
             top: -100%;
             right: 0;
             width: 2px;
@@ -321,7 +261,7 @@ if (isset($_SESSION['is_error'])) {
             }
         }
 
-        .login-box .Submitbtn span:nth-child(3) {
+        .register-box .Submitbtn span:nth-child(3) {
             bottom: 0;
             right: -100%;
             width: 100%;
@@ -343,7 +283,7 @@ if (isset($_SESSION['is_error'])) {
             }
         }
 
-        .login-box .Submitbtn span:nth-child(4) {
+        .register-box .Submitbtn span:nth-child(4) {
             bottom: -100%;
             left: 0;
             width: 2px;
@@ -365,49 +305,28 @@ if (isset($_SESSION['is_error'])) {
             }
         }
 
-        @media only screen and (max-width: 768px) {
-            header .HeaderContainer .HeaderSearch a {
-            font-size: 1000px;
-        }
-        header .HeaderContainer .HeaderSearch {
-            width: 50%;
-        }
-        .login-box .user-box input {
-            width: 100%;
-            margin-bottom: 50px;
-        }
-        .LoginPage {
-            height: 100%;
-            /* margin: 10% 0; */
-        }
-        .LoginContainer {
-            height: 100%;
-        }
-        }
-        
         @media only screen and (max-width: 1024px) {
-            .LoginContainer {
+            .RegisterContainer {
                 display: block;
                 background-color: var(--white);
                 border-radius: 50px;
-                height: 80vh;
+                height: auto;
                 box-shadow: 0 15px 25px rgba(0, 0, 0, .6);
             }
 
-            .LoginContainer .bgimg {
+            .RegisterContainer .bgimg {
                 display: none;
             }
 
-            .LoginContainer .bgimg img {
+            .RegisterContainer .bgimg img {
                 width: 100%;
                 border-radius: 50px;
                 height: auto;
             }
 
-            .LoginContainer .login {
+            .RegisterContainer .register {
                 width: 100%;
-                height: 100%;
-                background-image: url("login_img.jpg");
+                background-image: url("chef.png");
                 background-repeat: no-repeat;
                 background-position: center;
                 background-size: 50% 80%;
@@ -416,36 +335,10 @@ if (isset($_SESSION['is_error'])) {
                 align-items: center;
             }
 
-            header .HeaderContainer .HeaderSearch a {
-                padding: 6px 1px;
-                font-size: .9rem;
-                float: right;
-                border: none;
-                background: var(--red);
-                border: 2px solid var(--red);
-                color: var(--white);
-                font-family: 'Poppins', sans-serif;
-                text-decoration: none;
-                transition: all ease-in-out 0.6s;
-                border-radius: 10px;
-            }
+            
         }
-
-        @media only screen and (max-width: 2000px) {
-            .LoginContainer .bgimg img {
-                width: 80%;
-                border-radius: 50px;
-                height: auto;
-            }
-        }
-
-        .forgot{
-            color: red;
-        }
-
 
         #error {
-            margin-top: -30px;
             color: red;
             margin-bottom: 18px;
         }
@@ -454,62 +347,66 @@ if (isset($_SESSION['is_error'])) {
 
 <body>
 
-    <header>
+    <section class="RegisterPage">
         <div class="container">
-            <div class="HeaderContainer">
-                <a href="../indexPage/index.php">
-                    <div class="logo">
-                        <img src="logo.png" title="ScanToDine" alt="ScanToDine">
-                    </div>
-                </a>
-                <div class="HeaderSearch">
-                    <a href="register.php" rel="noopener noreferrer">register now</a>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <section class="LoginPage">
-        <div class="container">
-            <div class="LoginContainer">
+            <div class="RegisterContainer">
                 <div class="bgimg">
-                    <img src="login_img.jpg" alt="">
+                    <img src="chef.png" alt="">
                 </div>
-                <div class="login">
-                    <div class="login-box">
-                        <h2>Login</h2>
-                        <form method="POST" action="login_validate.php">
+                <div class="register">
+                    <div class="register-box">
+                        <h2>Chef's Register</h2>
+                        <form method="POST" action="chefRegisterValidate.php" onsubmit="return validate()">
+
                             <div class="user-box">
-                                <input type="text" name="phone" maxlength="10" value="<?php echo $phone; ?>"
-                                    required="">
-                                <label>Phone</label>
+                                <input type="text" name="name" value="<?php echo $name; ?>" required="">
+                                <label>Chef's Name</label>
                             </div>
                             <div class="user-box">
-                                <input type="password" id="Password" maxlength="12" name="password"
+                                <input type="text" name="email" value="<?php echo $email; ?>" required="">
+                                <label>Chef's Email</label>
+                            </div>
+
+                            <div class="user-box">
+                                <input type="text" name="phone" value="<?php echo $phone; ?>" maxlength="10"
+                                    required="">
+                                <label>Chef's Phone</label>
+                            </div>
+
+                            <div class="user-box">
+                                <input type="password" id="Password" minlength="8" maxlength="12" name="password"
                                     value="<?php echo $password; ?>" required="">
-                                <i class="far fa-eye" id="togglePassword"></i>
+                                <i class="far fa-eye togglePassword" id="togglePassword"></i>
                                 <label>Password</label>
+                            </div>
+
+                            <div class="user-box">
+                                <input type="password" id="confirm-Password" minlength="8" maxlength="12"
+                                    value="<?php echo $password; ?>" required="">
+                                <i class="far fa-eye togglePassword" id="confirm-togglePassword"></i>
+                                <label>Confirm Password</label>
                             </div>
 
                             <div class="user-box" id="error">
                                 <?php
                                 if ($is_error) {
-                                    echo "Incorrect Password or Phone";
+                                    ?>
+                                    <script>
+                                        document.getElementsByName('phone')[0].style.borderColor = 'red';
+                                        document.getElementsByName('email')[0].style.borderColor = 'red';
+                                    </script>
+                                    <?php
+                                    echo "Phone or Email is Already Registered!";
                                 }
                                 ?>
                             </div>
 
-
-                            <div class="user-box">
-                                <a href="forgot_pass/sendVerificationCode.php" class="forgot">forgot password?</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <a href="../commonPages/chef_login.php" style="color:blue; text-decoration:none;">Login&nbsp;as&nbsp;a&nbsp;Chef?</a>
-                            </div>
                             <div class="Submitbtn">
                                 <span></span>
                                 <span></span>
                                 <span></span>
                                 <span></span>
-                                <input type="submit" value="LOGIN">
+                                <input type="submit" value="register">
                             </div>
                         </form>
                     </div>
@@ -517,6 +414,7 @@ if (isset($_SESSION['is_error'])) {
             </div>
         </div>
     </section>
+
 </body>
 <script>
     const togglePassword = document.querySelector('#togglePassword');
@@ -527,6 +425,33 @@ if (isset($_SESSION['is_error'])) {
         this.classList.toggle('fa-eye-slash');
     });
 </script>
+
+<script>
+    const confirm_togglePassword = document.querySelector('#confirm-togglePassword');
+    const confirm_password = document.querySelector('#confirm-Password');
+    confirm_togglePassword.addEventListener('click', function (e) {
+        const type = confirm_password.getAttribute('type') === 'password' ? 'text' : 'password';
+        confirm_password.setAttribute('type', type);
+        this.classList.toggle('fa-eye-slash');
+    });
+</script>
+
+<script>
+    function validate() {
+        const pass = document.getElementById("Password");
+        const con_pass = document.getElementById("confirm-Password");
+        const passError = document.getElementById("error");
+
+        if (pass.value !== con_pass.value) {
+            passError.innerHTML = "Password must be same!";
+            pass.style.borderColor = 'red';
+            con_pass.style.borderColor = 'red';
+            return false;
+        }
+        return true;
+    }
+</script>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
     crossorigin="anonymous"></script>

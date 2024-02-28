@@ -3,7 +3,6 @@ if (!isset($_SESSION)) {
     session_start();
 }
 
-$order_id = 2;
 $order_id = $_GET['order_id'];
 include("../commonPages/dbConnect.php");
 
