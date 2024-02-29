@@ -43,7 +43,7 @@ if (isset($_POST['fb-email'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Status</title>
-
+    <link rel="shortcut icon" type="x-icon" href="../indexPage/logo.ico">
     <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
 
     <style>
@@ -507,8 +507,8 @@ if (isset($_POST['fb-email'])) {
                 </div>
             </div>
             <div class="status-animate">
-                <div class="status-animate-title">Preparing Your Order</div>
-                <img src="cooking-pot.gif" height="200px" width="200px" alt="">
+                <div class="status-animate-title" id="changeTitle">Preparing Your Order</div>
+                <img src="cooking-pot.gif" id="changeImg" height="200px" width="200px" alt="">
             </div>
 
 
@@ -521,6 +521,7 @@ if (isset($_POST['fb-email'])) {
                                         ORDER BY order_status DESC;";
             $fetchOrderDetails = mysqli_query($con, $fetchOrderDetailsQuery);
             $orderDetails = mysqli_fetch_all($fetchOrderDetails, MYSQLI_ASSOC);
+            $allOrderStatus = array();
             foreach ($orderDetails as $order) {
                 $order_id = $order['order_id'];
                 $order_date = $order['order_date'];
@@ -529,6 +530,12 @@ if (isset($_POST['fb-email'])) {
                 $total = $order['amount'];
                 $completion_code = $order['completion_code'];
                 $order_status = $order['order_status'];
+
+                if($order_status == 'placed'){
+                    array_push($allOrderStatus, 0);
+                }else{
+                    array_push($allOrderStatus, 1);
+                }
 
                 $items_det_array = json_decode($items_det, true);
 
@@ -595,7 +602,17 @@ if (isset($_POST['fb-email'])) {
                 <div class="hr"></div>
                 <?php
             }
-            ?>
+            $change_img = true;
+            foreach($allOrderStatus as $status){
+                if($status == 0){
+                    $change_img = false;
+                }
+            }
+            if($change_img){
+                echo "<script>document.getElementById('changeTitle').innerHTML = 'Order Completed'</script>";
+                echo "<script>document.getElementById('changeImg').src = '../customerModule/order-completed.gif'</script>";
+            }
+        ?>
         </div>
     </div>
 

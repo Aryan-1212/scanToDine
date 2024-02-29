@@ -29,9 +29,9 @@ if (isset($_POST['addQR'])) {
     $tableNumQuery = mysqli_query($con, "select table_num from tables where res_id = $res_code");
     $num = mysqli_num_rows($tableNumQuery) + 1;
 
-    $ip_add = "192.168.165.135";
+    $ip_add = "localhost";
 
-    $url = "$ip_add/dashboard/restaurant/customerModule/order.php?res_code=$res_code&table_num=$num";
+    $url = "$ip_add/restaurant/customerModule/order.php?res_code=$res_code&table_num=$num";
 
     $qr_code = QrCode::create($url)
         ->setSize(500)

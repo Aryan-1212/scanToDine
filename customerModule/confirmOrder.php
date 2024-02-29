@@ -18,7 +18,8 @@ $food_id = $_GET['food_id'];
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ConfirmOrder</title>
+    <title>Confirm Order</title>
+    <link rel="shortcut icon" type="x-icon" href="../indexPage/logo.ico">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
     </style>

@@ -27,10 +27,10 @@ function insertQuery($con, $res_code, $num)
     }
 }
 
-$ip_add = "192.168.165.135";
+$ip_add = "localhost";
 
 for ($num = 1; $num <= $table_num; $num++) {
-    $url = "$ip_add/dashboard/restaurant/customerModule/order.php?res_code=$res_code&table_num=$num";
+    $url = "$ip_add/restaurant/customerModule/order.php?res_code=$res_code&table_num=$num";
 
     $qr_code = QrCode::create($url)
         ->setSize(500)

@@ -12,6 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
     <title>Forget Password</title>
+    <link rel="shortcut icon" type="x-icon" href="../../indexPage/logo.ico">
     <style>
         body {
             font-family: 'Poppins', sans-serif;
