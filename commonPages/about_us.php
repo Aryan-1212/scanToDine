@@ -130,6 +130,9 @@
       .peopleItem {
         width: calc(100% - 20px);
       }
+      .summary ul li{
+        font-size: 15px;
+      }
     }
   </style>
 </head>

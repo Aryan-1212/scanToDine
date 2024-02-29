@@ -1,6 +1,6 @@
 <?php
-include("../commonPages/index_header.php");
 include("../commonPages/dbConnect.php");
+include("../commonPages/redirectPage.php");
 if (!isset($_SESSION)) {
     session_start();
 }
@@ -8,6 +8,17 @@ if (!isset($_SESSION)) {
 if (!isset($_SESSION['is_login'])) {
     header("Location: ../indexPage/index.php");
     exit();
+}
+
+if(isset($_POST['id'])){
+    $id = $_POST['id'];
+    echo "<script>confirm('Do you really want to remove the chef, id: $id');<script>";
+    $removeRowQuery = "delete from users where u_id = $id";
+    $removeRow = mysqli_query($con, $removeRowQuery);
+    if(!$removeRow){
+        echo "<script>alert('Unexpected Error Occurs!');</script>";
+    }
+    reDirect("../adminModule/chef.php");
 }
 
 $res_code = $_SESSION['res_code'];
@@ -207,6 +218,16 @@ $res_code = $_SESSION['res_code'];
             justify-content: center;
         }
 
+        .remove-btn{
+            border: 2px solid red;
+            /* background-color: red; */
+        }
+        .remove-btn:hover{
+            background-color: red;
+            color: white;
+            transition-duration: 0.7s;
+        }
+
         @media (max-width: 768px) {
             .table-row {
                 flex-direction: column;
@@ -229,19 +250,36 @@ $res_code = $_SESSION['res_code'];
             h2 {
                 width: 50%;
             }
+            
         }
 
         .errorMsg,
         .no-data {
             color: red;
         }
+        .summary {
+            border-top: 1px solid black;
+             margin-top: 30px;
+        }
+
+        .summary ul li {
+            font-size: 19px;
+            margin-bottom: 1%;
+        }
+
+        .summary ul {
+            list-style-type: disc;
+            padding-left: 20px;
+            font-size: 18px;
+            color: #333;
+        }
     </style>
 </head>
 
 <body>
-
-
     <?php
+    include("../commonPages/index_header.php");
+
     $fetch_data = "select * from users where res_code=$res_code and role='chef'";
     $data = mysqli_query($con, $fetch_data);
 
@@ -267,6 +305,9 @@ $res_code = $_SESSION['res_code'];
                             <div class="table-cell">Email</div>
                             <div class="table-cell">Phone</div>
                             <div class="table-cell">Password</div>
+                            <div class="table-cell change">
+                                <pre>                        </pre>
+                            </div>
                         </div>
 
                         <?php
@@ -278,6 +319,7 @@ $res_code = $_SESSION['res_code'];
                             <?php echo "<div class='table-cell'>". $row['u_email'] ."</div>"; ?>
                             <?php echo "<div class='table-cell'>". $row['u_phone'] ."</div>"; ?>
                             <?php echo "<div class='table-cell'>". $row['password'] ."</div>"; ?>
+                            <?php echo "<div class='table-cell'><button class='remove-btn' id='".$row['u_id']."' onclick='removeBtn(event)'>Remove</button></div>"; ?>
                             </div>
                             <?php
                         }
@@ -294,14 +336,41 @@ $res_code = $_SESSION['res_code'];
             </div>
         </div>
 
+        <form action="" method="POST" id="formToRemove">
+                <input type="hidden" id="hiddenField" name="id">
+        </form>
+
         <div class="addBtn">
             <a href="../adminModule/chefRegister.php" class="btn">Add Chef</a>
         </div>
+        <div class="container">
+            <div class="summary">
+                <ul>
+                    <li>If you want to register your chefs click the 'add chef' button. </li>
+                    <li>Chefs can manage and see the 'orders & dashboard' only.</li>
+                    <li>No other functionalities is provided to chef.</li>
+                </ul>
+            </div>
+        </div>    
+
+
+
 
     </section>
     <?php
     include("../commonPages/index_footer.html");
     ?>
+
+    <script>
+        removeBtn = (e) =>{
+            const id = e.target.id;
+            const confirmRemove = confirm(`Do you really want to remove the chef? ID: ${id}`);
+            if(confirmRemove){
+                document.getElementById("hiddenField").value = id;
+                document.getElementById("formToRemove").submit();
+            }
+        }
+    </script>
 </body>
 
 

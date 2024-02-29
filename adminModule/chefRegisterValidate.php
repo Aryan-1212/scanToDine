@@ -54,6 +54,7 @@ if ($_SESSION['is_error']) {
             values('$user_name', '$user_email', '$user_phone', '$password', '$res_code', 'chef');");
 
         if($insert_users){
+            $_SESSION['is_error'] = false;
             header("Location: ../adminModule/chef.php");
             exit();
         }

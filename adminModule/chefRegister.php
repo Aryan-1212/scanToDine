@@ -2,7 +2,7 @@
 if(!isset($_SESSION)){
     session_start();
 }
-if (isset($_SESSION['is_error'])) {
+if (isset($_SESSION['is_error']) and $_SESSION['is_error'] == true) {
     $name = $_SESSION['name'];
     $email = $_SESSION['email'];
     $phone = $_SESSION['phone'];
@@ -15,6 +15,7 @@ if (isset($_SESSION['is_error'])) {
     $password = NULL;
     $res_name = NULL;
     $is_error = NULL;
+    $_SESSION['is_error'] = false;
 }
 ?>
 <!DOCTYPE html>
