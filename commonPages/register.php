@@ -360,6 +360,8 @@ if (isset($_SESSION['is_error'])) {
                 display: block;
                 background-color: var(--white);
                 border-radius: 50px;
+                margin: 20px 0px;
+                /* height: 60vh; */
                 height: auto;
                 box-shadow: 0 15px 25px rgba(0, 0, 0, .6);
             }
@@ -376,7 +378,7 @@ if (isset($_SESSION['is_error'])) {
 
             .RegisterContainer .register {
                 width: 100%;
-                background-image: url("login_img.jpg");
+                /* background-image: url("login_img.jpg"); */
                 background-repeat: no-repeat;
                 background-position: center;
                 background-size: 50% 80%;

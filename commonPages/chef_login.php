@@ -392,7 +392,8 @@ if (isset($_SESSION['is_error'])) {
                 display: block;
                 background-color: var(--white);
                 border-radius: 50px;
-                height: 80vh;
+                height: 60vh;
+                margin: 100px 0px;
                 box-shadow: 0 15px 25px rgba(0, 0, 0, .6);
             }
 
@@ -409,7 +410,7 @@ if (isset($_SESSION['is_error'])) {
             .LoginContainer .login {
                 width: 100%;
                 height: 100%;
-                background-image: url("chef.jpg");
+                /* background-image: url("chef.jpg"); */
                 background-repeat: no-repeat;
                 background-position: center;
                 background-size: 50% 80%;

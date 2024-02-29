@@ -140,6 +140,45 @@ $res_code = $_SESSION['res_code'];
             justify-content: center;
             height: calc(100vh - 250px);
         }
+
+        .pagination {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .pagination a {
+            color: #333;
+            padding: 8px 16px;
+            text-decoration: none;
+            border: 1px solid #ddd;
+            margin: 0 5px;
+            border-radius: 5px;
+            background-color: #f3f3f3;
+        }
+
+        .pagination a:hover {
+            background-color: #ddd;
+        }
+
+        .pagination .disabled {
+            pointer-events: none;
+            background-color: grey;
+            margin: 0 5px;
+            padding: 8px 16px;
+            border-radius: 5px;
+            color: white;
+        }
+
+        .pagination .previous,
+        .pagination .next {
+            background-color: #333;
+            color: white;
+        }
+
+        .pagination .previous:hover,
+        .pagination .next:hover {
+            background-color: #555;
+        }
     </style>
 
 </head>
@@ -148,7 +187,11 @@ $res_code = $_SESSION['res_code'];
     <?php
     include("../commonPages/index_header.php");
 
-    $fetchOrdersQuery = "select * from orders where res_id = $res_code;";
+    $results_per_page = 10;
+    $page = isset($_GET['page']) ? $_GET['page'] : 1;
+    $start_from = ($page - 1) * $results_per_page;
+
+    $fetchOrdersQuery = "select * from orders where res_id = $res_code LIMIT $start_from, $results_per_page;";
     $fetchOrders = mysqli_query($con, $fetchOrdersQuery);
     if (!$fetchOrders) {
         echo "<script>alert('Unexpected Error Occurs!');</script>";
@@ -177,7 +220,7 @@ $res_code = $_SESSION['res_code'];
                     $order_id = $order['order_id'];
                     $cus_id = $order['cus_id'];
                     $order_date = $order['order_date'];
-                    $order_finish_date = (!$order['order_finish_date'])?'-':$order['order_finish_date'];
+                    $order_finish_date = (!$order['order_finish_date']) ? '-' : $order['order_finish_date'];
                     $table_num = $order['table_num'];
                     $items_det = $order['items_det'];
                     $amount = $order['amount'];
@@ -253,8 +296,38 @@ $res_code = $_SESSION['res_code'];
                 }
                 ?>
             </div>
+            <?php
+            $query = "SELECT COUNT(*) AS total FROM orders WHERE res_id = $res_code";
+            $result = mysqli_query($con, $query);
+            $row = mysqli_fetch_assoc($result);
+            $total_pages = ceil($row['total'] / $results_per_page);
+
+            echo "<div class='pagination'>";
+
+            if ($page > 1) {
+                echo "<a href='?page=" . ($page - 1) . "' class='page-btn'>Previous</a>";
+            } else {
+                echo "<span class='disabled'>Previous</span>";
+            }
+
+            for ($i = 1; $i <= $total_pages; $i++) {
+                // echo "<a href='?page=$i'>$i</a>";
+                ?>
+                    <a href="?page=<?php echo $i ?>" class="<?php echo ($page==$i)?"disabled":"" ?>"><?php echo $i; ?></a>
+                <?php
+            }
+
+            if ($page < $total_pages) {
+                echo "<a href='?page=" . ($page + 1) . "' class='page-btn'>Next</a>";
+            } else {
+                echo "<span class='disabled'>Next</span>";
+            }
+            echo "</div>";
+            ?>
         </div>
+
         <?php
+
     } else {
         ?>
         <div class="no-orders">
