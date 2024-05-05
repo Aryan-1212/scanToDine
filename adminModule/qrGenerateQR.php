@@ -27,7 +27,7 @@ function insertQuery($con, $res_code, $num)
     }
 }
 
-$ip_add = "localhost";
+$ip_add = "192.168.126.135";
 
 for ($num = 1; $num <= $table_num; $num++) {
     $url = "$ip_add/restaurant/customerModule/order.php?res_code=$res_code&table_num=$num";

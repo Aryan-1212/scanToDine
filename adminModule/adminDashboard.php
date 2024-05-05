@@ -92,6 +92,7 @@ foreach ($feedback_count as $key => $val) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
     <link rel="shortcut icon" type="x-icon" href="../indexPage/logo.ico">
+    <title>Dashboard Page</title>
 </head>
 <style>
     body {
@@ -163,8 +164,8 @@ foreach ($feedback_count as $key => $val) {
     .chartContainer {
         width: 100%;
         height: 500px;
-        border: 3px solid gray;
-        border-radius: 6px;
+        /* border: 3px solid gray; */
+        /* border-radius: 6px; */
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
         margin-bottom: 20px;
     }

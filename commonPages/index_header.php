@@ -225,7 +225,7 @@ if (!isset($_SESSION)) {
                             <li><a href="../adminModule/adminDashboard.php">Dashboard </a></li>
                             <li><a href="../adminModule/orders.php">Orders</a></li>
                             <!-- <li class="Header-sub-item"><a href="../adminModule/feedback.php">Feedbacks</a></li> -->
-                            <!-- <li class="Header-sub-item"><a href="../adminModule/inventory.php">Inventory</a></li> -->
+                            <li class="Header-sub-item"><a href="../adminModule/inventory.php">Inventory</a></li>
                             <li class="header-sub-item"><a href="../adminModule/orders_history.php">Orders History</a></li>
                             <li><a href="../commonPages/profile.php">Profile</a></li>
                             <?php
@@ -267,7 +267,7 @@ if (!isset($_SESSION)) {
                             <li><a href="../adminModule/adminDashboard.php">Dashboard </a></li>
                             <li><a href="../adminModule/orders.php">Orders</a></li>
                             <!-- <li class="Header-sub-item"><a href="../adminModule/feedback.php">Feedbacks</a></li> -->
-                            <!-- <li class="Header-sub-item"><a href="../adminModule/inventory.php">Inventory</a></li> -->
+                            <li class="Header-sub-item"><a href="../adminModule/inventory.php">Inventory</a></li>
                             <li class="header-sub-item"><a href="../adminModule/orders_history.php">Orders History</a></li>
                             <li><a href="../commonPages/profile.php">Profile</a></li>
                             <?php
