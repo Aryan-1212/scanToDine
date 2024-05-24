@@ -24,7 +24,7 @@ if (isset($_POST['fb-email'])) {
 
     if(isset($_POST['fb-rating'])){
         $rating = $_POST["fb-rating"];
-        $fbInsertQuery = "insert into feedbacks(res_code, username, fb_email, fb_subject, fb_description,  rating) values($res_code, '$uName', '$email', '$subject', '$feedback', $rating)";
+        $fbInsertQuery = "insert into feedbacks(res_code, username, fb_email, fb_subject, fb_description,  rating) values($res_code, '$uName', '$email', '$subject', '$feedback', '$rating')";
     }
 
     $fbInsert = mysqli_query($con, $fbInsertQuery);
